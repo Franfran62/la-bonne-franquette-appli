@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/security/secured_storage.dart';
+import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 import 'package:la_bonne_franquette_front/views/login_page.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 
