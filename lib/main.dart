@@ -3,8 +3,8 @@ import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 import 'package:la_bonne_franquette_front/views/login_page.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 
-
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
 
   SecuredStorage securedStorage = SecuredStorage();
