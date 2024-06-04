@@ -1,4 +1,4 @@
-import 'Categorie.dart';
+import 'categorie.dart';
 
 class SousCategorie extends Categorie{
   final int categorieId;
@@ -21,16 +21,8 @@ class SousCategorie extends Categorie{
     };
   }
 
-  int getId() {
-    return this.id;
-  }
-
-  String getNom() {
-    return this.nom;
-  }
-
   int getCategorieId() {
-    return this.categorieId;
+    return categorieId;
   }
   
 }

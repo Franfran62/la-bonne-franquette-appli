@@ -1,4 +1,4 @@
-import 'SousCategorie.dart';
+import 'sous_categorie.dart';
 
 class Categorie {
   final int id;
@@ -24,14 +24,14 @@ class Categorie {
   }
 
   int getId() {
-    return this.id;
+    return id;
   }
 
   String getNom() {
-    return this.nom;
+    return nom;
   }
 
   List<SousCategorie> getSousCategories() {
-    return this.sousCategories;
+    return sousCategories;
   }
 }

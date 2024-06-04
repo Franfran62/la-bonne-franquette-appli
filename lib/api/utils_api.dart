@@ -13,9 +13,9 @@ static const String wsQueryString = "$baseUrl/ws";
 static const String apiQueryString = "$baseUrl/api/v1/";
 
 //auth
-static final String authQueryString = apiQueryString + "auth/";
+static const String authQueryString = apiQueryString + "auth/";
 
 //login
-static final String createUserQuery = apiQueryString + "user/create";
+static const String createUserQuery = apiQueryString + "user/create";
 
 }

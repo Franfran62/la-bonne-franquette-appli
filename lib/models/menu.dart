@@ -1,4 +1,4 @@
-import "Produit.dart";
+import "produit.dart";
 
 class Menu {
   final int id;
@@ -9,26 +9,26 @@ class Menu {
   Menu(this.id, this.nom, this.prixHt, this.produits);
 
   double convertPriceToLong(){
-    return this.prixHt / 100;
+    return prixHt / 100;
   }
 
   double getTTC(){
-    return (this.prixHt * 1.1) / 100;
+    return (prixHt * 1.1) / 100;
   }
 
   int getId() {
-    return this.id;
+    return id;
   }
 
   String getNom() {
-    return this.nom;
+    return nom;
   }
 
   int getPrixHt() {
-    return this.prixHt;
+    return prixHt;
   }
 
   List<Produit> getProduits() {
-    return this.produits;
+    return produits;
   } 
 }

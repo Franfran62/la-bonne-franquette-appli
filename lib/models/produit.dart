@@ -1,5 +1,5 @@
-import "Ingredient.dart";
-import "Extra.dart";
+import "ingredient.dart";
+import "extra.dart";
 
 class Produit {
 
@@ -12,31 +12,31 @@ class Produit {
   Produit(this.id, this.nom, this.prixHt, this.extras, this.ingredients);
 
   double convertPriceToLong(){
-    return this.prixHt / 100;
+    return prixHt / 100;
   }
 
   double getTTC(){
-    return (this.prixHt * 1.1) / 100;
+    return (prixHt * 1.1) / 100;
   }
 
   int getId() {
-    return this.id;
+    return id;
   }
 
   String getNom() {
-    return this.nom;
+    return nom;
   }
 
   int getPrixHt() {
-    return this.prixHt;
+    return prixHt;
   }
 
   List<Extra> getExtras() {
-    return this.extras;
+    return extras;
   }
 
   List<Ingredient> getIngredients() {
-    return this.ingredients;
+    return ingredients;
   }
   
 }

@@ -25,15 +25,15 @@ class Ingredient {
   }
 
   int getId() {
-    return this.id;
+    return id;
   }
 
   String getNom() {
-    return this.nom;
+    return nom;
   }
 
   bool getACuire() {
-    return this.aCuire;
+    return aCuire;
   }
 
   List<Ingredient> getExtras() {
