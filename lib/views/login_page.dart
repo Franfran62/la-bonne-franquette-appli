@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/models/user.dart';
+import 'package:la_bonne_franquette_front/viewsmodels/user_view_model.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -36,9 +38,14 @@ class LoginPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
+                try {
+                  UserViewModel userViewModel = UserViewModel();
+                  userViewModel.submitForm();
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(const SnackBar(content: Text('Congrats =)')));
+                     .showSnackBar(const SnackBar(content: Text('Congrats =)')));
+                } catch (e) {
+                   ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(e.toString())));
                 }
               },
               child: const Text('Login'),

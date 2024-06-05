@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
 import '../api/utils_api.dart';
@@ -8,13 +9,16 @@ import 'package:http/http.dart' as http;
 class ApiService{
 
   static final UtilsApi tool = UtilsApi();
-
-  // TODO: modifier pour accéder au token enregistrer après la connexion
-  String authToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwidXNlcm5hbWUiOiJ0ZXN0IiwiZXhwIjoxNzE3MzQzNjMyfQ.JgphTBNjKrBsF7s7c14H51MBL8_t-VQ2lWymkE21RyS9OL8ytSLPUyMsXEQQRfjrKfYs_lrxx7sDMSNRXyTl-g";
-
   final String baseQuery = UtilsApi.apiQueryString; 
+  String authToken = "";
 
   ApiService(){
+    getToken();
+  }
+
+  /// Récupère le token depuis le SecuredStorage()
+  /// @return void
+  void getToken() {
     authToken = SecuredStorage().readSecret('auth-token').toString();
   }
 
@@ -103,6 +107,20 @@ class ApiService{
       }
     }else{
       throw Exception('Erreur : Impossible d\'accéder à la ressource : $this.apiQueryString$endpoint.\n Token invalide.');
+    }
+  }
+
+  Future<bool> connect({required User user}) async 
+  {
+    final response = await http.post(Uri.parse(baseQuery + '/v1/auth/login'), headers: {
+      'Content-Type': 'application/json'
+    }, body: jsonEncode(user.toJson()));
+    if(response.statusCode == 200) {
+      SecuredStorage().writeSecrets("auth-token", response.body.toString());
+      getToken();
+      return true;
+    } else {
+      throw Exception('Erreur : Impossible de se connecter');
     }
   }
 }
