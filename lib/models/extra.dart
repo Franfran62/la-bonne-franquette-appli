@@ -2,14 +2,14 @@ import 'ingredient.dart';
 
 class Extra extends Ingredient {
 
-  final int ingredientId;
+  final int prixHT;
 
   const Extra({
     required super.id,
     required super.nom,
     required super.aCuire,
-    required this.ingredientId,
-    super.extras = const [], //
+    required this.prixHT,
+    super.extra, //
   });
 
   factory Extra.fromJson(Map<String, dynamic> json){
@@ -17,15 +17,15 @@ class Extra extends Ingredient {
       {
         "id": int id,
         "nom": String nom,
-        "aCuire": bool aCuire,
-        "ingredient": int ingredientId,
-      } =>Extra(id: id, nom: nom, aCuire: aCuire, ingredientId: ingredientId),
+        "acuire": bool aCuire,
+        "prixHT": int prixHT,
+      } =>Extra(id: id, nom: nom, aCuire: aCuire, prixHT: prixHT),
       _ => throw Exception("Impossible de créer un Extra à partir de $json"),
     };
   }
 
-  int getIngredientId() {
-    return this.ingredientId;
+  int getPrixHT() {
+    return this.prixHT;
   }
   
 }

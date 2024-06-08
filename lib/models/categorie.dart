@@ -19,6 +19,10 @@ class Categorie {
         "sousCategories": List<SousCategorie> sousCategories,
       } => 
         Categorie(id: id, nom: nom, sousCategories: sousCategories),
+      {
+        'id': int id,
+        'nom': String nom,
+      } => Categorie(id: id, nom: nom, sousCategories: []),
         _ => throw Exception("Impossible de créer un Categorie à partir de $json"),
     };
   }
