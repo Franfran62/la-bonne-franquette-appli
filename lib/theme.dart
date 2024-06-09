@@ -4,22 +4,83 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomTheme {
   static ThemeData getTheme() {
     return ThemeData(
-      primaryColor: const Color(0xFFF2F3AE), // Couleur primary
-      secondaryHeaderColor: const Color(0xFFEDD382), // Couleur secondary
-      hoverColor: const Color(0xFFFC9E4F), // Couleur d'accentuation
-      disabledColor: const Color(0xFFFF521B), // Couleur d'erreur
-      highlightColor: Colors.green, // Couleur de succès
+
+      highlightColor: Colors.green, 
+      colorScheme: const ColorScheme.light(
+        primary:   Color(0xFFEDD382),
+        secondary: Color(0xFFF2F3AE),
+        tertiary:  Color(0xFFFC9E4F),
+        error: Color(0xFFFF521B),
+        surface: Colors.white,
+        onSurface: Colors.black,
+        surfaceContainer: Colors.white
+      ),
       
       textTheme: TextTheme(
-        bodyMedium: GoogleFonts.notoSans( //Police de texte
+        bodyLarge: GoogleFonts.notoSans( 
+          fontWeight: FontWeight.w500, 
+          color: Colors.black, 
+          fontSize: 20
+        ),
+        bodyMedium: GoogleFonts.notoSans( 
           fontWeight: FontWeight.normal, 
           color: Colors.black, 
+          fontSize: 16
         ),
-        headlineMedium: GoogleFonts.lora( //Police de titre
+        bodySmall: GoogleFonts.notoSans( 
+          fontWeight: FontWeight.normal, 
+          color: Colors.black, 
+          fontSize: 12
+        ),
+        headlineLarge: GoogleFonts.lora( 
           fontWeight: FontWeight.bold, 
           color: Colors.black, 
+          fontSize: 28,
         ), 
+        headlineMedium: GoogleFonts.lora( 
+          fontWeight: FontWeight.bold, 
+          color: Colors.black, 
+          fontSize: 24,
+        ), 
+        headlineSmall: GoogleFonts.lora( 
+          fontWeight: FontWeight.bold, 
+          color: Colors.black, 
+          fontSize: 22,
+        ),
       ),
-    );
+
+      inputDecorationTheme: InputDecorationTheme( 
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(50),
+          borderSide: const BorderSide(
+            color: Colors.black,
+            width: 3,
+          ),
+        ),
+        contentPadding: const EdgeInsets.only(left: 30),
+      ),
+
+       elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateColor.resolveWith((states) =>  const Color(0xFFEDD382)), 
+          foregroundColor: WidgetStateColor.resolveWith((states) => Colors.black), 
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              side: BorderSide.none,
+            ),
+          ),
+          textStyle: WidgetStateProperty.all(
+            GoogleFonts.notoSans(
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
+          ),
+          padding:  WidgetStateProperty.all(
+            const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
+          ),
+        ),
+        ),
+      );
   }
 }
