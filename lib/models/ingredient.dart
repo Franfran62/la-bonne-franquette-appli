@@ -50,7 +50,7 @@ class Ingredient {
   }
 
   Extra? getExtra() {
-    return this.extra;
+    return extra;
   }
 
   List<Produit> getProduits() {

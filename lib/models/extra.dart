@@ -25,7 +25,7 @@ class Extra extends Ingredient {
   }
 
   int getPrixHT() {
-    return this.prixHT;
+    return prixHT;
   }
   
 }

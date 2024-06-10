@@ -13,8 +13,6 @@ class InitialisationService {
 
   static void initStores() async {
     await GetStorage.init('carte');
-    GetStorage carte = GetStorage("carte");
-
     await initStore<Ingredient>('ingredient');
     await initStore<Categorie>('categorie');
     //await initStore<SousCategorie>('souscategorie');
