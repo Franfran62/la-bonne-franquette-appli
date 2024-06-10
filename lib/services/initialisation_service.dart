@@ -11,8 +11,6 @@ import 'package:la_bonne_franquette_front/services/api_service.dart';
 
 class InitialisationService {
 
-
-  /// Fonction permettant d'initialiser les ressources de l'application
   static void initStores() async {
     await GetStorage.init('carte');
     GetStorage carte = GetStorage("carte");
@@ -25,8 +23,7 @@ class InitialisationService {
     await initStore<Menu>('menu');
   }
 
-  static Future<void> initStore<T>(String endpoint) async {
-    
+  static Future<void> initStore<T>(String endpoint) async {    
     GetStorage carte = GetStorage("carte");
 
     final response = await ApiService().fetchAll(endpoint: endpoint, token: true);
@@ -46,7 +43,6 @@ class InitialisationService {
           results.add(Categorie.fromJson(i as Map<String, dynamic>) as T);
         }
       case "ingredient":
-      print('fetching ingrdients');
         for (var i in response){
           results.add(Ingredient.fromJson(i as Map<String, dynamic>) as T);
         }

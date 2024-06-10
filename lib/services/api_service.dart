@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
 import '../api/utils_api.dart';
@@ -10,14 +9,12 @@ class ApiService{
 
   static final UtilsApi tool = UtilsApi();
 
-  // TODO: modifier pour accéder au token enregistrer après la connexion
-  String authToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxNzcwNzI3Nn0.WfiOMc6s2hGECAoABAjtVVUvqza7weyV78b224q9v7Zw2XweOIesI_sLaCCb2DO94K4SQTNjxMod_fzBEXYO3A";
+  final String authToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxODA1Njg3OH0.tZsCCB8CHskkT57gPaNBfesd7EOLDpDXaS73aKrSxX36mESI0BoLEQmTdWYTIOr0ApGjRia9Ciuq_xUqSmFgxg";
 
-  final String baseQuery = UtilsApi.apiQueryString; 
+  final String baseQuery = UtilsApi.apiQueryString;
 
-  ApiService(){
-    SecuredStorage().writeSecrets('auth-token', 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxNzcwNzI3Nn0.WfiOMc6s2hGECAoABAjtVVUvqza7weyV78b224q9v7Zw2XweOIesI_sLaCCb2DO94K4SQTNjxMod_fzBEXYO3A');
-    authToken = SecuredStorage().readSecret('auth-token').toString();
+  ApiService() {
+    SecuredStorage().writeSecrets('auth-token', authToken);
   }
 
   /// Fonction permettant d'envoyer une requête GET à une ressource précisée en paramétre par 'endpoint'
@@ -26,10 +23,9 @@ class ApiService{
   /// @return Future<Map<String, dynamic>>: Map contenant les données de la ressource, avec comme clé le nom des champs de l'objet
   /// @throws Exception
   Future<List<JsonCodec>> get({required String endpoint, bool token = false}) async{
-
     if(token){
       final response = await http.get(Uri.parse(baseQuery + endpoint), headers: {
-        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxNzk0Mzk1NX0.njrK59SE4cXOsoRY1ljaoPUik2Pi5ZAszXkMKoD6Lv1g-hIxZ1Tc0mAeKM9SQwrCismaVS1Ly563TGKnzNVLeA"
+        'auth-token': authToken
       });
       if(response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -42,17 +38,11 @@ class ApiService{
   }
 
   Future<List<dynamic>> fetchAll({required String endpoint, bool token = false}) async{
-
     if(token){
-      print(baseQuery + endpoint);
       final response = await http.get(Uri.parse(baseQuery + endpoint), headers: {
-        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxODA1MTcwN30.OVpNKJBYMOVqHlL8Qxj6dfNDTqpa5eOWRiBDl0XyOpdXoaMie9nSAhmEh7uQUN_yQyZ8vksSf7LyZoxXUFF_Nw"
+        'auth-token': authToken
       });
       if(response.statusCode == 200) {
-        for (var i in jsonDecode(response.body)){
-          print(i);
-
-        }
         return jsonDecode(response.body);
       } else {
         throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint');
@@ -69,7 +59,6 @@ class ApiService{
   /// @return Future<Boolen>: retourne vrai si la requête a été effectuée, sinon léve une erreur
   /// @throws Exception
   Future<bool> post({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
-
     if(token){
       final response = await http.post(Uri.parse(baseQuery + endpoint), headers: {
         'auth-token': authToken,
@@ -92,7 +81,6 @@ class ApiService{
   /// @return Future<Boolen>: retourne vrai si la requête a été effectuée, sinon léve une erreur
   /// @throws Exception
   Future<bool> put({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
-
     if(token){
       final response = await http.put(Uri.parse(baseQuery + endpoint), headers: {
         'auth-token': authToken,
@@ -114,7 +102,6 @@ class ApiService{
   /// @return Future<Boolen>: retourne vrai si la suppression a été effectuée, sinon léve une erreur
   /// @throws Exception
   Future<bool> delete({required String endpoint, bool token = false}) async{
-
     if(token){
       final response = await http.delete(Uri.parse(baseQuery + endpoint), headers: {
         'auth-token': authToken
