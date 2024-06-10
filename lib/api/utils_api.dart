@@ -4,7 +4,7 @@
  */
 class UtilsApi {
 
-static const String baseUrl = "http://192.168.1.67:8080"; //loopback = 10.0.2.2
+static const String baseUrl = "http://10.0.2.2:8080"; //loopback = 10.0.2.2
 
 //Websocket
 static const String wsQueryString = "$baseUrl/ws";

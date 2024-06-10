@@ -29,7 +29,7 @@ class ApiService{
 
     if(token){
       final response = await http.get(Uri.parse(baseQuery + endpoint), headers: {
-        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxNzcwNzI3Nn0.WfiOMc6s2hGECAoABAjtVVUvqza7weyV78b224q9v7Zw2XweOIesI_sLaCCb2DO94K4SQTNjxMod_fzBEXYO3A"
+        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxNzk0Mzk1NX0.njrK59SE4cXOsoRY1ljaoPUik2Pi5ZAszXkMKoD6Lv1g-hIxZ1Tc0mAeKM9SQwrCismaVS1Ly563TGKnzNVLeA"
       });
       if(response.statusCode == 200) {
         return jsonDecode(response.body);
@@ -44,8 +44,9 @@ class ApiService{
   Future<List<dynamic>> fetchAll({required String endpoint, bool token = false}) async{
 
     if(token){
+      print(baseQuery + endpoint);
       final response = await http.get(Uri.parse(baseQuery + endpoint), headers: {
-        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxNzg2ODg2MH0.TaVYAnPfBVG_9nkppfYEe4VGlDlgcsPkf0oBUCHrwY1-pknMoqt2vtnG3ASSrFuL2QaHov1xT0e3qOoWsnlsYw"
+        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxODAxNDEyMX0.Fx_OABsFswC_rKOauE0x7y-MVe5w-jCOwJauY2M6j42p48K1ZnwS-IkhsbTQESJaQxysH2qtZUsXr1emOJV5Sw"
       });
       if(response.statusCode == 200) {
         for (var i in jsonDecode(response.body)){
