@@ -46,7 +46,7 @@ class ApiService{
     if(token){
       print(baseQuery + endpoint);
       final response = await http.get(Uri.parse(baseQuery + endpoint), headers: {
-        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxODAxNDEyMX0.Fx_OABsFswC_rKOauE0x7y-MVe5w-jCOwJauY2M6j42p48K1ZnwS-IkhsbTQESJaQxysH2qtZUsXr1emOJV5Sw"
+        'auth-token': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxODA1MTcwN30.OVpNKJBYMOVqHlL8Qxj6dfNDTqpa5eOWRiBDl0XyOpdXoaMie9nSAhmEh7uQUN_yQyZ8vksSf7LyZoxXUFF_Nw"
       });
       if(response.statusCode == 200) {
         for (var i in jsonDecode(response.body)){

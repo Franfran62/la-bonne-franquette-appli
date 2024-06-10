@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
+import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/models/sous_categorie.dart';
 import 'package:la_bonne_franquette_front/services/api_service.dart';
@@ -20,12 +21,8 @@ class InitialisationService {
     await initStore<Categorie>('categorie');
     //await initStore<SousCategorie>('souscategorie');
     await initStore<Extra>('extra');
-
-
     await initStore<Produit>('produit');
-
-
-    print(carte.getKeys());
+    await initStore<Menu>('menu');
   }
 
   static Future<void> initStore<T>(String endpoint) async {
@@ -41,7 +38,6 @@ class InitialisationService {
           results.add(Extra.fromJson(i as Map<String, dynamic>) as T);
         }
       case "souscategorie":
-      //SousCategorie
         for (var i in response){
           results.add(SousCategorie.fromJson(i as Map<String, dynamic>) as T);
         }
@@ -55,9 +51,15 @@ class InitialisationService {
           results.add(Ingredient.fromJson(i as Map<String, dynamic>) as T);
         }
       case "produit":
-      //Produit
         for (var i in response){
-          results.add(Produit.fromJson(i as Map<String, dynamic>) as T);
+          Produit currentProduit = Produit.fromJson(i as Map<String, dynamic>);
+          currentProduit.ingredients.map((i) => i.addProduit(currentProduit));
+          currentProduit.categories.map((c) => c.addProduit(currentProduit));
+          results.add(currentProduit as T);
+        }
+      case "menu":
+        for (var i in response){
+          results.add(Menu.fromJson(i as Map<String, dynamic>) as T);
         }
       default:
         throw Exception('Impossible d\'initialiser le store pour le modèle $T');

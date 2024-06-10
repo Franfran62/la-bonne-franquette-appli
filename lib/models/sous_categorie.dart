@@ -6,6 +6,7 @@ class SousCategorie extends Categorie{
     required super.id,
     required super.nom,
     super.sousCategories = const [],
+    super.produits = const [],
   });
 
   factory SousCategorie.fromJson(Map<String, dynamic> json){
