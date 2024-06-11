@@ -17,8 +17,8 @@ class LoginPage extends StatelessWidget {
     LoginPageViewModel viewModel = LoginPageViewModel();
 
     return Scaffold(
-      resizeToAvoidBottomInset : false,
-      body: Center(
+      body: SingleChildScrollView( 
+        child: Center(
          child: Container(
           width: screenWidth * 0.4,
           child: Form(
@@ -76,6 +76,7 @@ class LoginPage extends StatelessWidget {
             ),
           ),
          ),
+        ),
       ),
     );
   }
