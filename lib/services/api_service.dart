@@ -131,7 +131,18 @@ class ApiService{
       getToken();
       return true;
     } else {
-      throw Exception('Erreur : Impossible de se connecter');
+      throw Exception('Erreur : Impossible de se connecter au serveur}');
+    }
+  }
+
+  Future<String> getCacheVersion() async {
+    final response = await http.get(Uri.parse('$baseQuery/cache/version'), headers: {
+      'auth-token': authToken
+    });
+    if(response.statusCode == 200) {
+      return response.body.toString();
+    } else {
+      throw Exception('Erreur : Impossible de récupérer la version du cache');
     }
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/models/user.dart';
-import 'package:la_bonne_franquette_front/theme.dart';
-import 'package:la_bonne_franquette_front/viewsmodels/user_view_model.dart';
+import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart';
 
 class LoginPage extends StatelessWidget {
 
@@ -13,7 +11,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
-    UserViewModel userViewModel = UserViewModel();
+    LoginPageViewModel viewModel = LoginPageViewModel();
 
     return Scaffold(
       body: Center(
@@ -32,9 +30,10 @@ class LoginPage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 20),
                   child: 
                     TextFormField(
+                      controller: viewModel.usernameController,
                       decoration: getInputDecoration(label: 'Identifiant', placeholder: "nom de compte", context:  context),
                       validator: (String? value) {
-                        return userViewModel.validatePassword(value);
+                        return viewModel.validatePassword(value);
                       },
                     ),
                 ),
@@ -42,10 +41,11 @@ class LoginPage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 20, top: 10),
                   child: 
                     TextFormField(
+                      controller: viewModel.passwordController,
                       decoration: getInputDecoration(label: 'Mot de passe', placeholder: "mot de passe", context: context),
                       obscureText: true,
                       validator: (String? value) {
-                        return userViewModel.validatePassword(value);
+                        return viewModel.validatePassword(value);
                       },
                     ),
                 ),
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           try {
-                            bool connected = await userViewModel.submitForm();
+                            bool connected = await viewModel.submitForm();
                             ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text(connected.toString())));
                           } catch (e) {

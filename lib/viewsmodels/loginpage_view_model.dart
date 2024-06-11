@@ -3,8 +3,9 @@ import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/services/api_service.dart';
 import 'package:la_bonne_franquette_front/services/authenticator_service.dart';
 import 'package:la_bonne_franquette_front/services/cache_service.dart';
+import 'package:la_bonne_franquette_front/services/initialisation_service.dart';
 
-class UserViewModel {
+class LoginPageViewModel {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -15,6 +16,7 @@ class UserViewModel {
   GlobalKey<FormState> get formKey => _formKey;
   TextEditingController get usernameController => _usernameController;
   TextEditingController get passwordController => _passwordController;
+
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
       return 'Veuillez entrer votre nom d\'utilisateur';
@@ -34,29 +36,30 @@ class UserViewModel {
     User user = User(username: _usernameController.text, password: _passwordController.text);
     try {
       var response = await apiService.connect(user: user);
+      String? cacheVersion = await cacheService.getCacheVersion();
+      String apiVersion = await apiService.getCacheVersion(); 
+      
+      bool initCarte = false;
+      if (cacheVersion == null || apiVersion != cacheVersion) {
+        bool initCarte = await loadCarte(newVersion: apiVersion);
+      } else {
+        initCarte = true;
+      }
 
-      // String? cacheVersion = await cacheService.getCacheVersion();
-      // String apiVersion = (await getApiCarteVersion()) as String; 
-
-      // if (cacheVersion == null || apiVersion != cacheVersion) {
-      //   loadCarte(newVersion: apiVersion);
-      // } 
-      return response;
+      return response && initCarte;
 
     } catch (e) {
       throw Exception(e.toString());  
     }
 }
 
-  void loadCarte({required String newVersion}) async {
-    // Charger la carte
-    // TOTO
-    // update le cache du front
-    await cacheService.saveCacheVersion(newVersion);
-  }
-
-  Future<Map<String, dynamic>> getApiCarteVersion() async {
-     Map<String, dynamic> version = await apiService.get(endpoint: "/cache/version", token: true);
-     return version.values.first;
+  Future<bool> loadCarte({required String newVersion}) async {
+    try {
+      InitialisationService.initStores();
+      await cacheService.saveCacheVersion(newVersion);
+      return true;  
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 }
