@@ -4,6 +4,9 @@ import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart'
 class LoginPage extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   LoginPage({super.key});
 
 
@@ -31,7 +34,7 @@ class LoginPage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 20),
                   child: 
                     TextFormField(
-                      controller: viewModel.usernameController,
+                      controller: _usernameController,
                       decoration: getInputDecoration(label: 'Identifiant', placeholder: "nom de compte", context:  context),
                       validator: (String? value) {
                         return viewModel.validatePassword(value);
@@ -42,7 +45,7 @@ class LoginPage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 20, top: 10),
                   child: 
                     TextFormField(
-                      controller: viewModel.passwordController,
+                      controller: _passwordController,
                       decoration: getInputDecoration(label: 'Mot de passe', placeholder: "mot de passe", context: context),
                       obscureText: true,
                       validator: (String? value) {
@@ -57,7 +60,7 @@ class LoginPage extends StatelessWidget {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           try {
-                            bool connected = await viewModel.submitForm();
+                            bool connected = await viewModel.submitForm(username: _usernameController.text, password: _passwordController.text);
                             ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text(connected.toString())));
                           } catch (e) {
