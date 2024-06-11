@@ -9,8 +9,6 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  SecuredStorage securedStorage = SecuredStorage();
-  await securedStorage.writeSecrets('urlApi', "http://localhost:8080/api");
   await Hive.initFlutter();
   
   runApp(const MyApp());

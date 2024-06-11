@@ -8,12 +8,30 @@ import 'package:http/http.dart' as http;
 
 class ApiService{
 
-  static final UtilsApi tool = UtilsApi();
-  final String baseQuery = UtilsApi.apiQueryString; 
+  static final UtilsApi tool = UtilsApi();  
 
-  Future<String> getToken() async {
+  //Websocket
+  static final String wsQueryString = "$baseUrl/ws";
+
+  //api
+  static final String apiQueryString = "$baseUrl/api/v1";
+
+  //login
+  static final String createUserQuery = "$apiQueryString/user/create";
+
+  static final String baseUrl = getBaseAddressServer(); 
+
+  static Future<String> getToken() async {
     String? authToken = await SecuredStorage().readSecret('auth-token');
     return authToken ?? "";
+  }
+
+  static String getBaseAddressServer()  {
+    String? adresse;
+    String? ret;
+    SecuredStorage().readSecret('adresseServeur').then((value) => adresse = value);
+    ret = 'http://$adresse';
+    return ret ?? "";
   }
 
   Future<Map<String, String>> setHeaders(bool token) async {
@@ -29,6 +47,7 @@ class ApiService{
       'Content-Type': 'application/json'
     };
   }
+
   /// Fonction permettant d'envoyer une requête GET à une ressource précisée en paramétre par 'endpoint'
   /// @param endpoint: String de la ressource à laquelle on veut accéder
   /// @param token: Booléen permettant de savoir si on posséde un token ou non, défaut à false
@@ -37,7 +56,7 @@ class ApiService{
   Future<List<JsonCodec>> get({required String endpoint, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
-    final response = await http.get(Uri.parse(baseQuery + endpoint), headers: headers);
+    final response = await http.get(Uri.parse(apiQueryString + endpoint), headers: headers);
     if(response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
@@ -48,7 +67,7 @@ class ApiService{
   Future<List<dynamic>> fetchAll({required String endpoint, bool token = false}) async{
 
       Map<String, String> headers = await setHeaders(token);
-      final response = await http.get(Uri.parse(baseQuery + endpoint), headers: headers);
+      final response = await http.get(Uri.parse(apiQueryString + endpoint), headers: headers);
       if(response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -65,7 +84,7 @@ class ApiService{
   Future<bool> post({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
-    final response = await http.post(Uri.parse(baseQuery + endpoint), headers: headers, body: jsonEncode(body));
+    final response = await http.post(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
       if(response.statusCode == 200) {
         return true;
       } else {
@@ -82,7 +101,7 @@ class ApiService{
   Future<bool> put({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
-      final response = await http.put(Uri.parse(baseQuery + endpoint), headers: headers, body: jsonEncode(body));
+      final response = await http.put(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
       if(response.statusCode == 200) {
         return true;
       } else {
@@ -97,7 +116,7 @@ class ApiService{
   /// @throws Exception
   Future<bool> delete({required String endpoint, bool token = false}) async{
       Map<String, String> headers = await setHeaders(token);
-      final response = await http.delete(Uri.parse(baseQuery + endpoint), headers: headers);
+      final response = await http.delete(Uri.parse(apiQueryString + endpoint), headers: headers);
       if(response.statusCode == 200) {
         return true;
       } else {
@@ -108,7 +127,7 @@ class ApiService{
   Future<bool> connect({required User user}) async 
   {
     Map<String, String> headers = await setHeaders(false);
-    final response = await http.post(Uri.parse('$baseQuery/auth/login'), headers: headers, body: jsonEncode(user.toJson()));
+    final response = await http.post(Uri.parse('$apiQueryString/auth/login'), headers: headers, body: jsonEncode(user.toJson()));
     if(response.statusCode == 200) {
       Map<String, dynamic> token = jsonDecode(response.body);
       SecuredStorage().writeSecrets("auth-token", token['token']);
@@ -120,7 +139,7 @@ class ApiService{
 
   Future<String> getCacheVersion() async {
     String token = await getToken();
-    final response = await http.get(Uri.parse('$baseQuery/version/cache'), headers: {
+    final response = await http.get(Uri.parse('$apiQueryString/version/cache'), headers: {
       'auth-token': token
     });
     if(response.statusCode == 200) {
@@ -128,5 +147,10 @@ class ApiService{
     } else {
       throw Exception('Erreur : Impossible de récupérer la version du cache');
     }
+  }
+
+  Future<bool> testConnection(String serverAddress) async {
+    final response = await http.get(Uri.parse("http://$serverAddress/api/v1/testConnection"));
+    return response.statusCode == 200;
   }
 }

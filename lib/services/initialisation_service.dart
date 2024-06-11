@@ -19,6 +19,8 @@ class InitialisationService {
     await initStore<Extra>('extra');
     await initStore<Produit>('produit');
     await initStore<Menu>('menu');
+
+    print(GetStorage("carte").read("ingredients"));
   }
 
   static Future<void> initStore<T>(String endpoint) async {    

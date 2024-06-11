@@ -3,12 +3,20 @@ import 'package:la_bonne_franquette_front/services/api_service.dart';
 import 'package:la_bonne_franquette_front/services/authenticator_service.dart';
 import 'package:la_bonne_franquette_front/services/cache_service.dart';
 import 'package:la_bonne_franquette_front/services/initialisation_service.dart';
+import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
 class LoginPageViewModel {
  
   final apiService = ApiService();
   final authenticatorService = AuthenticatorService();
   final cacheService = CacheService();
+
+  String? validateServerAddress(String? value){
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer l\'adresse du serveur';
+    }
+    return null;
+  }
 
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
@@ -24,8 +32,19 @@ class LoginPageViewModel {
     return null;
   }
 
-  Future<bool> submitForm({required String username, required String password}) async {
+  Future<bool> connectToServer({required String serverAddress}) async {
+    if(await apiService.testConnection(serverAddress)){
+      SecuredStorage securedStorage = SecuredStorage();
+      securedStorage.writeSecrets('adresseServeur', serverAddress);
+      return true;
+    }
+    return false;
+  }
 
+  Future<bool> submitForm({required String username, required String password, required String serverAddress}) async {
+    if (!await connectToServer(serverAddress: serverAddress)) {
+      throw Exception('Impossible de se connecter au serveur');
+    }
     User user = User(username: username, password: password);
     try {
       var response = await apiService.connect(user: user);
@@ -34,6 +53,7 @@ class LoginPageViewModel {
       
       bool initCarte = false;
       if (cacheVersion == null || apiVersion != cacheVersion) {
+
         initCarte = await loadCarte(newVersion: apiVersion);
       } else {
         initCarte = true;
@@ -44,7 +64,7 @@ class LoginPageViewModel {
     } catch (e) {
       throw Exception(e.toString());  
     }
-}
+}  
 
   Future<bool> loadCarte({required String newVersion}) async {
     try {
