@@ -11,7 +11,10 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     double screenWidth = MediaQuery.of(context).size.width;
+    UserViewModel userViewModel = UserViewModel();
+
     return Scaffold(
       body: Center(
          child: Container(
@@ -20,7 +23,7 @@ class LoginPage extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: screenWidth * 0.3,
                   child:
                     Image.asset('lib/assets/images/logo.png'),
@@ -30,11 +33,8 @@ class LoginPage extends StatelessWidget {
                   child: 
                     TextFormField(
                       decoration: getInputDecoration(label: 'Identifiant', placeholder: "nom de compte", context:  context),
-                        validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Entrer votre nom d\'utilisateur';
-                        }
-                        return null;
+                      validator: (String? value) {
+                        return userViewModel.validatePassword(value);
                       },
                     ),
                 ),
@@ -44,11 +44,8 @@ class LoginPage extends StatelessWidget {
                     TextFormField(
                       decoration: getInputDecoration(label: 'Mot de passe', placeholder: "mot de passe", context: context),
                       obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Entrez votre mot de passe';
-                        }
-                        return null;
+                      validator: (String? value) {
+                        return userViewModel.validatePassword(value);
                       },
                     ),
                 ),
@@ -56,15 +53,16 @@ class LoginPage extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 10),
                   child:
                     ElevatedButton(
-                      onPressed: () {
-                        try {
-                          UserViewModel userViewModel = UserViewModel();
-                          userViewModel.submitForm();
-                          ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(content: Text('Congrats =)')));
-                        } catch (e) {
-                          ScaffoldMessenger.of(context)
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          try {
+                            bool connected = await userViewModel.submitForm();
+                            ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(connected.toString())));
+                          } catch (e) {
+                            ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text(e.toString())));
+                          }
                         }
                       },
                       child: const Text('Valider'),

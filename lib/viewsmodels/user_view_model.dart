@@ -15,30 +15,36 @@ class UserViewModel {
   GlobalKey<FormState> get formKey => _formKey;
   TextEditingController get usernameController => _usernameController;
   TextEditingController get passwordController => _passwordController;
+  String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre nom d\'utilisateur';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre mot de passe';
+    }
+    return null;
+  }
 
   Future<bool> submitForm() async {
 
-    if (!_formKey.currentState!.validate()) {
-      throw Exception("Données incorrectes");
-    } 
-
     User user = User(username: _usernameController.text, password: _passwordController.text);
-    var response = await apiService.connect(user: user);
-    if (!response) {
-      throw Exception("Données incorrectes");
-    }
-      
-    String? cacheVersion = await cacheService.getCacheVersion();
-    String apiVersion = (await getApiCarteVersion()) as String;   
-    if (cacheVersion != null && apiVersion == cacheVersion) {
-      return true;
-    } 
-
     try {
-      loadCarte(newVersion: apiVersion);
-      return true;
+      var response = await apiService.connect(user: user);
+
+      // String? cacheVersion = await cacheService.getCacheVersion();
+      // String apiVersion = (await getApiCarteVersion()) as String; 
+
+      // if (cacheVersion == null || apiVersion != cacheVersion) {
+      //   loadCarte(newVersion: apiVersion);
+      // } 
+      return response;
+
     } catch (e) {
-      throw Exception("Impossible de charger la carte");
+      throw Exception(e.toString());  
     }
 }
 
@@ -53,5 +59,4 @@ class UserViewModel {
      Map<String, dynamic> version = await apiService.get(endpoint: "/cache/version", token: true);
      return version.values.first;
   }
-
- }
+}

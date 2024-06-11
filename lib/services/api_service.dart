@@ -112,7 +112,7 @@ class ApiService{
 
   Future<bool> connect({required User user}) async 
   {
-    final response = await http.post(Uri.parse(baseQuery + '/v1/auth/login'), headers: {
+    final response = await http.post(Uri.parse('$baseQuery/auth/login'), headers: {
       'Content-Type': 'application/json'
     }, body: jsonEncode(user.toJson()));
     if(response.statusCode == 200) {

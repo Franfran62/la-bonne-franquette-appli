@@ -10,7 +10,7 @@ static const String baseUrl = "http://localhost:8080";
 static const String wsQueryString = "$baseUrl/ws";
 
 //api
-static const String apiQueryString = "$baseUrl/api/v1/";
+static const String apiQueryString = "$baseUrl/api/v1";
 
 //auth
 static const String authQueryString = apiQueryString + "auth/";
