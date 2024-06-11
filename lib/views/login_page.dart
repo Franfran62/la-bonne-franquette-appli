@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
+import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+  LoginPage({super.key});
+}
+
+class _LoginPageState extends State<LoginPage> {
 
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  LoginPage({super.key});
-
+  bool switchView = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +60,33 @@ class LoginPage extends StatelessWidget {
                     ),
                 ),
                 Container(
+                 margin: const EdgeInsets.only(bottom: 20, top: 10),
+                 child: 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        child: 
+                          const Text('Caisse'),
+                      ),
+                      Switch(
+                        value: switchView,
+                        onChanged: (value) {
+                          setState(() {
+                            switchView = value;
+                          });
+                        },
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: 
+                          const Text('Cuisine'),
+                      ),
+                    ],
+                  )
+                ),
+                Container(
                   margin: const EdgeInsets.only(top: 10),
                   child:
                     ElevatedButton(
@@ -61,8 +94,12 @@ class LoginPage extends StatelessWidget {
                         if (_formKey.currentState!.validate()) {
                           try {
                             bool connected = await viewModel.submitForm(username: _usernameController.text, password: _passwordController.text);
-                            ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(connected.toString())));
+                            if (connected) {
+                            
+                              Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => switchView ? CuisineHomePage() : CaisseHomePage()), 
+                               );
+                            }
                           } catch (e) {
                             ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text(e.toString())));
