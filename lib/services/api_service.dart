@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
 import '../api/utils_api.dart';
@@ -8,13 +9,17 @@ import 'package:http/http.dart' as http;
 class ApiService{
 
   static final UtilsApi tool = UtilsApi();
+  final String baseQuery = UtilsApi.apiQueryString; 
+  String authToken = "";
 
-  final String authToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJhZG1pbiIsImV4cCI6MTcxODA1Njg3OH0.tZsCCB8CHskkT57gPaNBfesd7EOLDpDXaS73aKrSxX36mESI0BoLEQmTdWYTIOr0ApGjRia9Ciuq_xUqSmFgxg";
+  ApiService(){
+    getToken();
+  }
 
-  final String baseQuery = UtilsApi.apiQueryString;
-
-  ApiService() {
-    SecuredStorage().writeSecrets('auth-token', authToken);
+  /// Récupère le token depuis le SecuredStorage()
+  /// @return void
+  void getToken() {
+    authToken = SecuredStorage().readSecret('auth-token').toString();
   }
 
   /// Fonction permettant d'envoyer une requête GET à une ressource précisée en paramétre par 'endpoint'
@@ -113,6 +118,31 @@ class ApiService{
       }
     }else{
       throw Exception('Erreur : Impossible d\'accéder à la ressource : $this.apiQueryString$endpoint.\n Token invalide.');
+    }
+  }
+
+  Future<bool> connect({required User user}) async 
+  {
+    final response = await http.post(Uri.parse('$baseQuery/auth/login'), headers: {
+      'Content-Type': 'application/json'
+    }, body: jsonEncode(user.toJson()));
+    if(response.statusCode == 200) {
+      SecuredStorage().writeSecrets("auth-token", response.body.toString());
+      getToken();
+      return true;
+    } else {
+      throw Exception('Erreur : Impossible de se connecter au serveur}');
+    }
+  }
+
+  Future<String> getCacheVersion() async {
+    final response = await http.get(Uri.parse('$baseQuery/cache/version'), headers: {
+      'auth-token': authToken
+    });
+    if(response.statusCode == 200) {
+      return response.body.toString();
+    } else {
+      throw Exception('Erreur : Impossible de récupérer la version du cache');
     }
   }
 }

@@ -7,12 +7,9 @@ static const String baseUrl = "http://10.0.2.2:8080"; //loopback = 10.0.2.2
 static const String wsQueryString = "$baseUrl/ws";
 
 //api
-static const String apiQueryString = "$baseUrl/api/v1/";
-
-//auth
-static const String authQueryString = "${apiQueryString}auth/";
+static const String apiQueryString = "$baseUrl/api/v1";
 
 //login
-static const String createUserQuery = "${apiQueryString}user/create";
+static const String createUserQuery = "$apiQueryString/user/create";
 
 }
