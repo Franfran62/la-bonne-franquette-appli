@@ -1,25 +1,38 @@
+import 'package:la_bonne_franquette_front/models/extra.dart';
+import 'package:la_bonne_franquette_front/models/produit.dart';
+
 class Ingredient {
   final int id;
   final String nom;
   final bool aCuire;
-  final List<Ingredient> extras; //Liste des extras contenant cet ingrédient
+  final Extra? extra;
+  final List<Produit> produits;
 
   const Ingredient({
     required this.id,
     required this.nom,
     required this.aCuire,
-    required this.extras,
+    required this.extra,
+    this.produits = const [],
   });
+
+  
   
   factory Ingredient.fromJson(Map<String, dynamic> json){
     return switch (json) {
       {
         "id": int id,
         "nom": String nom,
-        "aCuire": bool aCuire,
-        "extras": List<Ingredient> extras,
+        "acuire": bool aCuire,
+        "extra": Extra extra,
       } => 
-        Ingredient(id: id, nom: nom, aCuire: aCuire, extras: extras),
+        Ingredient(id: id, nom: nom, aCuire: aCuire, extra: extra),
+      {
+        "id": int id,
+        "nom": String nom,
+        "acuire": bool aCuire,
+      } =>
+        Ingredient(id: id, nom: nom, aCuire: aCuire, extra: null),
         _ => throw Exception("Impossible de créer un Ingredient à partir de $json"),
     };
   }
@@ -36,8 +49,16 @@ class Ingredient {
     return aCuire;
   }
 
-  List<Ingredient> getExtras() {
-    return this.extras;
+  Extra? getExtra() {
+    return extra;
+  }
+
+  List<Produit> getProduits() {
+    return produits;
+  }
+
+  void addProduit(Produit produit) {
+    produits.add(produit);
   }
 
 }
