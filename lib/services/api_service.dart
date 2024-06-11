@@ -27,8 +27,7 @@ class ApiService{
   /// @param token: Booléen permettant de savoir si on posséde un token ou non, défaut à false
   /// @return Future<Map<String, dynamic>>: Map contenant les données de la ressource, avec comme clé le nom des champs de l'objet
   /// @throws Exception
-  Future<Map<String, dynamic>> get({required String endpoint, bool token = false}) async{
-
+  Future<List<JsonCodec>> get({required String endpoint, bool token = false}) async{
     if(token){
       final response = await http.get(Uri.parse(baseQuery + endpoint), headers: {
         'auth-token': authToken
@@ -36,10 +35,25 @@ class ApiService{
       if(response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        throw Exception('Erreur : Impossible d\'accéder à la ressource : $this.apiQueryString$endpoint');
+        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint');
       }
     }else{
-      throw Exception('Erreur : Impossible d\'accéder à la ressource : $this.apiQueryString$endpoint.\n Token invalide.');
+      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint.\n Token invalide.');
+    }
+  }
+
+  Future<List<dynamic>> fetchAll({required String endpoint, bool token = false}) async{
+    if(token){
+      final response = await http.get(Uri.parse(baseQuery + endpoint), headers: {
+        'auth-token': authToken
+      });
+      if(response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint');
+      }
+    }else{
+      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint.\n Token invalide.');
     }
   }
 
@@ -50,7 +64,6 @@ class ApiService{
   /// @return Future<Boolen>: retourne vrai si la requête a été effectuée, sinon léve une erreur
   /// @throws Exception
   Future<bool> post({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
-
     if(token){
       final response = await http.post(Uri.parse(baseQuery + endpoint), headers: {
         'auth-token': authToken,
@@ -73,7 +86,6 @@ class ApiService{
   /// @return Future<Boolen>: retourne vrai si la requête a été effectuée, sinon léve une erreur
   /// @throws Exception
   Future<bool> put({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
-
     if(token){
       final response = await http.put(Uri.parse(baseQuery + endpoint), headers: {
         'auth-token': authToken,
@@ -95,7 +107,6 @@ class ApiService{
   /// @return Future<Boolen>: retourne vrai si la suppression a été effectuée, sinon léve une erreur
   /// @throws Exception
   Future<bool> delete({required String endpoint, bool token = false}) async{
-
     if(token){
       final response = await http.delete(Uri.parse(baseQuery + endpoint), headers: {
         'auth-token': authToken

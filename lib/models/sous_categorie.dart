@@ -1,13 +1,12 @@
 import 'categorie.dart';
 
 class SousCategorie extends Categorie{
-  final int categorieId;
 
   const SousCategorie({
     required super.id,
     required super.nom,
-    required this.categorieId,
     super.sousCategories = const [],
+    super.produits = const [],
   });
 
   factory SousCategorie.fromJson(Map<String, dynamic> json){
@@ -15,14 +14,9 @@ class SousCategorie extends Categorie{
       {
         "id": int id,
         "nom": String nom,
-        "categorie": int categorieId,
-      } => SousCategorie(id: id, nom: nom, categorieId: categorieId),
+      } => SousCategorie(id: id, nom: nom),
       _ => throw Exception("Impossible de créer une SousCategorie à partir de $json"),
     };
-  }
-
-  int getCategorieId() {
-    return categorieId;
   }
   
 }
