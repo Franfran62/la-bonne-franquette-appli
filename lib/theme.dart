@@ -80,7 +80,25 @@ class CustomTheme {
             const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
           ),
         ),
-        ),
-      );
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateColor.resolveWith((states) {
+            return const Color(0xFFEDD382);
+        }),
+        trackColor: WidgetStateColor.resolveWith((states) { 
+          if (states.contains(WidgetState.selected)) {
+            return const Color(0xFFFC9E4F);
+          }
+          return Colors.white;
+        }),
+        trackOutlineColor: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return  const Color(0xFFFC9E4F);
+          } else {
+            return Colors.grey.shade700;
+          }
+        }),
+      ),
+    );
   }
 }

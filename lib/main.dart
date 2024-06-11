@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 import 'package:la_bonne_franquette_front/views/login_page.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
