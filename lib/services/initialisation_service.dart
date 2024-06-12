@@ -23,6 +23,7 @@ class InitialisationService {
     print(GetStorage("carte").read("ingredients"));
   }
 
+
   static Future<void> initStore<T>(String endpoint) async {    
     GetStorage carte = GetStorage("carte");
 

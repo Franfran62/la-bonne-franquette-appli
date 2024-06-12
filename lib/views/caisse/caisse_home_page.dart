@@ -20,13 +20,6 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
               'Bienvenue dans la page de commande',
               style: TextStyle(fontSize: 24),
             ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Ajoutez ici la logique pour passer une commande
-              },
-              child: Text('Passer une commande'),
-            ),
           ],
         ),
       ),

@@ -3,6 +3,4 @@ import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
 class UtilsApi {
 
-
-
 }
