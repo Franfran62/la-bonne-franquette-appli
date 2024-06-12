@@ -14,7 +14,7 @@ class ApiService{
   static String wsQueryString = "$baseUrl/ws";
 
   //api
-  static String apiQueryString = "$baseUrl/api/v1";
+  static String apiQueryString = "$baseUrl/api/v1/";
 
   //login
   static String createUserQuery = "$apiQueryString/user/create";
@@ -125,7 +125,7 @@ class ApiService{
   Future<bool> connect({required User user}) async 
   {
     Map<String, String> headers = await setHeaders(false);
-    final response = await http.post(Uri.parse('$apiQueryString/auth/login'), headers: headers, body: jsonEncode(user.toJson()));
+    final response = await http.post(Uri.parse('${apiQueryString}auth/login'), headers: headers, body: jsonEncode(user.toJson()));
     if(response.statusCode == 200) {
       Map<String, dynamic> token = jsonDecode(response.body);
       SecuredStorage().writeSecrets("auth-token", token['token']);
@@ -137,7 +137,7 @@ class ApiService{
 
   Future<String> getCacheVersion() async {
     String token = await getToken();
-    final response = await http.get(Uri.parse('$apiQueryString/version/cache'), headers: {
+    final response = await http.get(Uri.parse('${apiQueryString}version/cache'), headers: {
       'auth-token': token
     });
     if(response.statusCode == 200) {

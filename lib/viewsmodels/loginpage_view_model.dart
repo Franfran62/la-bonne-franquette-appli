@@ -53,8 +53,8 @@ class LoginPageViewModel {
       String apiVersion = await apiService.getCacheVersion(); 
       
       bool initCarte = false;
-      if (cacheVersion == null || apiVersion != cacheVersion) {
-
+      //if (cacheVersion == null || apiVersion != cacheVersion) {
+      if(true) {
         initCarte = await loadCarte(newVersion: apiVersion);
       } else {
         initCarte = true;
@@ -69,7 +69,7 @@ class LoginPageViewModel {
 
   Future<bool> loadCarte({required String newVersion}) async {
     try {
-      InitialisationService.initStores();
+      await InitialisationService.initStores();
       await cacheService.saveCacheVersion(newVersion);
       return true;  
     } catch (e) {
