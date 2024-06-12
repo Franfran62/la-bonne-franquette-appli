@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/caisse_view_model.dart';
 
@@ -21,18 +22,18 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
           children: <Widget>[ 
             for(var p in viewModel.produits) ListTile(
               onTap: () {
-                print(p.nom);
-                for(var i in p.ingredients) {
-                  print(i.nom);
-                }
-                for(var c in p.categories) {
-                  print(c.nom);
-                }
+                viewModel.addToCart(p);
               },
               title: Text(p.nom, style: Theme.of(context).textTheme.bodyMedium),
-              leading: Text(p.categories[0].nom, style: Theme.of(context).textTheme.bodyMedium),
-              trailing: Text("${p.convertPriceToLong()}€", style: Theme.of(context).textTheme.bodyMedium),
+              trailing: Text(p.categories[0].nom, style: Theme.of(context).textTheme.bodyMedium),
+              leading: Text("${p.convertPriceToLong()}€", style: Theme.of(context).textTheme.bodyMedium),
               ),
+              ElevatedButton(
+                      onPressed: () async {
+                        await viewModel.sendOrder();
+                      },
+                      child: const Text('Valider'),
+                    ),
           ]
         ),
       ),

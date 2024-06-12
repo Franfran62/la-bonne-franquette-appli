@@ -79,14 +79,14 @@ class ApiService{
   /// @param token: Booléen permettant de savoir si on posséde un token ou non, défaut à false
   /// @return Future<Boolen>: retourne vrai si la requête a été effectuée, sinon léve une erreur
   /// @throws Exception
-  Future<bool> post({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
+  Future<bool> post({required String endpoint, required Map<dynamic, dynamic> body, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
     final response = await http.post(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
-      if(response.statusCode == 200) {
+      if(response.statusCode == 201) {
         return true;
       } else {
-        throw Exception('Erreur : Impossible d\'accéder à la ressource : $this.apiQueryString$endpoint');
+        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint');
       }
     }
 
