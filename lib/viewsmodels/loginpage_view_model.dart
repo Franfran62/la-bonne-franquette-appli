@@ -1,3 +1,4 @@
+import 'package:get_storage/get_storage.dart';
 import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/services/api_service.dart';
 import 'package:la_bonne_franquette_front/services/authenticator_service.dart';
@@ -34,8 +35,7 @@ class LoginPageViewModel {
 
   Future<bool> connectToServer({required String serverAddress}) async {
     if(await apiService.testConnection(serverAddress)){
-      SecuredStorage securedStorage = SecuredStorage();
-      securedStorage.writeSecrets('adresseServeur', serverAddress);
+      SecuredStorage().writeSecrets('adresseServeur', serverAddress);
       return true;
     }
     return false;
@@ -45,6 +45,7 @@ class LoginPageViewModel {
     if (!await connectToServer(serverAddress: serverAddress)) {
       throw Exception('Impossible de se connecter au serveur');
     }
+    await ApiService.setBaseAddressServer();
     User user = User(username: username, password: password);
     try {
       var response = await apiService.connect(user: user);

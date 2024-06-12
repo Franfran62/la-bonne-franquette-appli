@@ -11,27 +11,25 @@ class ApiService{
   static final UtilsApi tool = UtilsApi();  
 
   //Websocket
-  static final String wsQueryString = "$baseUrl/ws";
+  static String wsQueryString = "$baseUrl/ws";
 
   //api
-  static final String apiQueryString = "$baseUrl/api/v1";
+  static String apiQueryString = "$baseUrl/api/v1";
 
   //login
-  static final String createUserQuery = "$apiQueryString/user/create";
+  static String createUserQuery = "$apiQueryString/user/create";
 
-  static final String baseUrl = getBaseAddressServer(); 
+  static String? baseUrl;
 
   static Future<String> getToken() async {
     String? authToken = await SecuredStorage().readSecret('auth-token');
     return authToken ?? "";
   }
 
-  static String getBaseAddressServer()  {
-    String? adresse;
-    String? ret;
-    SecuredStorage().readSecret('adresseServeur').then((value) => adresse = value);
-    ret = 'http://$adresse';
-    return ret ?? "";
+  static Future<void> setBaseAddressServer() async {
+    await SecuredStorage().readSecret('adresseServeur').then((value) => {
+      baseUrl = 'http://$value'
+    });
   }
 
   Future<Map<String, String>> setHeaders(bool token) async {
