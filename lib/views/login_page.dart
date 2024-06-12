@@ -14,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _serverAddressController = TextEditingController();
   bool switchView = false;
 
   @override
@@ -35,6 +36,17 @@ class _LoginPageState extends State<LoginPage> {
                   width: screenWidth * 0.3,
                   child:
                     Image.asset('lib/assets/images/logo.png'),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: 
+                    TextFormField(
+                      controller: _serverAddressController,
+                      decoration: getInputDecoration(label: 'Serveur', placeholder: "adresse de serveur, ex: 182.168.1.0:8008", context:  context),
+                      validator: (String? value) {
+                        return viewModel.validateServerAddress(value);
+                      },
+                    ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(bottom: 20),
@@ -93,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           try {
-                            bool connected = await viewModel.submitForm(username: _usernameController.text, password: _passwordController.text);
+                            bool connected = await viewModel.submitForm(username: _usernameController.text, password: _passwordController.text, serverAddress: _serverAddressController.text);
                             if (connected) {
                             
                               Navigator.pushReplacement(context,
