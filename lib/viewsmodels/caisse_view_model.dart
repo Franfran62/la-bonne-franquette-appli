@@ -6,8 +6,6 @@ class CaisseViewModel {
     late List<Produit> produits;
 
     CaisseViewModel() {
-      print("--------------${carte.getKeys()}");
-      print(carte.read('produits'));
       produits = carte.read('produits') ?? [];
     }
   

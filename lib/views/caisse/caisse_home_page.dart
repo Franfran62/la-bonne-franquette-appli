@@ -21,9 +21,17 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
           children: <Widget>[ 
             for(var p in viewModel.produits) ListTile(
               onTap: () {
-                print(p);
+                print(p.nom);
+                for(var i in p.ingredients) {
+                  print(i.nom);
+                }
+                for(var c in p.categories) {
+                  print(c.nom);
+                }
               },
               title: Text(p.nom, style: Theme.of(context).textTheme.bodyMedium),
+              leading: Text(p.categories[0].nom, style: Theme.of(context).textTheme.bodyMedium),
+              trailing: Text("${p.convertPriceToLong()}€", style: Theme.of(context).textTheme.bodyMedium),
               ),
           ]
         ),

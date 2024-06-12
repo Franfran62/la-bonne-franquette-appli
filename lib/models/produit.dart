@@ -6,7 +6,7 @@ import "ingredient.dart";
 
 class Produit {
 
-  static final GetStorage carte = GetStorage("carte");
+  static GetStorage carte = GetStorage("carte");
 
   final int id;
   final String nom;
@@ -29,8 +29,21 @@ class Produit {
     List<Categorie> categorieResults = [];
     var ingredientsFromJson = json['ingredientSet'] as List; 
     var categoriesFromJson = json['categorieSet'] as List;
-    ingredientsFromJson.map((ingredient) => ingredientsResults.add(carte.read('ingredients').firstWhere((element) => element.id == ingredient['id']) as Ingredient));
-    categoriesFromJson.map((categorie) => categorieResults.add(carte.read('categories').firstWhere((element) => element.id == categorie['id']) as Categorie));
+    for (var i in ingredientsFromJson) {
+      for (var j in carte.read('ingredients')) {
+        if (i["id"] as int == j.id) {
+          ingredientsResults.add(j as Ingredient);
+        }
+      }
+    }
+
+    for (var i in categoriesFromJson) {
+      for (var j in carte.read('categories')) {
+        if (i["id"] as int == j.id) {
+          categorieResults.add(j as Categorie);
+        }
+      }
+    }
 
     return switch(json) {
       {

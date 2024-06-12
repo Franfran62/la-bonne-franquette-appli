@@ -46,6 +46,7 @@ class LoginPageViewModel {
       throw Exception('Impossible de se connecter au serveur');
     }
     await ApiService.setBaseAddressServer();
+    await cacheService.clearCache();
     User user = User(username: username, password: password);
     try {
       var response = await apiService.connect(user: user);
@@ -53,8 +54,7 @@ class LoginPageViewModel {
       String apiVersion = await apiService.getCacheVersion(); 
       
       bool initCarte = false;
-      //if (cacheVersion == null || apiVersion != cacheVersion) {
-      if(true) {
+      if (cacheVersion == null || apiVersion != cacheVersion) {
         initCarte = await loadCarte(newVersion: apiVersion);
       } else {
         initCarte = true;

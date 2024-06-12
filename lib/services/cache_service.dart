@@ -10,4 +10,9 @@ class CacheService {
     var box = await Hive.openBox('cache');
     return box.get('cacheVersion');
   }
+
+    Future<void> clearCache() async {
+    var box = await Hive.openBox('cache');
+    await box.clear();
+  }
 }
