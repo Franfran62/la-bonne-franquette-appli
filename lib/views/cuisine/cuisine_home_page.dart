@@ -75,7 +75,7 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
                   Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => CaisseHomePage()), 
                   );
-                  }, child: Text('caisse')),
+                  }, child: Text('Retour à la caisse')),
                   ],
                 )
               ],
