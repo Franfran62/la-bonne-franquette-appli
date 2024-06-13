@@ -61,4 +61,13 @@ class Ingredient {
     produits.add(produit);
   }
 
+  toJson() {
+    return {
+      'id': id,
+      'nom': nom,
+      'aCuire': aCuire,
+      'extra': extra,
+    };
+  }
+
 }

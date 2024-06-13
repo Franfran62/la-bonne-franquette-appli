@@ -11,7 +11,7 @@ import 'package:la_bonne_franquette_front/services/api_service.dart';
 
 class InitialisationService {
 
-  static void initStores() async {
+  static Future<void> initStores() async {
     await GetStorage.init('carte');
     await initStore<Ingredient>('ingredient');
     await initStore<Categorie>('categorie');
@@ -20,7 +20,8 @@ class InitialisationService {
     await initStore<Produit>('produit');
     await initStore<Menu>('menu');
 
-    print(GetStorage("carte").read("ingredients"));
+    GetStorage carte = GetStorage("carte");
+    print(carte.read("categorie"));
   }
 
   static Future<void> initStore<T>(String endpoint) async {    
