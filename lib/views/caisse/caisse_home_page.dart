@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
+import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/caisse_view_model.dart';
 
 class CaisseHomePage extends StatefulWidget {
@@ -33,13 +33,26 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                 ]
               ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await viewModel.sendOrder();
-              },
-              child: const Text('Voirle panier'),
-            ),
-            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: 
+                    ElevatedButton(
+                      onPressed: () async {
+                        await viewModel.sendOrder();
+                      },
+                      child: const Text('Voir le panier'),
+                    )
+                ),
+            ElevatedButton(onPressed: () {
+              Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => CuisineHomePage()), 
+                );
+            }, child: Text('Retour à la cuisine')),
+              ],
+            )
           ],
         ),
       ),

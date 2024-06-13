@@ -60,10 +60,24 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
                     }
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      child:
                 ElevatedButton(
                   onPressed: loadCommandes,
                   child: const Text("Charger les commandes en cours"),
+                  )
                 ),
+                ElevatedButton(onPressed: () {
+                  Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => CaisseHomePage()), 
+                  );
+                  }, child: Text('caisse')),
+                  ],
+                )
               ],
             )
           )
