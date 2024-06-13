@@ -39,7 +39,7 @@ class CaisseViewModel {
         "prixHT": prixTotal,
       };
       try {
-        await ApiService().post(endpoint: 'commandes', body: commandeBody, token: true);
+        await ApiService().post(endpoint: '/commandes', body: commandeBody, token: true);
       } on Exception catch (e) {
         SnackBar(content: Text('Erreur lors de l\'envoi de la commande :\n$e'));
       }

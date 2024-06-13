@@ -45,7 +45,7 @@ class LoginPageViewModel {
       throw Exception('Impossible de se connecter au serveur');
     }
     await ApiService.setBaseAddressServer();
-    await cacheService.clearCache();
+    await CacheService.clearCache();
     User user = User(username: username, password: password);
     try {
       var response = await apiService.connect(user: user);

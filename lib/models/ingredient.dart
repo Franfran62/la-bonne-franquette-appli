@@ -73,14 +73,4 @@ class Ingredient {
   void addProduit(Produit produit) {
     produits.add(produit);
   }
-
-  toJson() {
-    return {
-      'id': id,
-      'nom': nom,
-      'aCuire': aCuire,
-      'extra': extra,
-    };
-  }
-
 }
