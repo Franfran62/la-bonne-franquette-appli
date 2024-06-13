@@ -68,7 +68,7 @@ class LoginPageViewModel {
 
   Future<bool> loadCarte({required String newVersion}) async {
     try {
-      InitialisationService.initStores();
+      await InitialisationService.initStores();
       await CacheService.saveCacheVersion(newVersion);
       return true;  
     } catch (e) {
