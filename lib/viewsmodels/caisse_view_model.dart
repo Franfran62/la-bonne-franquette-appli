@@ -43,7 +43,7 @@ class CaisseViewModel {
       } on Exception catch (e) {
         SnackBar(content: Text('Erreur lors de l\'envoi de la commande :\n$e'));
       }
-      carte.write("panier", []);
+      carte.write("panier", [] as List<Article>);
     }
   
 }

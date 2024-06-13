@@ -12,29 +12,35 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   @override
   Widget build(BuildContext context) {
     CaisseViewModel viewModel = CaisseViewModel();
-    print(viewModel.produits.length);
     return Scaffold(
       appBar: AppBar(
         title: Text('Passer une commande'),
       ),
       body: Center(
-        child: ListView(
-          children: <Widget>[ 
-            for(var p in viewModel.produits) ListTile(
-              onTap: () {
-                viewModel.addToCart(p);
-              },
-              title: Text(p.nom, style: Theme.of(context).textTheme.bodyMedium),
-              trailing: Text(p.categories[0].nom, style: Theme.of(context).textTheme.bodyMedium),
-              leading: Text("${p.convertPriceToLong()}€", style: Theme.of(context).textTheme.bodyMedium),
-              ),
-              ElevatedButton(
-                      onPressed: () async {
-                        await viewModel.sendOrder();
-                      },
-                      child: const Text('Valider'),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                children: <Widget>[ 
+                  for(var p in viewModel.produits) ListTile(
+                    onTap: () {
+                      viewModel.addToCart(p);
+                    },
+                    title: Text(p.nom, style: Theme.of(context).textTheme.bodyMedium),
+                    trailing: Text(p.categories[0].nom, style: Theme.of(context).textTheme.bodyMedium),
+                    leading: Text("${p.convertPriceToLong()}€", style: Theme.of(context).textTheme.bodyMedium),
                     ),
-          ]
+                ]
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await viewModel.sendOrder();
+              },
+              child: const Text('Voirle panier'),
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
