@@ -1,4 +1,3 @@
-import 'package:get_storage/get_storage.dart';
 import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/services/api_service.dart';
 import 'package:la_bonne_franquette_front/services/authenticator_service.dart';

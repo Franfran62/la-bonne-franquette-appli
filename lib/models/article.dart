@@ -3,7 +3,7 @@ import 'package:la_bonne_franquette_front/models/ingredient.dart';
 
 class Article {
   final String nom;
-  final int quantite;
+  int quantite;
   final int prixHT;
   final List<Ingredient> ingredients;
   final List<Extra> extraSet;
@@ -52,8 +52,22 @@ class Article {
     };
   }
 
+  Map<String, dynamic> toJsonNoIngredient() {
+    return {
+      'nom': nom,
+      'quantite': quantite,
+      'prixHT': prixHT,
+      'ingredients': [],
+      'extraSet': extraSet.map((e) => e.toJson()).toList(),
+    };
+  } 
+
   @override
   String toString() {
     return 'Article(nom: $nom, quantite: $quantite, prixHT: $prixHT, ingredients: $ingredients, extraSet: $extraSet)';
+  }
+
+  double getPriceTTC(){
+    return (prixHT/100)*1.1;
   }
 }
