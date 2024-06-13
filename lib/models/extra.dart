@@ -24,6 +24,17 @@ class Extra extends Ingredient {
     };
   }
 
+   @override
+     Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "nom": nom,
+      "aCuire": aCuire,
+      "prixHT": prixHT,
+    };
+  }
+
+
   int getPrixHT() {
     return prixHT;
   }

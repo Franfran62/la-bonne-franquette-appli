@@ -24,10 +24,11 @@ class InitialisationService {
     print(carte.read("categorie"));
   }
 
+
   static Future<void> initStore<T>(String endpoint) async {    
     GetStorage carte = GetStorage("carte");
 
-    final response = await ApiService().fetchAll(endpoint: endpoint, token: true);
+    final response = await ApiService().fetchAll(endpoint: "/$endpoint", token: true);
     List<T> results = List<T>.empty(growable: true);
 
     switch (endpoint) {

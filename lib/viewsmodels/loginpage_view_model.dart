@@ -10,7 +10,6 @@ class LoginPageViewModel {
  
   final apiService = ApiService();
   final authenticatorService = AuthenticatorService();
-  final cacheService = CacheService();
 
   String? validateServerAddress(String? value){
     if (value == null || value.isEmpty) {
@@ -46,11 +45,11 @@ class LoginPageViewModel {
       throw Exception('Impossible de se connecter au serveur');
     }
     await ApiService.setBaseAddressServer();
-    await cacheService.clearCache();
+    await CacheService.clearCache();
     User user = User(username: username, password: password);
     try {
       var response = await apiService.connect(user: user);
-      String? cacheVersion = await cacheService.getCacheVersion();
+      String? cacheVersion = await CacheService.getCacheVersion();
       String apiVersion = await apiService.getCacheVersion(); 
       
       bool initCarte = false;
@@ -70,7 +69,7 @@ class LoginPageViewModel {
   Future<bool> loadCarte({required String newVersion}) async {
     try {
       await InitialisationService.initStores();
-      await cacheService.saveCacheVersion(newVersion);
+      await CacheService.saveCacheVersion(newVersion);
       return true;  
     } catch (e) {
       throw Exception(e.toString());

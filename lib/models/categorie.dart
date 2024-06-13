@@ -20,7 +20,7 @@ class Categorie {
       {
         "id": int id,
         "nom": String nom,
-        "sousCategories": List<SousCategorie> sousCategories,
+        "sousCategorieSet": List<SousCategorie> sousCategories,
       } => 
         Categorie(id: id, nom: nom, sousCategories: sousCategories),
       {

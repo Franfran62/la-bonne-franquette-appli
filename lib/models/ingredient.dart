@@ -37,6 +37,19 @@ class Ingredient {
     };
   }
 
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {
+      'id': id,
+      'nom': nom,
+      'aCuire': aCuire,
+    };
+    return json;
+  }
+
+  @override
+  String toString() {
+    return 'Ingredient(id: $id, nom: $nom, aCuire: $aCuire, extra: $extra, produits: $produits)';
+  }
   int getId() {
     return id;
   }
@@ -60,14 +73,4 @@ class Ingredient {
   void addProduit(Produit produit) {
     produits.add(produit);
   }
-
-  toJson() {
-    return {
-      'id': id,
-      'nom': nom,
-      'aCuire': aCuire,
-      'extra': extra,
-    };
-  }
-
 }
