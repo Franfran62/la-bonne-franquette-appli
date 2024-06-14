@@ -36,6 +36,8 @@
          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+         <!-- Required to fetch data from the internet. -->
+            <uses-permission android:name="android.permission.INTERNET" />
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
