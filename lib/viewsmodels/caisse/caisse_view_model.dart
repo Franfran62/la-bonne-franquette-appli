@@ -5,9 +5,11 @@ import 'package:la_bonne_franquette_front/models/produit.dart';
 class CaisseViewModel {
     final GetStorage carte = GetStorage('carte');
     late List<Produit> produits;
+    late int commandeNumber;
 
     CaisseViewModel() {
       produits = carte.read('produits') ?? [];
+      commandeNumber = carte.read('commandeNumber');
     }
   
     Future<void> addToCart(Produit produit) async {

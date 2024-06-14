@@ -13,7 +13,7 @@ class PanierViewModel {
   Future<bool> sendOrder() async {
     int prixTotal = getTotalPrice();
     Map commandeBody = {
-      "numero": 0,
+      "numero": carte.read('commandeNumber'),
       "surPlace": true,
       "menus": [],
       "paiementSet": [],
@@ -27,13 +27,13 @@ class PanierViewModel {
       rethrow;
     }
     await clearPanier();
+    carte.write('commandeNumber', carte.read('commandeNumber') + 1);
     return true;
   }
 
   Future<void> clearPanier() async {
     await carte.remove("panier");
     articles = List<Article>.empty();
-    print(articles.length);
   }
 
   int getTotalPrice() {

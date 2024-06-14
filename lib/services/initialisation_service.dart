@@ -21,7 +21,7 @@ class InitialisationService {
     await initStore<Menu>('menu');
 
     GetStorage carte = GetStorage("carte");
-    print(carte.read("categorie"));
+    carte.write("commandeNumber", 1);
   }
 
 
