@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/services/input_service.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart';
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: 
                     TextFormField(
                       controller: _serverAddressController,
-                      decoration: getInputDecoration(label: 'Serveur', placeholder: "adresse de serveur, ex: 182.168.1.0:8008", context:  context),
+                      decoration: InputService.getInputDecoration(label: 'Serveur', placeholder: "adresse de serveur, ex: 182.168.1.0:8008", context:  context),
                       validator: (String? value) {
                         return viewModel.validateServerAddress(value);
                       },
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: 
                     TextFormField(
                       controller: _usernameController,
-                      decoration: getInputDecoration(label: 'Identifiant', placeholder: "nom de compte", context:  context),
+                      decoration: InputService.getInputDecoration(label: 'Identifiant', placeholder: "nom de compte", context:  context),
                       validator: (String? value) {
                         return viewModel.validatePassword(value);
                       },
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: 
                     TextFormField(
                       controller: _passwordController,
-                      decoration: getInputDecoration(label: 'Mot de passe', placeholder: "mot de passe", context: context),
+                      decoration: InputService.getInputDecoration(label: 'Mot de passe', placeholder: "mot de passe", context: context),
                       obscureText: true,
                       validator: (String? value) {
                         return viewModel.validatePassword(value);
@@ -129,15 +130,5 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  InputDecoration getInputDecoration({required String label, required String placeholder, required BuildContext context}) {
-    ThemeData theme = Theme.of(context);
-    return InputDecoration(
-      labelText: label,
-      labelStyle: theme.textTheme.bodyMedium,
-      hintText: 'Entrez votre $placeholder', 
-      hintStyle: theme.textTheme.bodyMedium,
-      floatingLabelBehavior: FloatingLabelBehavior.always,
-    );
-  }
+  
 }
