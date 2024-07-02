@@ -22,7 +22,8 @@ class PanierViewModel {
       "prixHT": prixTotal,
     };
     try {
-      await ApiService().post(endpoint: '/commandes', body: commandeBody, token: true);
+      List<dynamic> response = await ApiService().post(endpoint: '/commandes', body: commandeBody, token: true);
+      print(response);
     } on Exception {
       rethrow;
     }

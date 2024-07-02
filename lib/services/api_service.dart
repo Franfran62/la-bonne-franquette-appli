@@ -46,93 +46,68 @@ class ApiService{
     };
   }
 
-  /// Fonction permettant d'envoyer une requête GET à une ressource précisée en paramétre par 'endpoint'
-  /// @param endpoint: String de la ressource à laquelle on veut accéder
-  /// @param token: Booléen permettant de savoir si on posséde un token ou non, défaut à false
-  /// @return Future<Map<String, dynamic>>: Map contenant les données de la ressource, avec comme clé le nom des champs de l'objet
-  /// @throws Exception
-  // TODO : utile ?
   Future<List<JsonCodec>> get({required String endpoint, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
     final response = await http.get(Uri.parse(apiQueryString + endpoint), headers: headers);
-    if(response.statusCode == 200) {
-      return jsonDecode(response.body);
+    if(response.statusCode >= 300){
+      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
     } else {
-      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode}');
+      return jsonDecode(response.body);
     }
   }
 
   Future<List<dynamic>> fetchAll({required String endpoint, bool token = false}) async{
 
-      Map<String, String> headers = await setHeaders(token);
-      final response = await http.get(Uri.parse(apiQueryString + endpoint), headers: headers);
-      if(response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint ${response.statusCode}, ${response.body}');
-      }
+    Map<String, String> headers = await setHeaders(token);
+    final response = await http.get(Uri.parse(apiQueryString + endpoint), headers: headers);
+    if(response.statusCode >= 300){
+      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
+    } else {
+      return jsonDecode(response.body);
+    }
   }
-
-  /// Fonction permettant d'envoyer une requête POST à une ressource précisée en paramétre par 'endpoint'
-  /// @param endpoint: String de la ressource à laquelle on veut accéder
-  /// @param body: Map contenant les données à envoyer
-  /// @param token: Booléen permettant de savoir si on posséde un token ou non, défaut à false
-  /// @return Future<Boolen>: retourne vrai si la requête a été effectuée, sinon léve une erreur
-  /// @throws Exception
-  Future<bool> post({required String endpoint, required Map<dynamic, dynamic> body, bool token = false}) async{
+  Future<List<dynamic>> post({required String endpoint, required Map<dynamic, dynamic> body, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
-    final response = await http.post(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
-      if(response.statusCode == 201) {
-        return true;
+      final response = await http.post(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
+      if(response.statusCode >= 300){
+      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
       } else {
-        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint');
+        return jsonDecode(response.body);
       }
     }
 
-  /// Fonction permettant d'envoyer une requête PUT à une ressource précisée en paramétre par 'endpoint'  
-  /// @param endpoint: String de la ressource à laquelle on veut accéder
-  /// @param body: Map contenant les données à envoyer
-  /// @param token: Booléen permettant de savoir si on posséde un token ou non, défaut à false
-  /// @return Future<Boolen>: retourne vrai si la requête a été effectuée, sinon léve une erreur
-  /// @throws Exception
-  Future<bool> put({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
+  Future<List<dynamic>> put({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
       final response = await http.put(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
-      if(response.statusCode == 200) {
-        return true;
+      if(response.statusCode >= 300){
+      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
       } else {
-        throw Exception('Erreur : Impossible d\'accéder à la ressource : $this.apiQueryString$endpoint');
-      }
+        return jsonDecode(response.body);
+      }      
     }
 
-  /// Fonction permettant de supprimer un obje
-  /// @param endpoint: String de la ressource à supprimer
-  /// @param token: Booléen permettant de savoir si on posséde un token ou non, défaut à false
-  /// @return Future<Boolen>: retourne vrai si la suppression a été effectuée, sinon léve une erreur
-  /// @throws Exception
   Future<bool> delete({required String endpoint, bool token = false}) async{
-      Map<String, String> headers = await setHeaders(token);
-      final response = await http.delete(Uri.parse(apiQueryString + endpoint), headers: headers);
-      if(response.statusCode == 200) {
-        return true;
+    Map<String, String> headers = await setHeaders(token);
+    final response = await http.delete(Uri.parse(apiQueryString + endpoint), headers: headers);
+    if(response.statusCode >= 300){
+      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
       } else {
-        throw Exception('Erreur : Impossible d\'accéder à la ressource : $this.apiQueryString$endpoint');
-      }
+        return true;
+      }   
     }
 
-  Future<bool> connect({required User user}) async 
-  {
+  Future<bool> connect({required User user}) async {
     Map<String, String> headers = await setHeaders(false);
     final response = await http.post(Uri.parse('$apiQueryString/auth/login'), headers: headers, body: jsonEncode(user.toJson()));
-    if(response.statusCode == 200) {
-      Map<String, dynamic> token = jsonDecode(response.body);
-      SecuredStorage().writeSecrets("auth-token", token['token']);
-      return true;
+    if(response.statusCode >= 300){
+      throw Exception('Erreur : Impossible de se connecter, ${response.statusCode} : ${response.body}');
     } else {
-      throw Exception('Erreur : Impossible de se connecter au serveur}');
+      Map<String, dynamic> token = jsonDecode(response.body);
+    SecuredStorage().writeSecrets("auth-token", token['token']);
+    return true;
     }
   }
 
@@ -141,11 +116,11 @@ class ApiService{
     final response = await http.get(Uri.parse('$apiQueryString/version/cache'), headers: {
       'auth-token': token
     });
-    if(response.statusCode == 200) {
-      return response.body.toString();
+    if(response.statusCode >= 300){
+      throw Exception('Erreur : Impossible de récupérer la version du cache, ${response.statusCode} : ${response.body}');
     } else {
-      throw Exception('Erreur : Impossible de récupérer la version du cache');
-    }
+      return response.body.toString();
+    }    
   }
 
   Future<bool> testConnection(String serverAddress) async {
