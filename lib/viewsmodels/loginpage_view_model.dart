@@ -10,13 +10,6 @@ class LoginPageViewModel {
   final apiService = ApiService();
   final authenticatorService = AuthenticatorService();
 
-  String? validateServerAddress(String? value){
-    if (value == null || value.isEmpty) {
-      return 'Veuillez entrer l\'adresse du serveur';
-    }
-    return null;
-  }
-
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
       return 'Veuillez entrer votre nom d\'utilisateur';
@@ -32,14 +25,15 @@ class LoginPageViewModel {
   }
 
   Future<bool> connectToServer({required String serverAddress}) async {
-    if(await apiService.testConnection(serverAddress)){
+    if(await ApiService.testConnection(serverAddress)){
       SecuredStorage().writeSecrets('adresseServeur', serverAddress);
       return true;
     }
     return false;
   }
 
-  Future<bool> submitForm({required String username, required String password, required String serverAddress}) async {
+  Future<bool> submitForm({required String username, required String password}) async {
+    String serverAddress = await SecuredStorage().readSecret("adresseServeur") as String;
     if (!await connectToServer(serverAddress: serverAddress)) {
       throw Exception('Impossible de se connecter au serveur');
     }

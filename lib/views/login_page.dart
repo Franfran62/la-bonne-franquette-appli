@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/services/input_service.dart';
+import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/login/connection_modal_widget.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,17 +39,6 @@ class _LoginPageState extends State<LoginPage> {
                   width: screenWidth * 0.3,
                   child:
                     Image.asset('lib/assets/images/logo.png'),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: 
-                    TextFormField(
-                      controller: _serverAddressController,
-                      decoration: InputService.getInputDecoration(label: 'Serveur', placeholder: "adresse de serveur, ex: 182.168.1.0:8008", context:  context),
-                      validator: (String? value) {
-                        return viewModel.validateServerAddress(value);
-                      },
-                    ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(bottom: 20),
@@ -106,9 +97,8 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           try {
-                            bool connected = await viewModel.submitForm(username: _usernameController.text, password: _passwordController.text, serverAddress: _serverAddressController.text);
+                            bool connected = await viewModel.submitForm(username: _usernameController.text, password: _passwordController.text);
                             if (connected) {
-                            
                               Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) => switchView ? CuisineHomePage() : CaisseHomePage()), 
                                );
@@ -121,6 +111,20 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: const Text('Valider'),
                     ),
+                ), ElevatedButton(
+                  child: const Text('Afficher les paramétres'),
+                  onPressed: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return SingleChildScrollView( child: Container(
+                          padding: EdgeInsets.only( bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: ConnectionModalWidget(),
+                        ));
+                      },
+                    );
+                  },
                 ),
               ],  
             ),
