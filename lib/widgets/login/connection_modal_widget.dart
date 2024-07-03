@@ -42,42 +42,54 @@ class ConnectionModalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min, 
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(top: 20),
-            child: const Text('Paramétres')
+    return Stack(
+      children:[
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min, 
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Text('Paramétres')
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 25, top: 25, left: 50, right: 50),
+                child: TextFormField(
+                  controller: _serverAddressController,
+                  decoration: InputService.getInputDecoration(
+                      label: 'Serveur',
+                      placeholder:
+                          "adresse de serveur, ex: 182.168.1.0:8008",
+                      context: context),
+                  validator: (String? value) {
+                    return validateServerAddress(value);
+                  },
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 25),
+                child: ElevatedButton(
+                  child: const Text('Enregistrer'),
+                  onPressed: () async => {
+                    await saveAddress(_serverAddressController.text) 
+                      ? ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Connexion enregistrée")))
+                      : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Impossible de contacter le serveur.")))
+                    }
+                ),
+              ),
+            ],
           ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 25, top: 25, left: 50, right: 50),
-            child: TextFormField(
-              controller: _serverAddressController,
-              decoration: InputService.getInputDecoration(
-                  label: 'Serveur',
-                  placeholder:
-                      "adresse de serveur, ex: 182.168.1.0:8008",
-                  context: context),
-              validator: (String? value) {
-                return validateServerAddress(value);
-              },
-            ),
+        ),
+        Positioned(
+          top: 10,
+          right: 10,
+          child: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(Icons.close),
           ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 25),
-            child: ElevatedButton(
-              child: const Text('Enregistrer'),
-              onPressed: () async => {
-                await saveAddress(_serverAddressController.text) 
-                  ? ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Connexion enregistrée")))
-                  : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Impossible de contacter le serveur.")))
-                }
-            ),
-          ),
-        ],
-      ),
+        )
+      ] 
     );
   }
 }
