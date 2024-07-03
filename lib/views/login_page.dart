@@ -107,7 +107,6 @@ class _LoginPageState extends State<LoginPage> {
                           try {
                             bool connected = await viewModel.submitForm(username: _usernameController.text, password: _passwordController.text, serverAddress: _serverAddressController.text);
                             if (connected) {
-                            
                               Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) => switchView ? CuisineHomePage() : CaisseHomePage()), 
                                );

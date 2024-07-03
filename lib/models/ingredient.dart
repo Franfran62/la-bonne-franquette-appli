@@ -1,18 +1,18 @@
-import 'package:la_bonne_franquette_front/models/extra.dart';
+import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 
-class Ingredient {
+class Ingredient implements Identifiable{
+
+  @override
   final int id;
   final String nom;
   final bool aCuire;
-  final Extra? extra;
   final List<Produit> produits;
 
   const Ingredient({
     required this.id,
     required this.nom,
     required this.aCuire,
-    required this.extra,
     this.produits = const [],
   });
 
@@ -24,15 +24,8 @@ class Ingredient {
         "id": int id,
         "nom": String nom,
         "acuire": bool aCuire,
-        "extra": Extra extra,
       } => 
-        Ingredient(id: id, nom: nom, aCuire: aCuire, extra: extra),
-      {
-        "id": int id,
-        "nom": String nom,
-        "acuire": bool aCuire,
-      } =>
-        Ingredient(id: id, nom: nom, aCuire: aCuire, extra: null),
+        Ingredient(id: id, nom: nom, aCuire: aCuire),
         _ => throw Exception("Impossible de créer un Ingredient à partir de $json"),
     };
   }
@@ -48,7 +41,7 @@ class Ingredient {
 
   @override
   String toString() {
-    return 'Ingredient(id: $id, nom: $nom, aCuire: $aCuire, extra: $extra, produits: $produits)';
+    return 'Ingredient(id: $id, nom: $nom, aCuire: $aCuire, produits: $produits)';
   }
   int getId() {
     return id;
@@ -62,15 +55,7 @@ class Ingredient {
     return aCuire;
   }
 
-  Extra? getExtra() {
-    return extra;
-  }
-
   List<Produit> getProduits() {
     return produits;
-  }
-
-  void addProduit(Produit produit) {
-    produits.add(produit);
   }
 }

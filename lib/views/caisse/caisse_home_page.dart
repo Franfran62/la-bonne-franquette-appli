@@ -10,31 +10,45 @@ class CaisseHomePage extends StatefulWidget {
 }
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
-  @override
-  Widget build(BuildContext context) {
+
     CaisseViewModel viewModel = CaisseViewModel();
+    List<Produit>? produits;
+    @override
+    void initState() {
+      super.initState();
+      loadProduits();
+    }
+
+    void loadProduits() async {
+      produits = await viewModel.getProduits();
+      print(produits);
+      setState(() {}); 
+    }
+    
+  @override
+  Widget build(BuildContext context)  {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Passer une commande'),
+        title: const Text('Passer une commande'),
       ),
       body: Center(
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ListView(children: <Widget>[
-                for (var p in viewModel.produits)
+              child: ( produits != null && produits!.isNotEmpty ) 
+              ? ListView(children: <Widget>[
+                for (var p in produits!)
                   ListTile(
                     onTap: () {
-                      viewModel.addToCart(p);
+                      viewModel.ajouterAuPanier(p);
                     },
                     title: Text(p.nom,
                         style: Theme.of(context).textTheme.bodyMedium),
-                    trailing: Text(p.categories[0].nom,
-                        style: Theme.of(context).textTheme.bodyMedium),
-                    leading: Text("${(p.convertPriceToLong()*1.1).toStringAsFixed(2)}€",
+                    leading: Text("${(p.prixHt / 100).toStringAsFixed(2)} €",
                         style: Theme.of(context).textTheme.bodyMedium),
                   ),
-              ]),
+                ])
+              : const CircularProgressIndicator(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

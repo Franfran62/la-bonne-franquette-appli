@@ -9,7 +9,6 @@ class Extra extends Ingredient {
     required super.nom,
     required super.aCuire,
     required this.prixHT,
-    super.extra, //
   });
 
   factory Extra.fromJson(Map<String, dynamic> json){
@@ -33,7 +32,6 @@ class Extra extends Ingredient {
       "prixHT": prixHT,
     };
   }
-
 
   int getPrixHT() {
     return prixHT;

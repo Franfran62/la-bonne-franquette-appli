@@ -1,7 +1,7 @@
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 
-class Article{
+class Article {
   final String nom;
   int quantite;
   final int prixHT;
@@ -25,4 +25,24 @@ class Article{
       'extraSet': extras.map((e) => e.toJson()).toList(),
     };
   } 
+
+  String getNom() {
+    return nom;
+  }
+
+  int getQuantite() {
+    return quantite;
+  }
+
+  int getPrixHT() {
+    return prixHT;
+  }
+
+  List<Ingredient> getIngredients() {
+    return ingredients;
+  }
+
+  List<Extra> getExtras() {
+    return extras;
+  }
 }
