@@ -40,6 +40,14 @@ class ConnectionModalWidget extends StatelessWidget {
     }
   }
 
+  Future<void> rafraichirCache() async {
+    SecuredStorage().readSecret('adresseServeur').then((value) => {
+      if(value!.isNotEmpty){
+        ApiService().get(endpoint: "/cache/reinitialiser")
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -65,6 +73,13 @@ class ConnectionModalWidget extends StatelessWidget {
                   validator: (String? value) {
                     return validateServerAddress(value);
                   },
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 25),
+                child: ElevatedButton(
+                  child: const Text('Rafraichir le cache'),
+                  onPressed: () async => await rafraichirCache()
                 ),
               ),
               Container(
