@@ -114,7 +114,7 @@ class ApiService{
 
   Future<String> getCacheVersion() async {
     String token = await getToken();
-    final response = await http.get(Uri.parse('$apiQueryString/version/cache'), headers: {
+    final response = await http.get(Uri.parse('$apiQueryString/cache/version'), headers: {
       'auth-token': token
     });
     if(response.statusCode >= 300){
