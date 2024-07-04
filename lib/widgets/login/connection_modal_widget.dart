@@ -7,15 +7,12 @@ class ConnectionModalWidget extends StatelessWidget {
 
   final _serverAddressController = TextEditingController();
 
-  late String adresseServeur = "";
-
-
   ConnectionModalWidget({super.key}) {
     SecuredStorage().readSecret('adresseServeur').then((value) =>{
-      if(value!.isNotEmpty){
-        adresseServeur = value
+      if (value!.isNotEmpty) {
+        _serverAddressController.text = value
       } else {
-        adresseServeur = ""
+        _serverAddressController.text = ""
       }
     });
   }
@@ -31,8 +28,7 @@ class ConnectionModalWidget extends StatelessWidget {
     if(adresse.isEmpty) return false;
     bool result = await ApiService.testConnection(adresse);
     if(result){
-      adresseServeur = adresse;
-      SecuredStorage().writeSecrets('adresseServeur',adresseServeur);
+      SecuredStorage().writeSecrets('adresseServeur',adresse);
       ApiService.setBaseAddressServer();
       return true;
     }else{
@@ -59,13 +55,13 @@ class ConnectionModalWidget extends StatelessWidget {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(top: 20),
-                child: const Text('Paramétres')
+                child: const Text('Paramètre')
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 25, top: 25, left: 50, right: 50),
                 child: TextFormField(
                   controller: _serverAddressController,
-                  decoration: InputService.getInputDecoration(
+                  decoration: InputService.getInputDecoration( 
                       label: 'Serveur',
                       placeholder:
                           "adresse de serveur, ex: 182.168.1.0:8008",
@@ -79,18 +75,24 @@ class ConnectionModalWidget extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 25),
                 child: ElevatedButton(
                   child: const Text('Rafraichir le cache'),
-                  onPressed: () async => await rafraichirCache()
+                  onPressed: () async {
+                    await rafraichirCache();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Cache rafraîchi.")));
+                  }
                 ),
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 25),
                 child: ElevatedButton(
                   child: const Text('Enregistrer'),
-                  onPressed: () async => {
-                    await saveAddress(_serverAddressController.text) 
-                      ? ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Connexion enregistrée")))
-                      : ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Impossible de contacter le serveur.")))
+                  onPressed: () async {
+                    if (await saveAddress(_serverAddressController.text)) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Connexion réussi.")));
+                    } else {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Impossible de contacter le serveur.")));
                     }
+                  }
                 ),
               ),
             ],
