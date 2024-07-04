@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/panier/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
 class PanierPage extends StatefulWidget {
   @override
@@ -8,11 +9,18 @@ class PanierPage extends StatefulWidget {
 }
 
 class _PanierPageState extends State<PanierPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     PanierViewModel viewModel = PanierViewModel();
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: SideMenuWidget(),
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer()
+          ),
         title: Text('Panier'),
       ),
       body: Center(

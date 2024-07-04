@@ -37,7 +37,7 @@ class LoginPageViewModel {
     }
     await ApiService.setBaseAddressServer();
     await CacheService.clearCache();
-    User user = User(username: username, password: password);
+    User user = User(username: username.trim(), password: password.trim());
     try {
       var response = await apiService.connect(user: user);
       String? cacheVersion = await CacheService.getCacheVersion();

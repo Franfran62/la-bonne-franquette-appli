@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/services/input_service.dart';
-import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/login/connection_modal_widget.dart';
+import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,7 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _serverAddressController = TextEditingController();
   bool switchView = false;
 
   @override
@@ -25,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     LoginPageViewModel viewModel = LoginPageViewModel();
 
     return Scaffold(
+      drawer: SideMenuWidget(),
       body: SingleChildScrollView(
         child: Stack(children: [
           Center(
@@ -138,9 +138,9 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 );
               },
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
             ),
-          )
+          ),
         ]),
       ),
     );

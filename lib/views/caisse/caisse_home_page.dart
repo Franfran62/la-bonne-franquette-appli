@@ -3,6 +3,7 @@ import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/views/panier/panier_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/caisse/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   @override
@@ -11,8 +12,10 @@ class CaisseHomePage extends StatefulWidget {
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
 
-    CaisseViewModel viewModel = CaisseViewModel();
-    List<Produit>? produits;
+  CaisseViewModel viewModel = CaisseViewModel();
+  List<Produit>? produits;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
     @override
     void initState() {
       super.initState();
@@ -28,7 +31,13 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   @override
   Widget build(BuildContext context)  {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: SideMenuWidget(),
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer()
+          ),
         title: const Text('Passer une commande'),
       ),
       body: Center(
