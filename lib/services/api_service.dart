@@ -67,6 +67,7 @@ class ApiService{
       return jsonDecode(response.body);
     }
   }
+  
   Future<List<dynamic>> post({required String endpoint, required Map<dynamic, dynamic> body, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
@@ -123,7 +124,7 @@ class ApiService{
     }    
   }
 
-  Future<bool> testConnection(String serverAddress) async {
+  static Future<bool> testConnection(String serverAddress) async {
     final response = await http.get(Uri.parse("http://$serverAddress/api/v1/testConnection"));
     return response.statusCode == 200;
   }
