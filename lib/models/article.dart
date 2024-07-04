@@ -5,8 +5,8 @@ class Article {
   final String nom;
   int quantite;
   final int prixHT;
-  final List<Ingredient> ingredients;
-  final List<Extra> extraSet;
+  List<Ingredient> ingredients;
+  List<Extra> extraSet;
 
   Article({
     required this.nom,
@@ -68,6 +68,14 @@ class Article {
   }
 
   double getPriceTTC(){
-    return (prixHT/100)*1.1;
+    return  (prixHT/100) * 1.1;
+  }
+
+  List<Extra> getExtras() {
+    return extraSet;
+  }
+
+  List<Ingredient> getIngredients() {
+    return ingredients;
   }
 }

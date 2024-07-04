@@ -1,6 +1,5 @@
 import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/services/api_service.dart';
-import 'package:la_bonne_franquette_front/services/authenticator_service.dart';
 import 'package:la_bonne_franquette_front/services/cache_service.dart';
 import 'package:la_bonne_franquette_front/services/initialisation_service.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
@@ -8,7 +7,6 @@ import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 class LoginPageViewModel {
  
   final apiService = ApiService();
-  final authenticatorService = AuthenticatorService();
 
   String? validateServerAddress(String? value){
     if (value == null || value.isEmpty) {

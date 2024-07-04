@@ -1,67 +1,85 @@
 import 'dart:core';
 
-import 'package:get_storage/get_storage.dart';
 import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
+import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/models/sous_categorie.dart';
 import 'package:la_bonne_franquette_front/services/api_service.dart';
+import 'package:la_bonne_franquette_front/services/database_service.dart';
 
 class InitialisationService {
 
   static Future<void> initStores() async {
-    await GetStorage.init('carte');
+    await DatabaseService.initDatabase();
     await initStore<Ingredient>('ingredient');
-    await initStore<Categorie>('categorie');
-    //await initStore<SousCategorie>('souscategorie');
     await initStore<Extra>('extra');
+    await initStore<Categorie>('categorie');
     await initStore<Produit>('produit');
     await initStore<Menu>('menu');
-
-    GetStorage carte = GetStorage("carte");
-    carte.write("commandeNumber", 1);
+    return;
   }
 
-
   static Future<void> initStore<T>(String endpoint) async {    
-    GetStorage carte = GetStorage("carte");
-
     final response = await ApiService().fetchAll(endpoint: "/$endpoint", token: true);
-    List<T> results = List<T>.empty(growable: true);
-
     switch (endpoint) {
-      case "extra":
-        for (var i in response){
-          results.add(Extra.fromJson(i as Map<String, dynamic>) as T);
-        }
-      case "souscategorie":
-        for (var i in response){
-          results.add(SousCategorie.fromJson(i as Map<String, dynamic>) as T);
-        }
-      case "categorie":
-        for (var i in response){
-          results.add(Categorie.fromJson(i as Map<String, dynamic>) as T);
-        }
       case "ingredient":
         for (var i in response){
-          results.add(Ingredient.fromJson(i as Map<String, dynamic>) as T);
+          i['acuire'] = i['acuire'] ? 1 : 0; 
+          await DatabaseService.insert("ingredient", i as Map<String, dynamic>);
         }
+        break;
+      case "extra":
+        for (var i in response){
+          i['acuire'] = i['acuire'] ? 1 : 0; 
+          await DatabaseService.insert("extra", i as Map<String, dynamic>);
+        }
+        break;
+      case "categorie":
+        for (var i in response){
+          await DatabaseService.insert("categorie", i as Map<String, dynamic>);
+        }
+        break;
       case "produit":
         for (var i in response){
-          Produit currentProduit = Produit.fromJson(i as Map<String, dynamic>);
-          currentProduit.ingredients.map((i) => i.addProduit(currentProduit));
-          currentProduit.categories.map((c) => c.addProduit(currentProduit));
-          results.add(currentProduit as T);
+          Produit produit = Produit.fromJson(i);
+          List<Categorie> categories = produit.getCategories();
+          List<Ingredient> ingredients = produit.getIngredients();
+
+          await DatabaseService.insert("produit", produit.register());
+          await link<Categorie>("produit_appartient_categorie", i['id'], categories);
+          await link<Ingredient>("produit_contient_ingredient", i['id'], ingredients);
         }
+        break;
       case "menu":
         for (var i in response){
-          results.add(Menu.fromJson(i as Map<String, dynamic>) as T);
+          Menu menu = Menu.fromJson(i);
+          List<Produit> produitsInMenu = menu.getProduits();
+
+          await DatabaseService.insert("menu", menu.register());
+          await link<Produit>("menu_contient_produit", i['id'], produitsInMenu);
         }
+        break;
       default:
         throw Exception('Impossible d\'initialiser le store pour le modèle $T');
     }
-    carte.write("${endpoint}s", results);
   }
+
+  static Future<void> link<T extends Identifiable>(String table, int id, List<T> items) async {
+    try {
+        List<String> tableSplitted =table.split("_");
+        String referenceName = "${tableSplitted.first}_id";
+        String itemName = "${tableSplitted.last}_id";
+
+        for (T item in items) {
+          await DatabaseService.insert(table, {
+            referenceName: id,
+            itemName: item.id 
+          });
+        }
+    } catch(e) {
+      throw Exception("Impossible de lier les éléments dans la table $table");
+    }
+  } 
 }
