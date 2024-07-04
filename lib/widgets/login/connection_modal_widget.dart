@@ -43,7 +43,7 @@ class ConnectionModalWidget extends StatelessWidget {
   Future<void> rafraichirCache() async {
     SecuredStorage().readSecret('adresseServeur').then((value) => {
       if(value!.isNotEmpty){
-        ApiService().get(endpoint: "/cache/reinitialiser")
+        ApiService().get(endpoint: "/cache/rafraichir")
       }
     });
   }
