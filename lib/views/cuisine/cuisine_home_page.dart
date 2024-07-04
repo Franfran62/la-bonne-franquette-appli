@@ -48,7 +48,7 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: SideMenuWidget(),
+        drawer: SideMenuWidget(destination: CaisseHomePage(), context: context),
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.menu),

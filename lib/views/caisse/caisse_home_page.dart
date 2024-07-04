@@ -32,7 +32,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   Widget build(BuildContext context)  {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: SideMenuWidget(),
+      drawer: SideMenuWidget(destination: CuisineHomePage(), context: context),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),

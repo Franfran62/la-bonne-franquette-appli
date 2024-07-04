@@ -24,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
     LoginPageViewModel viewModel = LoginPageViewModel();
 
     return Scaffold(
-      drawer: SideMenuWidget(),
       body: SingleChildScrollView(
         child: Stack(children: [
           Center(
