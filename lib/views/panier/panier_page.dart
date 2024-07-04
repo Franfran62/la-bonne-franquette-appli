@@ -20,7 +20,7 @@ class _PanierPageState extends State<PanierPage> {
           children: <Widget>[
             Expanded(
               child: ListView(children: <Widget>[
-                for (var a in viewModel.articles)
+                for (var a in viewModel.getArticles())
                   ListTile(
                     title: Text(a.nom,
                         style: Theme.of(context).textTheme.bodyMedium),
@@ -33,7 +33,7 @@ class _PanierPageState extends State<PanierPage> {
             ),
             Container(
               margin: const EdgeInsets.all(5),
-              child: Text("Total : ${(viewModel.getTotalPriceTTC()/100).toStringAsFixed(2)}€",
+              child: Text("Total : ${(viewModel.getTotalPriceTTC()).toStringAsFixed(2)}€",
                   style: Theme.of(context).textTheme.bodyMedium),
             ),
             Row(
@@ -61,7 +61,7 @@ class _PanierPageState extends State<PanierPage> {
                 Container(
                   margin: const EdgeInsets.all(5),
                   child: ElevatedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         viewModel.clearPanier();
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar( content: Text("Abandon de la commande.")));
                         Navigator.pushReplacement(
@@ -70,7 +70,7 @@ class _PanierPageState extends State<PanierPage> {
                               builder: (context) => CaisseHomePage()),
                         );
                         },
-                      child: Text('Supprimer le panier')),
+                      child: const Text('Supprimer le panier')),
                 ),
                 Container(
                   margin: const EdgeInsets.all(5),

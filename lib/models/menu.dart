@@ -1,9 +1,10 @@
-import "package:get_storage/get_storage.dart";
 
+import "package:la_bonne_franquette_front/models/interface/identifiable.dart";
 import "produit.dart";
 
-class Menu {
-  static final GetStorage carte = GetStorage("carte");
+class Menu implements Identifiable {
+  
+  @override
   final int id;
   final String nom;
   final int prixHT;
@@ -16,29 +17,31 @@ class Menu {
     required this.produits,
   });
 
-  factory Menu.fromJson(Map<String, dynamic> json){
-    List<Produit> produitsResults = [];
-    var produitsFromJson = json['produitSet'] as List;
-    produitsFromJson.map((produit) => produitsResults.add(carte.read('produits').firstWhere((element) => element.id == produit['id']) as Produit));
+  factory Menu.fromJson(Map<String, dynamic> json) {
+    try {
+      var produitList = json['produitSet'] as List<dynamic>;
 
-    return switch (json) {
-      {
-        "id": int id,
-        "nom": String nom,
-        "prixHT": int prixHT,
-        "produitSet": List<dynamic> produits,
-      } => 
-        Menu(id: id, nom: nom, prixHT: prixHT, produits: produitsResults),
-        _ => throw Exception("Impossible de créer un Ingredient à partir de $json"),
+      List<Produit> produits = produitList
+        .map((produitJson) => Produit.fromJson(produitJson))
+        .toList();
+
+      return Menu(
+            id: json['id'] as int,
+            nom: json['nom'] as String,
+            prixHT: json['prixHT'] as int,
+            produits: produits
+          ); 
+    } catch (e) {
+      throw Exception("Impossible de créer un Menu à partir de $json");
+    }
+  }
+
+  Map<String, dynamic> register() {
+    return {
+      "id": id,
+      "nom": nom,
+      "prixHT": prixHT,
     };
-  }
-
-  double convertPriceToLong(){
-    return prixHT / 100;
-  }
-
-  double getTTC(){
-    return (prixHT * 1.1) / 100;
   }
 
   int getId() {

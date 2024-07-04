@@ -1,19 +1,15 @@
-import "package:get_storage/get_storage.dart";
 import "package:la_bonne_franquette_front/models/categorie.dart";
-import "package:la_bonne_franquette_front/models/sous_categorie.dart";
-
+import "package:la_bonne_franquette_front/models/interface/identifiable.dart";
 import "ingredient.dart";
 
-class Produit {
+class Produit implements Identifiable {
 
-  static GetStorage carte = GetStorage("carte");
-
+  @override
   final int id;
   final String nom;
   final int prixHt;
-  List<Ingredient> ingredients;
-  List<Categorie> categories;
-  List<SousCategorie>? sousCategories;
+  final List<Ingredient> ingredients;
+  final List<Categorie> categories;
 
   Produit ({
     required this.id,
@@ -21,66 +17,49 @@ class Produit {
     required this.prixHt,
     required this.ingredients,
     required this.categories,
-    this.sousCategories,
   });
 
   factory Produit.fromJson(Map<String, dynamic> json) {
-    List<Ingredient> ingredientsResults = [];
-    List<Categorie> categorieResults = [];
-    var ingredientsFromJson = json['ingredientSet'] as List; 
-    var categoriesFromJson = json['categorieSet'] as List;
-    for (var i in ingredientsFromJson) {
-      for (var j in carte.read('ingredients')) {
-        if (i["id"] as int == j.id) {
-          ingredientsResults.add(j as Ingredient);
-        }
-      }
-    }
+    try {
+      var ingredientList = json['ingredientSet'] as List<dynamic>;
+      var categorieList = json['categorieSet'] as List<dynamic>;
 
-    for (var i in categoriesFromJson) {
-      for (var j in carte.read('categories')) {
-        if (i["id"] as int == j.id) {
-          categorieResults.add(j as Categorie);
-        }
-      }
-    }
+      List<Ingredient> ingredients = ingredientList
+        .map((ingredientJson) => Ingredient.fromJson(ingredientJson))
+        .toList();
 
-    return switch(json) {
-      {
-        "id": int id,
-        "nom": String nom,
-        "prixHT": int prixHT,
-        "ingredientSet": List<dynamic> ingredients,
-        "categorieSet": List<dynamic> categories,
-        "sousCategorieSet": List<dynamic> sousCategories,
-      } => Produit( id: id, 
-                    nom: nom,
-                    prixHt: prixHT,
-                    ingredients: ingredients.map((e) => carte.read('ingredients').firstWhere((element) => element.id == e)).toList() as List<Ingredient>,
-                    categories: categories.map((e) => carte.read('categories').firstWhere((element) => element.id == e)).toList() as List<Categorie>,
-                    sousCategories: sousCategories.map((e) => carte.read('souscategories').firstWhere((element) => element.id == e)).toList() as List<SousCategorie>?,),
-      {
-        "id": int id,
-        "nom": String nom,
-        "prixHT": int prixHT,
-        "categorieSet": List<dynamic> categories,
-        "ingredientSet": List<dynamic> ingredients,
-      } => Produit( id: id, 
-                    nom: nom,
-                    prixHt: prixHT,
-                    ingredients: ingredientsResults,
-                    categories: categorieResults,
-                    sousCategories: null,),    
-      _ => throw Exception("Impossible de créer un Produit à partir de $json"),
+      List<Categorie> categories = categorieList
+        .map((categorieJson) => Categorie.fromJson(categorieJson))
+        .toList();
+
+      return Produit(
+            id: json['id'] as int,
+            nom: json['nom'] as String,
+            prixHt: json['prixHT'] as int,
+            ingredients: ingredients,
+            categories: categories,
+          ); 
+    } catch (e) {
+      throw Exception("Impossible de créer un Produit à partir de $json");
+    }
+  }
+
+  static Produit fromMap(Map<String, dynamic> map) {
+    return Produit(
+      id: map['id'],
+      nom: map['nom'],
+      prixHt: map['prixht'],
+      ingredients: map['ingredients'] ?? [],
+      categories: map['categories'] ?? [],
+    );
+  }
+
+  Map<String, dynamic> register () {
+    return {
+      "id": id,
+      "nom": nom,
+      "prixHT": prixHt,
     };
-  }
-
-  double convertPriceToLong(){
-    return prixHt / 100;
-  }
-
-  double getTTC(){
-    return (prixHt * 1.1) / 100;
   }
 
   int getId() {
@@ -103,9 +82,5 @@ class Produit {
     return categories;
   }
 
-  List<SousCategorie>? getSousCategories() {
-    return sousCategories;
-  }
-
-  
+ 
 }

@@ -33,8 +33,11 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   get_storage:
+  sqflite: 
+  path:
   stomp_dart_client: 
   provider: ^6.0.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:

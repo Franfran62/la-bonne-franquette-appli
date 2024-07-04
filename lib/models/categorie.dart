@@ -1,18 +1,18 @@
-import 'package:la_bonne_franquette_front/models/produit.dart';
+import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 
-import 'sous_categorie.dart';
+class Categorie implements Identifiable {
 
-class Categorie {
+  @override
   final int id;
   final String nom;
-  final List<SousCategorie> sousCategories; //Liste des sous catégories de la catégorie
-  final List<Produit>? produits;
+  final String categorieType;
+  final int? categorieId;
 
   const Categorie({
     required this.id,
     required this.nom,
-    required this.sousCategories,
-    this.produits = const [],
+    required this.categorieType,
+    this.categorieId
   });
 
   factory Categorie.fromJson(Map<String, dynamic> json){
@@ -20,14 +20,26 @@ class Categorie {
       {
         "id": int id,
         "nom": String nom,
-        "sousCategorieSet": List<SousCategorie> sousCategories,
+        "categorieType": String categorieType,
+        "categorieId": int? categorieId
       } => 
-        Categorie(id: id, nom: nom, sousCategories: sousCategories),
+        Categorie(id: id, nom: nom, categorieType: categorieType, categorieId: categorieId),
       {
-        'id': int id,
-        'nom': String nom,
-      } => Categorie(id: id, nom: nom, sousCategories: []),
+        "id": int id,
+        "nom": String nom,
+        "categorieType": String categorieType,
+      } => 
+        Categorie(id: id, nom: nom, categorieType: categorieType),
         _ => throw Exception("Impossible de créer un Categorie à partir de $json"),
+    };
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nom': nom,
+      'categorieType': categorieType,
+      'categorieId': categorieId
     };
   }
 
@@ -39,15 +51,12 @@ class Categorie {
     return nom;
   }
 
-  List<SousCategorie> getSousCategories() {
-    return sousCategories;
+
+  String getCategorieType() {
+    return categorieType;
   }
 
-  List<Produit>? getProduits() {
-    return produits;
-  }
-
-  void addProduit(Produit produit) {
-    produits!.add(produit);
+  int? getCategorieId() {
+    return categorieId;
   }
 }
