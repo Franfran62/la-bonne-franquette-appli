@@ -11,15 +11,10 @@ class ApiService{
   static final UtilsApi tool = UtilsApi();  
 
   //Websocket
-  static String wsQueryString = "$baseUrl/ws";
-
+  static String wsQueryString = "";
   //api
-  static String apiQueryString = "$baseUrl/api/v1";
+  static String apiQueryString = "";
 
-  //login
-  static String createUserQuery = "$apiQueryString/user/create";
-
-  static String? baseUrl;
 
   static Future<String> getToken() async {
     String? authToken = await SecuredStorage().readSecret('auth-token');
@@ -28,7 +23,8 @@ class ApiService{
 
   static Future<void> setBaseAddressServer() async {
     await SecuredStorage().readSecret('adresseServeur').then((value) => {
-      baseUrl = 'http://$value'
+      apiQueryString = 'http://$value/api/v1',
+      wsQueryString = 'ws://$value/ws'
     });
   }
 
