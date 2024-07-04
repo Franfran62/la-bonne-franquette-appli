@@ -14,6 +14,7 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     PanierViewModel viewModel = PanierViewModel();
     return Scaffold(
+      key: _scaffoldKey,
       drawer: SideMenuWidget(),
       appBar: AppBar(
         leading: IconButton(
