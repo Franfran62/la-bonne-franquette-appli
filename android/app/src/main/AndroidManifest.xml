@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="la_bonne_franquette_front"
+        android:label="La bonne Franquette"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
