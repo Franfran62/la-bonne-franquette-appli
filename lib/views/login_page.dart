@@ -138,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                 );
               },
               icon: const Icon(Icons.settings),
+              iconSize: 35.0,
             ),
           ),
         ]),
