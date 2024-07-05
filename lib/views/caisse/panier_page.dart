@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
-import 'package:la_bonne_franquette_front/viewsmodels/panier/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/viewsmodels/caisse/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
 class PanierPage extends StatefulWidget {

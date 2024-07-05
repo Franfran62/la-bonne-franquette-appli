@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
-import 'package:la_bonne_franquette_front/views/panier/panier_page.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/caisse/caisse_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
