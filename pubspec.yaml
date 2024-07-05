@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   google_fonts: ^6.2.1
   flutter_secure_storage: ^9.2.2
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
   get_storage:
   sqflite: 
   path:
