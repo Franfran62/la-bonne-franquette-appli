@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
+import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/panier/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
@@ -15,7 +16,7 @@ class _PanierPageState extends State<PanierPage> {
     PanierViewModel viewModel = PanierViewModel();
     return Scaffold(
       key: _scaffoldKey,
-      drawer: SideMenuWidget(),
+      drawer: SideMenuWidget(destination: CuisineHomePage(), context: context, scaffoldKey: _scaffoldKey,),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),
