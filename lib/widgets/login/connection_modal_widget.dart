@@ -26,20 +26,13 @@ class ConnectionModalWidget extends StatelessWidget {
 
   Future<bool> saveAddress(String adresse) async {
     if(adresse.isEmpty) return false;
-    bool result = await ApiService.testConnection(adresse);
-    if(result){
-      SecuredStorage().writeSecrets('adresseServeur',adresse);
-      ApiService.setBaseAddressServer();
-      return true;
-    }else{
-      return false;
-    }
+    return await ApiService.testConnection(adresse: adresse);
   }
 
   Future<void> rafraichirCache() async {
     SecuredStorage().readSecret('adresseServeur').then((value) => {
       if(value!.isNotEmpty){
-        ApiService().get(endpoint: "/cache/rafraichir")
+        ApiService.get(endpoint: "/cache/rafraichir")
       }
     });
   }
