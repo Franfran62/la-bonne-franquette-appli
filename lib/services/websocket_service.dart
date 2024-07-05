@@ -3,7 +3,10 @@ import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 
+typedef MessageCallback = void Function(String message);
+
 class WebSocketService {
+  
   StompClient? stompClient;
   String? url;
 
@@ -13,7 +16,7 @@ class WebSocketService {
     });
   }
 
-  void connect() async {
+  void connect(MessageCallback messageRecu) async {
     int maxReconnectAttempts = 5; 
     int reconnectAttempts = 0;
 
@@ -25,7 +28,7 @@ class WebSocketService {
             destination: '/socket/commande',
             callback: (frame) {
               if (frame.body != null) {
-                print("Message reçu : ${frame.body}");
+                messageRecu(frame.body!);
               }
             },
           );

@@ -40,9 +40,12 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
   }
 
   void setupWebSocket() async {
-      await webSocketService.setBaseAddressServer();
-      webSocketService.connect();
-  }
+        await webSocketService.setBaseAddressServer();
+        webSocketService.connect((String message) {
+          //faire des trucs ici 
+          loadCommandes();
+        });
+    }
 
   @override
   void dispose() {
