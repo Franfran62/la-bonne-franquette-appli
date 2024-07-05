@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 
 class DatabaseService {
   static Database? database;
+  static String databaseVersion = "0";
 
   static Future<void> initDatabase() async {
 
@@ -76,6 +77,14 @@ class DatabaseService {
         ''');
       },
     );
+  }
+
+  static String getDatabaseVersion() {
+    return databaseVersion; 
+  }
+
+  static void setDatabaseVersion(String version) {
+    databaseVersion = version;
   }
 
   static Future<void> insert(String table, Map<String, dynamic> data) async {
