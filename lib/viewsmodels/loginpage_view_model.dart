@@ -23,7 +23,7 @@ class LoginPageViewModel {
 
     try {
       await ApiService.testConnection();
-      User user = User(username: username.trim(), password: password.trim());
+      User user = User(username: username, password: password);
       var response = await ApiService.connect(user: user);
       String apiVersion = await ApiService.getCacheVersion(); 
       
