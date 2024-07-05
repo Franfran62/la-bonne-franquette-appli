@@ -16,7 +16,7 @@ class _PanierPageState extends State<PanierPage> {
     PanierViewModel viewModel = PanierViewModel();
     return Scaffold(
       key: _scaffoldKey,
-      drawer: SideMenuWidget(destination: CuisineHomePage(), context: context),
+      drawer: SideMenuWidget(destination: CuisineHomePage(), context: context, scaffoldKey: _scaffoldKey,),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.menu),

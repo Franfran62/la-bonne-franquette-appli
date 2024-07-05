@@ -48,7 +48,7 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: SideMenuWidget(destination: CaisseHomePage(), context: context),
+        drawer: SideMenuWidget(destination: CaisseHomePage(), context: context, scaffoldKey: _scaffoldKey),
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.menu),
@@ -76,17 +76,11 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
                   children: [
                     Container(
                       margin: const EdgeInsets.all(10),
-                      child:
-                ElevatedButton(
-                  onPressed: loadCommandes,
-                  child: const Text("Charger les commandes en cours"),
-                  )
-                ),
-                ElevatedButton(onPressed: () {
-                  Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => CaisseHomePage()), 
-                  );
-                  }, child: Text('Retour à la caisse')),
+                      child: ElevatedButton (
+                        onPressed: loadCommandes,
+                        child: const Text("Charger les commandes en cours"),
+                      )
+                    ),
                   ],
                 )
               ],
