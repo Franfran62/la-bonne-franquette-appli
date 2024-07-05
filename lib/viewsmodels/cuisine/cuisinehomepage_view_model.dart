@@ -3,11 +3,10 @@ import 'package:la_bonne_franquette_front/services/api_service.dart';
 
 class CuisineHomepageViewModel {
 
-  final ApiService apiService = ApiService();
 
   Future<List<Commande>> getCommandeEnCours() async {
     try {
-      final response = await apiService.fetchAll(endpoint: '/commandes/status/en-cours', token: true);
+      final response = await ApiService.fetchAll(endpoint: '/commandes/status/en-cours', token: true);
       List<Commande> commandes = List<Commande>.from(response.map((commande) => Commande.fromJson(commande)));
       return commandes;
     } catch (e) {

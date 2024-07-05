@@ -25,21 +25,13 @@ class ConnectionModalWidget extends StatelessWidget {
   }
 
   Future<bool> saveAddress(String adresse) async {
-    if(adresse.isEmpty) return false;
-    bool result = await ApiService.testConnection(adresse);
-    if(result){
-      SecuredStorage().writeSecrets('adresseServeur',adresse);
-      ApiService.setBaseAddressServer();
-      return true;
-    }else{
-      return false;
-    }
+    return await ApiService.testConnection(adresse: adresse);
   }
 
   Future<void> rafraichirCache() async {
     SecuredStorage().readSecret('adresseServeur').then((value) => {
       if(value!.isNotEmpty){
-        ApiService().get(endpoint: "/cache/rafraichir")
+        ApiService.get(endpoint: "/cache/rafraichir")
       }
     });
   }
@@ -73,8 +65,11 @@ class ConnectionModalWidget extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 25),
-                child: ElevatedButton(
-                  child: const Text('Rafraichir le cache'),
+                child: TextButton(
+                  child: const Text('Rafraichir le cache', style: TextStyle( color: Colors.black, 
+                                                                        fontSize: 16, 
+                                                                        fontWeight: FontWeight.normal
+                                                                        )),
                   onPressed: () async {
                     await rafraichirCache();
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Cache rafraîchi.")));

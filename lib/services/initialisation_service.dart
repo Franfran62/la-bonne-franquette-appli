@@ -22,7 +22,7 @@ class InitialisationService {
   }
 
   static Future<void> initStore<T>(String endpoint) async {    
-    final response = await ApiService().fetchAll(endpoint: "/$endpoint", token: true);
+    final response = await ApiService.fetchAll(endpoint: "/$endpoint", token: true);
     switch (endpoint) {
       case "ingredient":
         for (var i in response){
