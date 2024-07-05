@@ -10,9 +10,6 @@ class ApiService{
 
   static final UtilsApi tool = UtilsApi();  
 
-  //Websocket
-  static String wsQueryString = "$baseUrl/ws";
-
   //api
   static String apiQueryString = "$baseUrl/api/v1";
 

@@ -292,10 +292,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "9c96da072b421e98183f9ea7464898428e764bc0ce5567f27ec8693442e72514"
+      sha256: bca87b0165ffd7cdb9cad8edd22d18d2201e886d9a9f19b4fb3452ea7df3a72a
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.5"
+    version: "2.2.6"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -393,10 +393,10 @@ packages:
     dependency: "direct main"
     description:
       name: stomp_dart_client
-      sha256: "244a243c8d56dd1a64e5d27f599d7d6077866267aff506f9dd9e60630c41cba7"
+      sha256: "8779d1383f0a6faa0623af27ab6d4b228ab76c75020d9a83ade5ee204eac5153"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "0.4.4"
   stream_channel:
     dependency: transitive
     description:

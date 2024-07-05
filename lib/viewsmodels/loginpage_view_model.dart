@@ -42,7 +42,7 @@ class LoginPageViewModel {
       var response = await apiService.connect(user: user);
       String? cacheVersion = await CacheService.getCacheVersion();
       String apiVersion = await apiService.getCacheVersion(); 
-      
+      print("2");
       bool initCarte = false;
       if (cacheVersion == null || apiVersion != cacheVersion) {
         initCarte = await loadCarte(newVersion: apiVersion);
@@ -50,6 +50,7 @@ class LoginPageViewModel {
         initCarte = true;
       }
 
+      print("3");
       return response && initCarte;
 
     } catch (e) {
