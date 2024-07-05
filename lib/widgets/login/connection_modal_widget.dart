@@ -73,8 +73,11 @@ class ConnectionModalWidget extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 25),
-                child: ElevatedButton(
-                  child: const Text('Rafraichir le cache'),
+                child: TextButton(
+                  child: const Text('Rafraichir le cache', style: TextStyle( color: Colors.black, 
+                                                                        fontSize: 16, 
+                                                                        fontWeight: FontWeight.normal
+                                                                        )),
                   onPressed: () async {
                     await rafraichirCache();
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Cache rafraîchi.")));
