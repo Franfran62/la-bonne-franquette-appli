@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/services/connection_service.dart';
 
 class SideMenuWidget extends StatelessWidget{
 
@@ -57,6 +58,29 @@ class SideMenuWidget extends StatelessWidget{
                 ),
               ),
             ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: 17,
+                ),
+                const Icon(
+                  Icons.logout,
+                  color: Colors.red,
+                  ),
+                TextButton(
+                  onPressed: () async => await ConnectionService.logout(context),
+                  child: const Text("Déconnexion", style: TextStyle( color: Colors.red, 
+                                                                        fontSize: 20, 
+                                                                        fontWeight: FontWeight.normal
+                                                                        )
+                  ),
+                ),
+              ],
+            ),]
           )
         ],
       )
