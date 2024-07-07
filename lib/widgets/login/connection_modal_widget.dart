@@ -25,7 +25,11 @@ class ConnectionModalWidget extends StatelessWidget {
   }
 
   Future<bool> saveAddress(String adresse) async {
-    return await ApiService.testConnection(adresse: adresse);
+    if (await ApiService.testConnection(adresse: adresse)){
+      SecuredStorage().writeSecrets('adresseServeur', adresse);
+      return true;
+    }
+    return false;
   }
 
   Future<void> rafraichirCache() async {
