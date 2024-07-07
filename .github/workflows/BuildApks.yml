@@ -1,0 +1,46 @@
+name: Franquette's Apks
+# Attention les tests n'ont pas encore été implémentés
+on:
+  push:
+    branches:
+      - release
+      
+jobs:
+  build:
+    name: Build & Release
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '13'
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            **/flutter/.pub
+            **/flutter/bin
+            **/flutter/packages
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-  # Matches any previous cache key
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6'
+          channel: 'stable'
+          architecture: x64
+
+      - run: flutter pub get
+      - run: flutter --version
+      - run: flutter build apk --release
+
+      - name: Push to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
