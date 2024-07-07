@@ -10,7 +10,7 @@ class ConnectionService {
       "token" : SecuredStorage().readSecret('auth-token')
     };
     try {
-  ApiService.post(endpoint: '/auth/logout', body: tokenJSON, token: true);
+      ApiService.post(endpoint: '/auth/logout', body: tokenJSON, token: true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Erreur lors de la déconnexion.")));
     }

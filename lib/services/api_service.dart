@@ -63,7 +63,18 @@ class ApiService{
     Map<String, String> headers = await setHeaders(token);
       final response = await http.post(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
       if(response.statusCode >= 300){
-      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
+        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
+      } else {
+        return jsonDecode(response.body);
+      }
+    }
+
+    static Future<Map<String, dynamic>> postCommande({required String endpoint, required Map<dynamic, dynamic> body, bool token = false}) async{
+
+      Map<String, String> headers = await setHeaders(token);
+      final response = await http.post(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
+      if(response.statusCode >= 300){
+        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
       } else {
         return jsonDecode(response.body);
       }
@@ -74,7 +85,7 @@ class ApiService{
     Map<String, String> headers = await setHeaders(token);
       final response = await http.put(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
       if(response.statusCode >= 300){
-      throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
+        throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
       } else {
         return jsonDecode(response.body);
       }      
@@ -85,10 +96,10 @@ class ApiService{
     final response = await http.delete(Uri.parse(apiQueryString + endpoint), headers: headers);
     if(response.statusCode >= 300){
       throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
-      } else {
+    } else {
         return true;
-      }   
-    }
+    }   
+  }
 
   static Future<bool> connect({required User user}) async {
     Map<String, String> headers = await setHeaders(false);

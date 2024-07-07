@@ -16,11 +16,11 @@ class PanierViewModel {
       "prixHT": Panier.prixTotal*100,
     };
     try {
-      List<dynamic> response = await ApiService.post(endpoint: '/commandes', body: commandeBody, token: true);
+      await ApiService.postCommande(endpoint: '/commandes', body: commandeBody, token: true);
     } on Exception {
       rethrow;
     }
-    Panier.viderLePanier();
+    clearPanier();
     return true;
   }
 
