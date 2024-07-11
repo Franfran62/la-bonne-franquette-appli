@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
+import 'package:la_bonne_franquette_front/services/websocket_service.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/cuisine/cuisinehomepage_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_widget.dart';
@@ -10,11 +11,14 @@ import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 class CuisineHomePage extends StatefulWidget {
   @override
   _CuisineHomePageState createState() => _CuisineHomePageState();
+
   final CuisineHomepageViewModel viewModel = CuisineHomepageViewModel();
 }
 
 class _CuisineHomePageState extends State<CuisineHomePage> {
+
   List<Commande> commandes = [];
+  final WebSocketService webSocketService = WebSocketService();
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -22,6 +26,7 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
   void initState() {
     super.initState();
     loadCommandes();
+    setupWebSocket();
   }
 
   void loadCommandes() async {
@@ -32,6 +37,20 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
     }
+  }
+
+  void setupWebSocket() async {
+        await webSocketService.setBaseAddressServer();
+        webSocketService.connect((String message) {
+          //faire des trucs ici 
+          loadCommandes();
+        });
+    }
+
+  @override
+  void dispose() {
+    webSocketService.disconnect();
+    super.dispose();
   }
 
   @override
