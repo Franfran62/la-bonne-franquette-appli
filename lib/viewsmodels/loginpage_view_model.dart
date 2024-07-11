@@ -36,7 +36,6 @@ class LoginPageViewModel {
         initCarte = true;
       }
 
-      print("3");
       return response && initCarte;
 
     } catch (e) {

@@ -23,7 +23,6 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   void loadProduits() async {
     produits = await viewModel.getProduits();
-    print(produits);
     setState(() {});
   }
 
