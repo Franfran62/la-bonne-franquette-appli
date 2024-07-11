@@ -7,7 +7,6 @@ class PanierViewModel {
   Future<bool> sendOrder() async {
 
     Map commandeBody = {
-      "numero": 1,
       "surPlace": true,
       "menus": [],
       "paiementSet": [],
