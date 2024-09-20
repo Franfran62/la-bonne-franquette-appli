@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build & Release
+    name: Build
     runs-on: macos-latest
 
     steps:
@@ -37,10 +37,7 @@ jobs:
       - run: flutter pub get
       - run: flutter --version
       - run: flutter build apk --release
-
-      - name: Push to Releases
-        uses: ncipollo/release-action@v1
+      - uses: actions/upload-artifact@v4
         with:
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
+          name: Package
+          path: build/app/outputs/flutter-apk/

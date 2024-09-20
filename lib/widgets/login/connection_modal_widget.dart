@@ -55,7 +55,7 @@ class ConnectionModalWidget extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(bottom: 25, top: 25, left: 50, right: 50),
-                child: TextFormField(
+                    child: TextFormField(
                   controller: _serverAddressController,
                   decoration: InputService.getInputDecoration( 
                       label: 'Serveur',
