@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
+import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_commande_widget.dart';
+import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_header_widget.dart';
+
+import 'commande_card_footer_widget.dart';
 
 class CommandeCard extends StatelessWidget {
   final Commande commande;
@@ -10,51 +14,16 @@ class CommandeCard extends StatelessWidget {
 Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(40.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade100,
-            blurRadius: 1.0,
-            spreadRadius: 1.0,
-            offset: const Offset(1.0, 1.0),
-          ),
-        ],
-      ),
       child: Card(
+        color: Theme.of(context).colorScheme.primary,
         child: Column(
+
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: const BorderRadius.only(
-                  topLeft:  Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Numero ${commande.numero}',
-                    style: Theme.of(context).textTheme.headlineSmall
-                    ),
-                  Text(
-                    '${commande.dateSaisie.hour}:${commande.dateSaisie.minute}',
-                    style: Theme.of(context).textTheme.headlineSmall
-                  ),
-                ],
-              ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: commande.articles.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(' ${commande.articles[index]}'),
-                );
-              },
-            ),
+            CommandeCardHeaderWidget(commande.numero, commande.dateSaisie.hour, commande.dateSaisie.minute),
+            CommandeCardCommandeWidget(commande),
+            CommandeCardFooterWidget(),
+
+
           ],
         ),
         ),
