@@ -13,6 +13,8 @@ class CuisineHomePage extends StatefulWidget {
   _CuisineHomePageState createState() => _CuisineHomePageState();
 
   final CuisineHomepageViewModel viewModel = CuisineHomepageViewModel();
+
+  CuisineHomePage({super.key});
 }
 
 class _CuisineHomePageState extends State<CuisineHomePage> {

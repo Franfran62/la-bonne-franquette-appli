@@ -126,7 +126,7 @@ class ApiService{
   }
 
   static Future<bool> testConnection({String adresse = ""}) async {
-    var response;
+    http.Response response;
     if (adresse == "") {
       String serverAddress = await SecuredStorage().readSecret("adresseServeur") as String;
       response = await http.get(Uri.parse("http://$serverAddress/api/v1/testConnection"));

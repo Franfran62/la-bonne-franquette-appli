@@ -5,6 +5,8 @@ import 'package:la_bonne_franquette_front/viewsmodels/caisse/panier_view_model.d
 import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
 class PanierPage extends StatefulWidget {
+  const PanierPage({super.key});
+
   @override
   _PanierPageState createState() => _PanierPageState();
 }

@@ -6,6 +6,8 @@ import 'package:la_bonne_franquette_front/viewsmodels/caisse/caisse_view_model.d
 import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
+  const CaisseHomePage({super.key});
+
   @override
   _CaisseHomePageState createState() => _CaisseHomePageState();
 }

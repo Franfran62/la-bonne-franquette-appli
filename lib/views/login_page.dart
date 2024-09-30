@@ -9,7 +9,7 @@ import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
-  LoginPage({super.key});
+  const LoginPage({super.key});
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Stack(children: [
           Center(
-            child: Container(
+            child: SizedBox(
               width: screenWidth * 0.4,
               child: Form(
                 key: _formKey,

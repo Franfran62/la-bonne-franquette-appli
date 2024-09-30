@@ -24,20 +24,22 @@ class LoginPageViewModel {
   Future<bool> submitForm({required String username, required String password}) async {
 
     try {
-      await ApiService.testConnection();
-      User user = User(username: username.trim(), password: password.trim());
-      var response = await ApiService.connect(user: user);
-      String apiVersion = await ApiService.getCacheVersion(); 
-      
-      bool initCarte = false;
-      if ((apiVersion != DatabaseService.databaseVersion)) {
-        initCarte = await loadCarte(newVersion: apiVersion);
-      } else {
-        initCarte = true;
+      final connection = await ApiService.testConnection();
+
+      if (connection) {
+        User user = User(username: username.trim(), password: password.trim());
+        var response = await ApiService.connect(user: user);
+        String apiVersion = await ApiService.getCacheVersion(); 
+        
+        bool initCarte = false;
+        if ((apiVersion != DatabaseService.databaseVersion)) {
+          initCarte = await loadCarte(newVersion: apiVersion);
+        } else {
+          initCarte = true;
+        }
+
+        return response && initCarte;
       }
-
-      return response && initCarte;
-
     } catch (e) {
       throw Exception(e.toString());  
     }

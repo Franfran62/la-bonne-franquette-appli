@@ -10,7 +10,7 @@ class SideMenuWidget extends StatelessWidget{
   final BuildContext context;
   final GlobalKey<ScaffoldState> scaffoldKey; 
 
-  SideMenuWidget({super.key, required this.destination, required this.context, required this.scaffoldKey});
+  const SideMenuWidget({super.key, required this.destination, required this.context, required this.scaffoldKey});
 
   void handleScreenSwap() {
     Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => destination));                  
