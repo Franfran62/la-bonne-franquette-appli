@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
+import 'package:la_bonne_franquette_front/services/api_service.dart';
 import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_commande_widget.dart';
 import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_header_widget.dart';
 
@@ -7,8 +8,22 @@ import 'commande_card_footer_widget.dart';
 
 class CommandeCard extends StatelessWidget {
   final Commande commande;
+  final Function loadCommandes;
+  final Function popCommande;
 
-  const CommandeCard({super.key, required this.commande});
+  const CommandeCard({super.key, required this.commande, required this.loadCommandes, required this.popCommande});
+
+  void envoieCommande() {
+    ApiService.put(endpoint: '/commandes/${commande.commandeId.toString()}', body: {}, token: true).then((value) {
+      popCommande(commande.commandeId);
+    });
+  }
+
+  void supprimerCommande() {
+    ApiService.delete(endpoint: '/commandes/${commande.commandeId.toString()}').then((value) {
+      popCommande(commande.commandeId);
+    });
+  }
 
   @override
 Widget build(BuildContext context) {
@@ -20,8 +35,9 @@ Widget build(BuildContext context) {
 
           children: <Widget>[
             CommandeCardHeaderWidget(commande.numero, commande.dateSaisie.hour, commande.dateSaisie.minute),
-            CommandeCardCommandeWidget(commande),
-            CommandeCardFooterWidget(),
+            Expanded(child: CommandeCardCommandeWidget(commande)),
+            CommandeCardFooterWidget(commandePaye: true,envoieFn: envoieCommande, suppressionFn: supprimerCommande,),
+            const SizedBox(height: 50.0,),
 
 
           ],

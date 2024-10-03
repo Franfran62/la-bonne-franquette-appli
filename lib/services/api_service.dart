@@ -80,10 +80,15 @@ class ApiService{
       }
     }
 
-  static Future<List<dynamic>> put({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
+  static Future<Map<String, dynamic>> put({required String endpoint, required Map<String, dynamic> body, bool token = false}) async{
 
     Map<String, String> headers = await setHeaders(token);
-      final response = await http.put(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
+    var response;
+      if(body.isNotEmpty){
+        response = await http.put(Uri.parse(apiQueryString + endpoint), headers: headers, body: jsonEncode(body));
+      }else {
+        response = await http.put(Uri.parse(apiQueryString + endpoint), headers: headers);
+      }
       if(response.statusCode >= 300){
         throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
       } else {
@@ -91,7 +96,7 @@ class ApiService{
       }      
     }
 
-  static Future<bool> delete({required String endpoint, bool token = false}) async{
+  static Future<bool> delete({required String endpoint, bool token = true}) async{
     Map<String, String> headers = await setHeaders(token);
     final response = await http.delete(Uri.parse(apiQueryString + endpoint), headers: headers);
     if(response.statusCode >= 300){
