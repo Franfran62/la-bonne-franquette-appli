@@ -1,60 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
+import 'package:la_bonne_franquette_front/services/api_service.dart';
+import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_commande_widget.dart';
+import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_header_widget.dart';
+
+import 'commande_card_footer_widget.dart';
 
 class CommandeCard extends StatelessWidget {
   final Commande commande;
+  final Function loadCommandes;
+  final Function popCommande;
 
-  const CommandeCard({super.key, required this.commande});
+  const CommandeCard({super.key, required this.commande, required this.loadCommandes, required this.popCommande});
+
+  void envoieCommande() {
+    ApiService.put(endpoint: '/commandes/${commande.commandeId.toString()}', body: {}, token: true).then((value) {
+      popCommande(commande.commandeId);
+    });
+  }
+
+  void supprimerCommande() {
+    ApiService.delete(endpoint: '/commandes/${commande.commandeId.toString()}').then((value) {
+      popCommande(commande.commandeId);
+    });
+  }
 
   @override
 Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(40.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade100,
-            blurRadius: 1.0,
-            spreadRadius: 1.0,
-            offset: const Offset(1.0, 1.0),
-          ),
-        ],
-      ),
       child: Card(
+        color: Theme.of(context).colorScheme.primary,
         child: Column(
+
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: const BorderRadius.only(
-                  topLeft:  Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Numero ${commande.numero}',
-                    style: Theme.of(context).textTheme.headlineSmall
-                    ),
-                  Text(
-                    '${commande.dateSaisie.hour}:${commande.dateSaisie.minute}',
-                    style: Theme.of(context).textTheme.headlineSmall
-                  ),
-                ],
-              ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: commande.articles.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(' ${commande.articles[index]}'),
-                );
-              },
-            ),
+            CommandeCardHeaderWidget(commande.numero, commande.dateSaisie.hour, commande.dateSaisie.minute),
+            Expanded(child: CommandeCardCommandeWidget(commande)),
+            CommandeCardFooterWidget(commandePaye: true,envoieFn: envoieCommande, suppressionFn: supprimerCommande,),
+            const SizedBox(height: 50.0,),
+
+
           ],
         ),
         ),

@@ -27,18 +27,32 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
   @override
   void initState() {
     super.initState();
-    loadCommandes();
     setupWebSocket();
+    loadCommandes();
   }
 
-  void loadCommandes() async {
+  void loadCommandes() {
     try {
-      commandes = await widget.viewModel.getCommandeEnCours();
-      setState(() {});
+        widget.viewModel.getCommandeEnCours().then((result) {
+          setState(() {
+            commandes = result;
+          });
+        });
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
     }
+  }
+
+  void popCommande(num id) async {
+    print(commandes.length);
+    setState(() {
+      commandes.remove(
+          commandes.firstWhere((item) => item.commandeId == id)
+      );
+      loadCommandes();
+      print(commandes.length);
+    });
   }
 
   void setupWebSocket() async {
@@ -87,7 +101,7 @@ class _CuisineHomePageState extends State<CuisineHomePage> {
                     itemBuilder: (context, index) {
                       return ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 500),
-                        child: CommandeCard(commande: commandes[index])
+                        child: CommandeCard(commande: commandes[index], loadCommandes: loadCommandes, popCommande: popCommande,)
                       );
                     }
                   ),
