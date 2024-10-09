@@ -1,6 +1,6 @@
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/panier.dart';
-import 'package:la_bonne_franquette_front/services/api_service.dart';
+import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 
 class PanierViewModel {
 

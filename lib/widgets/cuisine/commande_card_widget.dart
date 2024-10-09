@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
-import 'package:la_bonne_franquette_front/services/api_service.dart';
+import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_commande_widget.dart';
 import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_header_widget.dart';
 

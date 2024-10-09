@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/services/api_service.dart';
+import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/input_service.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
+
+import '../../services/api/connection_service.dart';
 
 class ConnectionModalWidget extends StatelessWidget {
 
@@ -25,7 +27,7 @@ class ConnectionModalWidget extends StatelessWidget {
   }
 
   Future<bool> saveAddress(String adresse) async {
-    if (await ApiService.testConnection(adresse: adresse)){
+    if (await ConnectionService.testConnection(adresse: adresse)){
       SecuredStorage().writeSecrets('adresseServeur', adresse);
       return true;
     }

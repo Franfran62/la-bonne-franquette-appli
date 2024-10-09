@@ -1,7 +1,10 @@
 import 'package:la_bonne_franquette_front/models/user.dart';
-import 'package:la_bonne_franquette_front/services/api_service.dart';
+import 'package:la_bonne_franquette_front/services/api/api_service.dart';
+import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
 import 'package:la_bonne_franquette_front/services/database_service.dart';
 import 'package:la_bonne_franquette_front/services/initialisation_service.dart';
+
+import '../services/api/connection_service.dart';
 
 class LoginPageViewModel {
  
@@ -24,12 +27,12 @@ class LoginPageViewModel {
   Future<bool> submitForm({required String username, required String password}) async {
 
     try {
-      final connection = await ApiService.testConnection();
+      final connection = await ConnectionService.testConnection();
 
       if (connection) {
         User user = User(username: username.trim(), password: password.trim());
-        var response = await ApiService.connect(user: user);
-        String apiVersion = await ApiService.getCacheVersion(); 
+        var response = await ConnectionService.connect(user: user);
+        String apiVersion = await ApiUtilsService.getCacheVersion();
         
         bool initCarte = false;
         if ((apiVersion != DatabaseService.databaseVersion)) {
@@ -40,10 +43,11 @@ class LoginPageViewModel {
 
         return response && initCarte;
       }
+      return false;
     } catch (e) {
       throw Exception(e.toString());  
     }
-}  
+}
 
   Future<bool> loadCarte({required String newVersion}) async {
     try {
