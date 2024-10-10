@@ -3,13 +3,12 @@ import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/login/connection_modal_widget.dart';
-
 import '../theme.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
   @override
   _LoginPageState createState() => _LoginPageState();
-  const LoginPage({super.key});
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -25,123 +24,145 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Stack(children: [
-          Center(
-            child: SizedBox(
-              width: screenWidth * 0.4,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      width: screenWidth * 0.3,
-                      child: Image.asset('lib/assets/images/logo.png'),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      child: TextFormField(
+        child: Stack(
+          children: [
+            Center(
+              child: SizedBox(
+                width: screenWidth * 0.4,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: screenWidth * 0.3,
+                        child: Image.asset('lib/assets/images/logo.png'),
+                      ),
+                      _buildTextFormField(
                         controller: _usernameController,
-                        decoration: CustomTheme.getInputDecoration(
-                            label: 'Identifiant',
-                            placeholder: "nom de compte",
-                            context: context),
-                        validator: (String? value) {
-                          return viewModel.validatePassword(value);
-                        },
+                        label: 'Identifiant',
+                        placeholder: 'nom de compte',
+                        validator: viewModel.validatePassword,
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 20, top: 10),
-                      child: TextFormField(
+                      _buildTextFormField(
                         controller: _passwordController,
-                        decoration: CustomTheme.getInputDecoration(
-                            label: 'Mot de passe',
-                            placeholder: "mot de passe",
-                            context: context),
+                        label: 'Mot de passe',
+                        placeholder: 'mot de passe',
                         obscureText: true,
-                        validator: (String? value) {
-                          return viewModel.validatePassword(value);
-                        },
+                        validator: viewModel.validatePassword,
                       ),
-                    ),
-                    Container(
-                        margin: const EdgeInsets.only(bottom: 20, top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              child: const Text('Caisse'),
-                            ),
-                            Switch(
-                              value: switchView,
-                              onChanged: (value) {
-                                setState(() {
-                                  switchView = value;
-                                });
-                              },
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              child: const Text('Cuisine'),
-                            ),
-                          ],
-                        )),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            try {
-                              bool connected = await viewModel.submitForm(
-                                  username: _usernameController.text,
-                                  password: _passwordController.text);
-                              if (connected) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => switchView
-                                          ? CuisineHomePage()
-                                          : CaisseHomePage()),
-                                );
-                              }
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(e.toString())));
-                            }
-                          }
-                        },
-                        child: const Text('Valider'),
-                      ),
-                    ),
-                  ],
+                      _buildSwitch(),
+                      _buildSubmitButton(viewModel),
+                    ],
+                  ),
                 ),
               ),
             ),
+            _buildSettingsButton(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String label,
+    required String placeholder,
+    bool obscureText = false,
+    required String? Function(String?) validator,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20, top: 10),
+      child: TextFormField(
+        controller: controller,
+        decoration: CustomTheme.getInputDecoration(
+          label: label,
+          placeholder: placeholder,
+          context: context,
+        ),
+        obscureText: obscureText,
+        validator: validator,
+      ),
+    );
+  }
+
+  Widget _buildSwitch() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20, top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Caisse'),
+          Switch(
+            value: switchView,
+            onChanged: (value) {
+              setState(() {
+                switchView = value;
+              });
+            },
           ),
-          Positioned(
-            top: 25,
-            right: 25,
-            child: IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SingleChildScrollView(
-                      child: Dialog(
-                        insetPadding: const EdgeInsets.symmetric(
-                            vertical: 175, horizontal: 250),
-                        child: ConnectionModalWidget(),
-                      ),
-                    );
-                  },
+          const Text('Cuisine'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubmitButton(LoginPageViewModel viewModel) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      child: ElevatedButton(
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            try {
+              bool connected = await viewModel.submitForm(
+                username: _usernameController.text,
+                password: _passwordController.text,
+              );
+              if (connected) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => switchView
+                        ? CuisineHomePage()
+                        : CaisseHomePage(),
+                  ),
                 );
-              },
-              icon: const Icon(Icons.settings),
-              iconSize: 35.0,
-            ),
-          ),
-        ]),
+              }
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(e.toString())),
+              );
+            }
+          }
+        },
+        child: const Text('Valider'),
+      ),
+    );
+  }
+
+  Widget _buildSettingsButton(BuildContext context) {
+    return Positioned(
+      top: 25,
+      right: 25,
+      child: IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SingleChildScrollView(
+                child: Dialog(
+                  insetPadding: const EdgeInsets.symmetric(
+                    vertical: 175,
+                    horizontal: 250,
+                  ),
+                  child: ConnectionModalWidget(),
+                ),
+              );
+            },
+          );
+        },
+        icon: const Icon(Icons.settings),
+        iconSize: 35.0,
       ),
     );
   }
