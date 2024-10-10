@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
-import 'package:la_bonne_franquette_front/services/input_service.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
 import '../../services/api/connection_service.dart';
+import '../../theme.dart';
 
 class ConnectionModalWidget extends StatelessWidget {
 
@@ -59,7 +59,7 @@ class ConnectionModalWidget extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 25, top: 25, left: 50, right: 50),
                 child: TextFormField(
                   controller: _serverAddressController,
-                  decoration: InputService.getInputDecoration( 
+                  decoration: CustomTheme.getInputDecoration(
                       label: 'Serveur',
                       placeholder:
                           "adresse de serveur, ex: 182.168.1.0:8008",

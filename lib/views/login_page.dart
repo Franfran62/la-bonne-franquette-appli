@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/services/input_service.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/loginpage_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/login/connection_modal_widget.dart';
-import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
+
+import '../theme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                       margin: const EdgeInsets.only(bottom: 20),
                       child: TextFormField(
                         controller: _usernameController,
-                        decoration: InputService.getInputDecoration(
+                        decoration: CustomTheme.getInputDecoration(
                             label: 'Identifiant',
                             placeholder: "nom de compte",
                             context: context),
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       margin: const EdgeInsets.only(bottom: 20, top: 10),
                       child: TextFormField(
                         controller: _passwordController,
-                        decoration: InputService.getInputDecoration(
+                        decoration: CustomTheme.getInputDecoration(
                             label: 'Mot de passe',
                             placeholder: "mot de passe",
                             context: context),
