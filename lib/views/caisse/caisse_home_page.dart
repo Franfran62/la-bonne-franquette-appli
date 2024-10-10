@@ -3,7 +3,7 @@ import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/views/caisse/panier_page.dart';
 import 'package:la_bonne_franquette_front/viewsmodels/caisse/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
+import 'package:la_bonne_franquette_front/widgets/main_scaffold.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
@@ -30,15 +30,10 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: SideMenuWidget(destination: CuisineHomePage(), context: context, scaffoldKey: _scaffoldKey,),
-      appBar: AppBar(
-        leading: IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => _scaffoldKey.currentState?.openDrawer()),
-        title: const Text('Passer une commande'),
-      ),
+    return MainScaffold(
+      destination: CuisineHomePage(),
+      title: "Passer une commande",
+      scaffoldKey: _scaffoldKey,
       body: Center(
         child: Column(
           children: <Widget>[
@@ -58,19 +53,21 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                         ),
                     ])
                   : const CircularProgressIndicator(),
-            ), Row (
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [ Container(
-                  margin: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => PanierPage()),
-                      );
-                    },
-                    child: const Text('Valider'),
-                  )
+              children: [
+                Container(
+                    margin: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => PanierPage()),
+                        );
+                      },
+                      child: const Text('Valider'),
+                    )
                 ),
               ],
             )

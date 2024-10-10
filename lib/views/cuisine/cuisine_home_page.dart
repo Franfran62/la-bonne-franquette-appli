@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/widgets/cuisine/commande_list_view.dart';
-import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
+import 'package:la_bonne_franquette_front/widgets/main_scaffold.dart';
 
 class CuisineHomePage extends StatelessWidget {
   CuisineHomePage({super.key});
@@ -22,18 +22,7 @@ class CuisineHomePage extends StatelessWidget {
             );
           }
         },
-        child: Scaffold(
-            key: _scaffoldKey,
-            drawer: SideMenuWidget(destination: CaisseHomePage(), context: context, scaffoldKey: _scaffoldKey),
-            appBar: AppBar(
-              leading: IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () => _scaffoldKey.currentState?.openDrawer()
-              ),
-              title: const Text('Commandes'),
-            ),
-            body: CommandeListView()
-        )
+        child: MainScaffold(body: CommandeListView(), destination: CaisseHomePage(), title: "Commandes", scaffoldKey: _scaffoldKey)
     );
   }
 }
