@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/services/connection_service.dart';
+import 'package:la_bonne_franquette_front/services/api/connection_service.dart';
 
 class SideMenuWidget extends StatelessWidget{
 
