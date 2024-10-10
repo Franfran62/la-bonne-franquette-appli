@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/views/login_page.dart';
+import 'package:la_bonne_franquette_front/views/login/login_page.dart';
 
 import '../../models/user.dart';
 

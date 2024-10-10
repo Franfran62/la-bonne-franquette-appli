@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/commande.dart';
-import '../../services/websocket_service.dart';
-import '../../viewsmodels/cuisine/cuisinehomepage_view_model.dart';
+import '../../../models/commande.dart';
+import '../../../services/websocket_service.dart';
+import '../viewmodel/cuisinehomepage_view_model.dart';
 import 'commande_card_widget.dart';
 
 class CommandeListView extends StatefulWidget {

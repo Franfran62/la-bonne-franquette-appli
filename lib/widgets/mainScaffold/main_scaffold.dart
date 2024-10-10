@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/widgets/side_menu_widget.dart';
+import 'package:la_bonne_franquette_front/widgets/sideMenu/side_menu_widget.dart';
 
 class MainScaffold extends StatefulWidget {
   final Widget body;

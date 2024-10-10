@@ -4,7 +4,7 @@ import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
 import 'package:la_bonne_franquette_front/services/database_service.dart';
 import 'package:la_bonne_franquette_front/services/initialisation_service.dart';
 
-import '../services/api/connection_service.dart';
+import '../../../services/api/connection_service.dart';
 
 class LoginPageViewModel {
  

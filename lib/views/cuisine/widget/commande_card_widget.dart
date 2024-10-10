@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
-import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_commande_widget.dart';
-import 'package:la_bonne_franquette_front/widgets/cuisine/commande_card_header_widget.dart';
+import 'package:la_bonne_franquette_front/views/cuisine/widget/commande_card_commande_widget.dart';
 
 import 'commande_card_footer_widget.dart';
+import 'commande_card_header_widget.dart';
 
 class CommandeCard extends StatelessWidget {
   final Commande commande;
