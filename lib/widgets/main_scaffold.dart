@@ -20,7 +20,6 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState  extends State<MainScaffold> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

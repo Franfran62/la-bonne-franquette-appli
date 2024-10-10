@@ -34,68 +34,43 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
       destination: CuisineHomePage(),
       title: "Passer une commande",
       scaffoldKey: _scaffoldKey,
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: (produits != null && produits!.isNotEmpty)
-                  ? ListView(children: <Widget>[
-                      for (var p in produits!)
-                        ListTile(
-                          onTap: () {
-                            viewModel.ajouterAuPanier(p);
-                          },
-                          title: Text(p.nom,
-                              style: Theme.of(context).textTheme.bodyMedium),
-                          leading: Text(
-                              "${(p.prixHt / 100).toStringAsFixed(2)} €",
-                              style: Theme.of(context).textTheme.bodyMedium),
-                        ),
-                    ])
-                  : const CircularProgressIndicator(),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    margin: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => PanierPage()),
-                        );
-                      },
-                      child: const Text('Valider'),
-                    )
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProduitCard extends StatelessWidget {
-  const ProduitCard({
-    super.key,
-    required this.produit,
-  });
-
-  final Produit produit;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displayMedium!
-        .copyWith(color: theme.colorScheme.onPrimary);
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(produit.nom, style: style),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: (produits != null && produits!.isNotEmpty)
+                ? ListView(children: <Widget>[
+                    for (var p in produits!)
+                      ListTile(
+                        onTap: () {
+                          viewModel.ajouterAuPanier(p);
+                        },
+                        title: Text(p.nom,
+                            style: Theme.of(context).textTheme.bodyMedium),
+                        leading: Text(
+                            "${(p.prixHt / 100).toStringAsFixed(2)} €",
+                            style: Theme.of(context).textTheme.bodyMedium),
+                      ),
+                  ])
+                : const CircularProgressIndicator(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  margin: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => PanierPage()),
+                      );
+                    },
+                    child: const Text('Valider'),
+                  )
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

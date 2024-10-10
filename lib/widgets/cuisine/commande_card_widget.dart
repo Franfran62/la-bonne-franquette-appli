@@ -33,10 +33,10 @@ Widget build(BuildContext context) {
         color: Theme.of(context).colorScheme.primary,
         child: Column(
           children: <Widget>[
-            CommandeCardHeaderWidget(commande.numero, commande.dateSaisie.hour, commande.dateSaisie.minute),
+            CommandeCardHeaderWidget(numero: commande.numero, heure: commande.dateSaisie.hour, minute: commande.dateSaisie.minute),
             Expanded(child: CommandeCardCommandeWidget(commande)),
             CommandeCardFooterWidget(commandePaye: true,envoieFn: envoieCommande, suppressionFn: supprimerCommande,),
-            const SizedBox(height: 50.0,),
+            const SizedBox(height: 25.0,),
           ],
         ),
         ),
