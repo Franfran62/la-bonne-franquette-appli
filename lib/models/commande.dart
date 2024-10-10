@@ -59,7 +59,7 @@ class Commande {
     return Commande(
       commandeId: json['commandeId'],
       numero: json['numero'],
-      dateSaisie: DateTime.parse(json['dateSaisie']),
+      dateSaisie: DateTime.parse(json['dateSaisie']).toLocal(),
       dateLivraison: json['dateLivraison'] != null ? DateTime.parse(json['dateLivraison']) : null,
       status: StatusCommande.values.firstWhere(
         (status) => status.toString().split('.').last == json['status']),

@@ -6,7 +6,7 @@ import 'package:la_bonne_franquette_front/services/api/connection_service.dart';
 
 class SideMenuWidget extends StatelessWidget{
 
-  final StatefulWidget destination;
+  final Widget destination;
   final BuildContext context;
   final GlobalKey<ScaffoldState> scaffoldKey; 
 
