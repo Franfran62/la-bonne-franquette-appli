@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
-import '../../services/api/connection_service.dart';
-import '../../theme.dart';
+import '../../../services/api/connection_service.dart';
+import '../../../theme.dart';
 
 class ConnectionModalWidget extends StatelessWidget {
   final _serverAddressController = TextEditingController();
