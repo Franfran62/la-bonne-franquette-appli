@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-class CommandeCardHeaderWidget extends StatelessWidget{
-  int numero;
-  int heure;
-  int minute;
+class CommandeCardHeaderWidget extends StatelessWidget {
+  final int numero;
+  final int heure;
+  final int minute;
 
-  CommandeCardHeaderWidget(this.numero, this.heure, this.minute, {super.key});
+  CommandeCardHeaderWidget(
+      {required this.numero,
+      required this.heure,
+      required this.minute,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +18,19 @@ class CommandeCardHeaderWidget extends StatelessWidget{
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.tertiary,
         borderRadius: const BorderRadius.only(
-          topLeft:  Radius.circular(10.0),
+          topLeft: Radius.circular(10.0),
           topRight: Radius.circular(10.0),
         ),
       ),
       child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-            'Numero ${numero.toString()}',
-            style: Theme.of(context).textTheme.headlineSmall
-        ),
-        Text(
-            '${heure.toString()}:${minute.toString()}',
-            style: Theme.of(context).textTheme.headlineSmall
-        ),
-      ],
-    ),);
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text('N°${numero.toString()}',
+              style: Theme.of(context).textTheme.headlineSmall),
+          Text('${heure.toString()}:${minute.toString()}',
+              style: Theme.of(context).textTheme.headlineSmall),
+        ],
+      ),
+    );
   }
 }
