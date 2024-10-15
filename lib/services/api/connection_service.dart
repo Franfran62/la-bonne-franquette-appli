@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:la_bonne_franquette_front/router/routes.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +57,6 @@ class ConnectionService {
       ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Erreur lors de la déconnexion.")));
     }
     SecuredStorage().writeSecrets('auth-token', "");
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginPage()));
-    ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Vous êtes déconnecté.")));
+    context.go('/');
   }
 }
