@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/services/api/api_service.dart';
+import 'package:la_bonne_franquette_front/services/cache_service.dart';
 import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
 
 import '../../../services/api/connection_service.dart';
@@ -30,12 +30,6 @@ class ConnectionModalWidget extends StatelessWidget {
       return true;
     }
     return false;
-  }
-
-  Future<void> rafraichirCache() async {
-    SecuredStorage().readSecret('adresseServeur').then((value) => {
-          if (value!.isNotEmpty) {ApiService.get(endpoint: "/cache/rafraichir")}
-        });
   }
 
   @override
@@ -71,7 +65,7 @@ class ConnectionModalWidget extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.normal)),
                 onPressed: () async {
-                  await rafraichirCache();
+                  await CacheService.rafraichirCache();
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Cache rafraîchi.")));
                 }),
