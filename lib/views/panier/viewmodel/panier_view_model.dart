@@ -6,6 +6,10 @@ class PanierViewModel {
 
   Future<bool> sendOrder() async {
 
+    if(Panier.articles.isEmpty) {
+      throw Exception("Le panier est vide.");
+    }
+
     Map commandeBody = {
       "surPlace": true,
       "menus": [],
