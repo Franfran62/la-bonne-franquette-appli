@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/router/routes.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/views/login/viewmodel/loginpage_view_model.dart';
@@ -119,14 +121,9 @@ class _LoginPageState extends State<LoginPage> {
                 password: _passwordController.text,
               );
               if (connected) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => switchView
-                        ? CuisineHomePage()
-                        : CaisseHomePage(),
-                  ),
-                );
+                switchView
+                  ? context.go('/cuisne')
+                  : context.go('/caisse');
               }
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(

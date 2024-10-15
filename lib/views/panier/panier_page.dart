@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
@@ -18,7 +19,7 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     PanierViewModel viewModel = PanierViewModel();
     return MainScaffold(
-      destination: CuisineHomePage(),
+      destination: "/cuisine",
       title: "Panier",
       scaffoldKey: _scaffoldKey,
       body: Column(
@@ -48,10 +49,7 @@ class _PanierPageState extends State<PanierPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Commande envoyée avec succès !"))
                     );
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => CaisseHomePage()),
-                    );
+                    context.go('/caisse');
                   }
                 } on Exception catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -64,16 +62,10 @@ class _PanierPageState extends State<PanierPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Abandon de la commande."))
                 );
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => CaisseHomePage()),
-                );
+                context.go('/caisse');
               }),
               _buildButton(context, "Retour à la caisse", () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => CaisseHomePage()),
-                );
+                context.go('/caisse');
               }),
             ],
           ),

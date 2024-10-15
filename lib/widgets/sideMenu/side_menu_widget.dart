@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/services/api/connection_service.dart';
+import 'package:la_bonne_franquette_front/services/cache_service.dart';
 
 class SideMenuWidget extends StatelessWidget {
-  final Widget destination;
+  final String destination;
   final BuildContext context;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -11,11 +13,6 @@ class SideMenuWidget extends StatelessWidget {
       required this.destination,
       required this.context,
       required this.scaffoldKey});
-
-  void handleScreenSwap() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => destination));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +27,26 @@ class SideMenuWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 25),
           _buildIconButton(Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
-          _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue", handleScreenSwap),
+          _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue", () => context.go(destination)),
+          _buildMenuItem(Icons.refresh, "Rafraîchir le cache", rafraichirCache ),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion", () async => await ConnectionService.logout(context), color: Colors.red),
           SizedBox(height: 10,)
         ],
       ),
     );
+  }
+
+  void rafraichirCache() {
+    try {
+      CacheService.rafraichirCache();
+    } on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Une erreur s'est produite: $e")));
+      scaffoldKey.currentState?.closeDrawer();
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cache mis à jour.")));
+    scaffoldKey.currentState?.closeDrawer();
   }
 
   Widget _buildIconButton(IconData icon, VoidCallback onPressed) {

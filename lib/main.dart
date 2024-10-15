@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/views/login/login_page.dart';
+import 'package:la_bonne_franquette_front/router/routes.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 
 void main() async {
@@ -13,10 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'La Bonne Franquette',
-      theme: CustomTheme.getTheme(), 
-      home: LoginPage(), 
+      theme: CustomTheme.getTheme(),
     );
   }
 }
