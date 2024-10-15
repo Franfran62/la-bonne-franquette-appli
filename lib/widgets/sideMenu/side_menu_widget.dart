@@ -26,12 +26,18 @@ class SideMenuWidget extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 25),
-          _buildIconButton(Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
-          _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue", () => context.go(destination)),
-          _buildMenuItem(Icons.refresh, "Rafraîchir le cache", rafraichirCache ),
+          _buildIconButton(
+              Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
+          _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue",
+              () => context.go(destination)),
+          _buildMenuItem(Icons.refresh, "Rafraîchir le cache", rafraichirCache),
           const Spacer(),
-          _buildMenuItem(Icons.logout, "Déconnexion", () async => await ConnectionService.logout(context), color: Colors.red),
-          SizedBox(height: 10,)
+          _buildMenuItem(Icons.logout, "Déconnexion",
+              () async => await ConnectionService.logout(context),
+              color: Colors.red),
+          SizedBox(
+            height: 10,
+          )
         ],
       ),
     );
@@ -41,11 +47,13 @@ class SideMenuWidget extends StatelessWidget {
     try {
       CacheService.rafraichirCache();
     } on Exception catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Une erreur s'est produite: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Une erreur s'est produite: $e")));
       scaffoldKey.currentState?.closeDrawer();
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cache mis à jour.")));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Cache mis à jour.")));
     scaffoldKey.currentState?.closeDrawer();
   }
 
@@ -59,7 +67,8 @@ class SideMenuWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String text, VoidCallback onPressed, {Color color = Colors.black}) {
+  Widget _buildMenuItem(IconData icon, String text, VoidCallback onPressed,
+      {Color color = Colors.black}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -69,7 +78,8 @@ class SideMenuWidget extends StatelessWidget {
           onPressed: onPressed,
           child: Text(
             text,
-            style: TextStyle(color: color, fontSize: 20, fontWeight: FontWeight.normal),
+            style: TextStyle(
+                color: color, fontSize: 20, fontWeight: FontWeight.normal),
           ),
         ),
       ],
