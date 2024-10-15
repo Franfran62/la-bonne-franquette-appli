@@ -4,7 +4,7 @@ import 'package:la_bonne_franquette_front/widgets/sideMenu/side_menu_widget.dart
 
 class MainScaffold extends StatefulWidget {
   final Widget body;
-  final Widget destination;
+  final String destination;
   final String title;
   final GlobalKey<ScaffoldState> scaffoldKey;
 

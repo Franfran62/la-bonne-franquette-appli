@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/services/api/connection_service.dart';
 
 class SideMenuWidget extends StatelessWidget {
-  final Widget destination;
+  final String destination;
   final BuildContext context;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -11,11 +12,6 @@ class SideMenuWidget extends StatelessWidget {
       required this.destination,
       required this.context,
       required this.scaffoldKey});
-
-  void handleScreenSwap() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => destination));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +26,7 @@ class SideMenuWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 25),
           _buildIconButton(Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
-          _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue", handleScreenSwap),
+          _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue", () => context.go(destination)),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion", () async => await ConnectionService.logout(context), color: Colors.red),
           SizedBox(height: 10,)

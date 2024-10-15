@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
+import 'package:la_bonne_franquette_front/router/routes.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
 import 'package:la_bonne_franquette_front/views/panier/panier_page.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
@@ -31,7 +33,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      destination: CuisineHomePage(),
+      destination: "/cuisine",
       title: "Passer une commande",
       scaffoldKey: _scaffoldKey,
       body: Column(
@@ -60,10 +62,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                   margin: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => PanierPage()),
-                      );
+                      context.go("/panier");
                     },
                     child: const Text('Valider'),
                   )
