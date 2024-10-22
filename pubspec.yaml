@@ -37,6 +37,7 @@ dependencies:
   collection: ^1.18.0
   stomp_dart_client: ^0.4.4
   go_router: ^14.3.0
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:

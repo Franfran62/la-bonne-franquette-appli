@@ -1,4 +1,4 @@
-import 'package:la_bonne_franquette_front/services/api/connection_service.dart';
+import 'package:la_bonne_franquette_front/services/api/session_service.dart';
 
 import 'api_service.dart';
 
@@ -6,8 +6,8 @@ class CacheService {
 
   static Future<void> refreshCache() async {
     try {
-      final bool connected = await ConnectionService.isConnected();
-      if (connected) {
+      await SessionService.isConnected();
+      if (SessionService.connected) {
         await ApiService.get(endpoint: "/cache/rafraichir", token: true);
       }
     } catch (e) {

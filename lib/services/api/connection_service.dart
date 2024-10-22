@@ -25,35 +25,4 @@ class ConnectionService {
       throw Exception(e);
     }
   }
-
-  static Future<bool> isConnected() async {
-    try {
-      return await ApiService.get(endpoint: "/auth/is-connected", token: true);
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  static Future<bool> login({required User user}) async {
-    try {
-      final Map<String, dynamic> token = await ApiService.post(endpoint: "/auth/login", body: user.toJson(), token: false);
-      await SecuredStorage().writeSecrets("auth-token", token['token']);
-      return true;
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  static Future<void> logout(BuildContext context) async {
-    Map tokenJSON = {
-      "token" : await ApiUtilsService.getToken()
-    };
-    try {
-      ApiService.post(endpoint: '/auth/logout', body: tokenJSON, token: true);
-      SecuredStorage().writeSecrets('auth-token', "");
-      context.go('/');
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Erreur lors de la déconnexion.")));
-    }
-  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/services/api/connection_service.dart';
 import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
+import 'package:la_bonne_franquette_front/services/api/session_service.dart';
 
 class SideMenuWidget extends StatelessWidget {
   final String destination;
@@ -33,7 +34,7 @@ class SideMenuWidget extends StatelessWidget {
           _buildMenuItem(Icons.refresh, "Rafraîchir le cache", refreshCache),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion",
-              () async => await ConnectionService.logout(context),
+              () async => await SessionService.logout(context),
               color: Colors.red),
           SizedBox(
             height: 10,
