@@ -58,9 +58,6 @@ class ApiService{
     String url = await ApiUtilsService.getUrl(endpoint: endpoint);
     final response = await http.delete(Uri.parse(url), headers: headers);
     if(response.statusCode >= 300){
-      print("--------------------");
-      print(response.body);
-      print("--------------------");
       throw Exception('Erreur : Impossible d\'accéder à la ressource : $endpoint, ${response.statusCode} : ${response.body}');
     } else {
         return true;

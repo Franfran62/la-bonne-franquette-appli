@@ -42,13 +42,11 @@ class _CommandeListViewState extends State<CommandeListView> {
   }
 
   void popCommande(num id) async {
-    print(commandes.length);
     setState(() {
       commandes.remove(
           commandes.firstWhere((item) => item.commandeId == id)
       );
       loadCommandes();
-      print(commandes.length);
     });
   }
 

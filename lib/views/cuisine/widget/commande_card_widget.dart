@@ -14,7 +14,6 @@ class CommandeCard extends StatelessWidget {
   const CommandeCard({super.key, required this.commande, required this.loadCommandes, required this.popCommande});
 
   void envoieCommande() {
-    print("Je suis appelé");
     ApiService.put(endpoint: '/commandes/${commande.commandeId.toString()}', body: {}, token: true).then((value) {
       popCommande(commande.commandeId);
     });

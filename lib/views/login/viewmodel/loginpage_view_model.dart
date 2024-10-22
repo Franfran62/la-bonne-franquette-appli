@@ -40,7 +40,6 @@ class LoginPageViewModel {
       }
       return false;
     } catch (e) {
-      print(e);
       throw Exception(e.toString());  
     }
 }
