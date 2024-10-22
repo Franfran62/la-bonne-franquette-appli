@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/services/cache_service.dart';
-import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
+import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
+import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
+import 'package:la_bonne_franquette_front/services/stores/secured_storage.dart';
 
 import '../../../services/api/connection_service.dart';
 import '../../../theme.dart';
@@ -10,10 +11,7 @@ class ConnectionModalWidget extends StatelessWidget {
 
   ConnectionModalWidget({super.key}) {
     SecuredStorage().readSecret('adresseServeur').then((value) => {
-          if (value!.isNotEmpty)
-            {_serverAddressController.text = value}
-          else
-            {_serverAddressController.text = ""}
+          _serverAddressController.text = value!.isNotEmpty ? value : ""
         });
   }
 
@@ -25,11 +23,13 @@ class ConnectionModalWidget extends StatelessWidget {
   }
 
   Future<bool> saveAddress(String adresse) async {
-    if (await ConnectionService.testConnection(adresse: adresse)) {
-      SecuredStorage().writeSecrets('adresseServeur', adresse);
+    try {
+      await ConnectionService.testConnectionToNewServer(adresse: adresse);
+      ApiUtilsService.setUrl(adresse: adresse);
       return true;
+    } catch (e) {
+      throw Exception(e);
     }
-    return false;
   }
 
   @override
@@ -49,7 +49,7 @@ class ConnectionModalWidget extends StatelessWidget {
               controller: _serverAddressController,
               decoration: CustomTheme.getInputDecoration(
                   label: 'Serveur',
-                  placeholder: "adresse de serveur, ex: 182.168.1.0:8008",
+                  placeholder: "adresse de serveur (ex: 182.168.1.0:8008)",
                   context: context),
               validator: (String? value) {
                 return validateServerAddress(value);
@@ -65,9 +65,14 @@ class ConnectionModalWidget extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.normal)),
                 onPressed: () async {
-                  await CacheService.rafraichirCache();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Cache rafraîchi.")));
+                  try {
+                    await CacheService.refreshCache();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Cache rafraîchi.")));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(e.toString())));
+                  }
                 }),
           ),
           Container(
@@ -75,13 +80,15 @@ class ConnectionModalWidget extends StatelessWidget {
             child: ElevatedButton(
                 child: const Text('Enregistrer'),
                 onPressed: () async {
-                  if (await saveAddress(_serverAddressController.text)) {
+                  try {
+                    await saveAddress(_serverAddressController.text);
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Connexion réussi.")));
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Impossible de contacter le serveur.")));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                      content: Text(e.toString())));
+                       //  content: Text("Impossible de contacter le serveur.")));
                   }
                 }),
           ),

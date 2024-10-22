@@ -1,14 +1,10 @@
 import 'package:la_bonne_franquette_front/models/user.dart';
-import 'package:la_bonne_franquette_front/services/api/api_service.dart';
-import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
-import 'package:la_bonne_franquette_front/services/database_service.dart';
-import 'package:la_bonne_franquette_front/services/initialisation_service.dart';
-
+import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
+import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
+import 'package:la_bonne_franquette_front/services/stores/initialisation_service.dart';
 import '../../../services/api/connection_service.dart';
 
 class LoginPageViewModel {
- 
-  final apiService = ApiService();
 
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
@@ -28,34 +24,34 @@ class LoginPageViewModel {
 
     try {
       final connection = await ConnectionService.testConnection();
-
+      
       if (connection) {
         User user = User(username: username.trim(), password: password.trim());
-        var response = await ConnectionService.connect(user: user);
-        String apiVersion = await ApiUtilsService.getCacheVersion();
-        
-        bool initCarte = false;
+        final bool response = await ConnectionService.login(user: user);
+        final String apiVersion = await CacheService.getApiCacheVersion();
+        bool isStores = false;
         if ((apiVersion != DatabaseService.databaseVersion)) {
-          initCarte = await loadCarte(newVersion: apiVersion);
+          isStores = await loadStores(newVersion: apiVersion);
         } else {
-          initCarte = true;
+          isStores = true;
         }
 
-        return response && initCarte;
+        return response && isStores;
       }
       return false;
     } catch (e) {
+      print(e);
       throw Exception(e.toString());  
     }
 }
 
-  Future<bool> loadCarte({required String newVersion}) async {
+  Future<bool> loadStores({required String newVersion}) async {
     try {
       await InitialisationService.initStores();
       DatabaseService.databaseVersion = newVersion;
       return true;  
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception(e);
     }
   }
 }

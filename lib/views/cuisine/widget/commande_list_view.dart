@@ -53,7 +53,7 @@ class _CommandeListViewState extends State<CommandeListView> {
   }
 
   void setupWebSocket() async {
-    await webSocketService.setBaseAddressServer();
+    await webSocketService.setWebSocketServerAdress();
     webSocketService.connect((String message) {
       //faire des trucs ici
       loadCommandes();

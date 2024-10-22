@@ -19,7 +19,7 @@ class PanierViewModel {
       "prixHT": Panier.prixTotal*100,
     };
     try {
-      await ApiService.postCommande(endpoint: '/commandes', body: commandeBody, token: true);
+      await ApiService.post(endpoint: '/commandes', body: commandeBody, token: true);
     } on Exception {
       rethrow;
     }

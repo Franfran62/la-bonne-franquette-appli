@@ -5,6 +5,7 @@ class Ingredient implements Identifiable{
 
   @override
   final int id;
+  @override
   final String nom;
   final bool aCuire;
   final List<Produit> produits;
