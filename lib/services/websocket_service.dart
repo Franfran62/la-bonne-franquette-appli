@@ -1,4 +1,4 @@
-import 'package:la_bonne_franquette_front/stores/secured_storage.dart';
+import 'package:la_bonne_franquette_front/services/stores/secured_storage.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -10,13 +10,13 @@ class WebSocketService {
   StompClient? stompClient;
   String? url;
 
-  Future<void> setBaseAddressServer() async {
+  Future<void> setWebSocketServerAdress() async {
     await SecuredStorage().readSecret('adresseServeur').then((value) {
       url = 'ws://$value/ws';
     });
   }
 
-  void connect(MessageCallback messageRecu) async {
+  void connect(MessageCallback messageReceived) async {
     int maxReconnectAttempts = 5; 
     int reconnectAttempts = 0;
 
@@ -28,7 +28,7 @@ class WebSocketService {
             destination: '/socket/commande',
             callback: (frame) {
               if (frame.body != null) {
-                messageRecu(frame.body!);
+                messageReceived(frame.body!);
               }
             },
           );

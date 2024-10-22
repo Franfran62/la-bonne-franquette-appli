@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/services/api/connection_service.dart';
-import 'package:la_bonne_franquette_front/services/cache_service.dart';
+import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
 
 class SideMenuWidget extends StatelessWidget {
   final String destination;
@@ -30,7 +30,7 @@ class SideMenuWidget extends StatelessWidget {
               Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
           _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue",
               () => context.go(destination)),
-          _buildMenuItem(Icons.refresh, "Rafraîchir le cache", rafraichirCache),
+          _buildMenuItem(Icons.refresh, "Rafraîchir le cache", refreshCache),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion",
               () async => await ConnectionService.logout(context),
@@ -43,9 +43,9 @@ class SideMenuWidget extends StatelessWidget {
     );
   }
 
-  void rafraichirCache() {
+  void refreshCache() {
     try {
-      CacheService.rafraichirCache();
+      CacheService.refreshCache();
     } on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Une erreur s'est produite: $e")));

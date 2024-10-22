@@ -4,6 +4,7 @@ class Categorie implements Identifiable {
 
   @override
   final int id;
+  @override
   final String nom;
   final String categorieType;
   final int? categorieId;

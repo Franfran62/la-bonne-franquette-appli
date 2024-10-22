@@ -1,7 +1,7 @@
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/panier.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/services/database_service.dart';
+import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 
 class CaisseViewModel {
   

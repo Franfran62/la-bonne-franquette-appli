@@ -6,6 +6,7 @@ class Menu implements Identifiable {
   
   @override
   final int id;
+  @override
   final String nom;
   final int prixHT;
   final List<Produit> produits;

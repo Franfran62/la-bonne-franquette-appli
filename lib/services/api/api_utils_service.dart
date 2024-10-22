@@ -1,7 +1,4 @@
-import '../../stores/secured_storage.dart';
-import 'package:http/http.dart' as http;
-
-import 'api_service.dart';
+import '../stores/secured_storage.dart';
 
 class ApiUtilsService {
 
@@ -11,16 +8,30 @@ class ApiUtilsService {
     return authToken ?? "";
   }
 
-  static Future<String> getCacheVersion() async {
-    String token = await ApiUtilsService.getToken();
-    final response = await http.get(Uri.parse('${ApiService.apiQueryString}/cache/version'), headers: {
-      'auth-token': token
-    });
-    if(response.statusCode >= 300){
-      throw Exception('Erreur : Impossible de récupérer la version du cache, ${response.statusCode} : ${response.body}');
-    } else {
-      return response.body.toString();
+  static Future<String> getUrl({String endpoint = ""}) async {
+    final String? adresseServeur = await SecuredStorage().readSecret('adresseServeur');
+    return 'http://$adresseServeur/api/v1$endpoint';
+  }
+
+  static Future<bool> setUrl({required String adresse}) async {
+    try {
+      await SecuredStorage().writeSecrets("adresseServeur", adresse);
+      return true;
+    } catch (e) {
+      throw Exception('Erreur : Impossible de sauvegarder l\'adresse du serveur');
     }
   }
 
+    static Future<Map<String, String>> setHeaders(bool token) async {
+      if(token){
+        String authToken = await ApiUtilsService.getToken();
+        return {
+          'auth-token': authToken,
+          'Content-Type': 'application/json'
+        };
+      }
+      return {
+        'Content-Type': 'application/json'
+      };
+  }
 }
