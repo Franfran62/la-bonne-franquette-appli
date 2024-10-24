@@ -1,3 +1,4 @@
+import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -87,16 +88,16 @@ class DatabaseService {
     databaseVersion = version;
   }
 
-  static Future<void> insert(String table, Map<String, dynamic> data) async {
+  static Future<void> insert(Tables table, Map<String, dynamic> data) async {
     await database?.insert(
-      table,
+      table.name,
       data,
       conflictAlgorithm: ConflictAlgorithm.rollback,
     );
   }
 
-static Future<List<T>?> findAll<T>(String table, T Function(Map<String, dynamic>) fromMap) async {
-  final List<Map<String, Object?>>? maps = await database?.query(table);
+static Future<List<T>?> findAll<T>(Tables table, T Function(Map<String, dynamic>) fromMap) async {
+  final List<Map<String, Object?>>? maps = await database?.query(table.name);
   return maps?.map(fromMap).toList();
 }
 }

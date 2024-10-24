@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:la_bonne_franquette_front/models/categorie.dart';
+import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
@@ -28,18 +29,18 @@ class InitialisationService {
         case "ingredient":
           for (var i in response){
             i['acuire'] = i['acuire'] ? 1 : 0; 
-            await DatabaseService.insert("ingredient", i as Map<String, dynamic>);
+            await DatabaseService.insert(Tables.ingredient, i as Map<String, dynamic>);
           }
           break;
         case "extra":
           for (var i in response){
             i['acuire'] = i['acuire'] ? 1 : 0; 
-            await DatabaseService.insert("extra", i as Map<String, dynamic>);
+            await DatabaseService.insert(Tables.extra, i as Map<String, dynamic>);
           }
           break;
         case "categorie":
           for (var i in response){
-            await DatabaseService.insert("categorie", i as Map<String, dynamic>);
+            await DatabaseService.insert(Tables.categorie, i as Map<String, dynamic>);
           }
           break;
         case "produit":
@@ -48,9 +49,9 @@ class InitialisationService {
             List<Categorie> categories = produit.getCategories();
             List<Ingredient> ingredients = produit.getIngredients();
 
-            await DatabaseService.insert("produit", produit.register());
-            await link<Categorie>("produit_appartient_categorie", i['id'], categories);
-            await link<Ingredient>("produit_contient_ingredient", i['id'], ingredients);
+            await DatabaseService.insert(Tables.produit, produit.register());
+            await link<Categorie>(Tables.produitAppartientCategorie, i['id'], categories);
+            await link<Ingredient>(Tables.produitContientIngredient, i['id'], ingredients);
           }
           break;
         case "menu":
@@ -58,8 +59,8 @@ class InitialisationService {
             Menu menu = Menu.fromJson(i);
             List<Produit> produitsInMenu = menu.getProduits();
 
-            await DatabaseService.insert("menu", menu.register());
-            await link<Produit>("menu_contient_produit", i['id'], produitsInMenu);
+            await DatabaseService.insert(Tables.menu, menu.register());
+            await link<Produit>(Tables.menuContientProduit, i['id'], produitsInMenu);
           }
           break;
         default:
@@ -70,9 +71,9 @@ class InitialisationService {
     }
   }
 
-  static Future<void> link<T extends Identifiable>(String table, int id, List<T> items) async {
+  static Future<void> link<T extends Identifiable>(Tables table, int id, List<T> items) async {
     try {
-        List<String> tableSplitted =table.split("_");
+        List<String> tableSplitted =table.name.split("_");
         String referenceName = "${tableSplitted.first}_id";
         String itemName = "${tableSplitted.last}_id";
 

@@ -29,7 +29,6 @@ class ApiService{
   }
   
   static Future<dynamic> post({required String endpoint, required Map<dynamic, dynamic> body, bool token = false}) async{
-
     Map<String, String> headers = await ApiUtilsService.setHeaders(token);
     String url = await ApiUtilsService.getUrl(endpoint: endpoint);
       final response = await http.post(Uri.parse(url), headers: headers, body: jsonEncode(body));
