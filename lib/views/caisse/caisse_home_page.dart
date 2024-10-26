@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/router/routes.dart';
-import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
-import 'package:la_bonne_franquette_front/views/panier/panier_page.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
+
+import '../panier/widget/panier_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
@@ -16,6 +15,7 @@ class CaisseHomePage extends StatefulWidget {
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel viewModel = CaisseViewModel();
+
   List<Produit>? produits;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -32,43 +32,83 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    const double defaultHeight = 600;
+    const double titleSize = 20;
     return MainScaffold(
       destination: "/cuisine",
       title: "Passer une commande",
       scaffoldKey: _scaffoldKey,
       body: Column(
-        children: <Widget>[
-          Expanded(
-            child: (produits != null && produits!.isNotEmpty)
-                ? ListView(children: <Widget>[
-                    for (var p in produits!)
-                      ListTile(
-                        onTap: () {
-                          viewModel.ajouterAuPanier(p);
-                        },
-                        title: Text(p.nom,
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        leading: Text(
-                            "${(p.prixHt / 100).toStringAsFixed(2)} €",
-                            style: Theme.of(context).textTheme.bodyMedium),
+        children: [
+          Row(
+            children: [
+              Flexible(
+                fit: FlexFit.tight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        style: TextStyle(
+                          fontSize: titleSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                          "Votre Commande"
                       ),
-                  ])
-                : const CircularProgressIndicator(),
+                    ),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        return SizedBox(
+                          height: defaultHeight-titleSize,
+                          width: constraints.maxWidth,
+                          child: PanierWidget(height: defaultHeight),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: produits != null && produits!.isNotEmpty
+                    ? SizedBox(
+                        height: defaultHeight,
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: produits!
+                              .map((produit) => ListTile(
+                                    onTap: () {
+                                      viewModel.ajouterAuPanier(produit);
+                                    },
+                                    title: Text(produit.nom),
+                                    leading: Text(
+                                        "${(produit.prixHt * 1.1 / 100).toStringAsFixed(2)} €"),
+                                  ))
+                              .toList(),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+              ),
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  margin: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.go("/panier");
-                    },
-                    child: const Text('Valider'),
-                  )
+                margin: const EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.go("/panier");
+                  },
+                  child: const Text('Valider'),
+                ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
