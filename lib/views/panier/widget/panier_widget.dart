@@ -3,6 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/views/panier/widget/article_card.dart';
 
+import '../../../models/article.dart';
+
 class PanierWidget extends HookWidget {
   final double height;
 
@@ -19,7 +21,8 @@ class PanierWidget extends HookWidget {
       child: ListView(children: [
         ...articles.value
             .map((e) => ArticleCard(
-                article: e, quantite: 1, ajout: () {}, suppression: () {}))
+                  article: e,
+                ))
             .toList(),
       ]),
     );

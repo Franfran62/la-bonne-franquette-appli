@@ -7,6 +7,9 @@ import 'package:collection/collection.dart';
   static double prixTotal = 0;
 
   static void ajouterAuPanier(Article article) {
+    print(articles.length);
+    articles.forEach((a) => print("${a.nom}  ${a.quantite}\n"
+        "${a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet == article.extraSet}"));
     Article? existingArticle = articles.firstWhereOrNull(
       (a) =>  a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet == article.extraSet
     );
@@ -21,10 +24,10 @@ import 'package:collection/collection.dart';
 
   static void supprimerDuPanier(Article article) {
     Article? existingArticle = articles.firstWhereOrNull(
-      (a) =>  a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet == article.extraSet
+      (a) => a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet == article.extraSet
     );
 
-    if (existingArticle != null && existingArticle.quantite > 2) {
+    if (existingArticle != null && existingArticle.quantite > 1) {
       existingArticle.quantite -= 1;
     } else {
       articles.remove(article);

@@ -4,18 +4,21 @@ import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
 
 class ArticleCard extends HookWidget {
+
   final Article article;
-  int quantite;
-  Function ajout;
-  Function suppression;
   final PanierViewModel viewModel = PanierViewModel();
 
   ArticleCard(
       {required this.article,
-      required this.quantite,
-      required this.ajout,
-      required this.suppression,
       super.key});
+
+  void ajout() {
+    PanierViewModel().ajouterArticle(article);
+  }
+
+  void suppression() {
+    PanierViewModel().supprimerArticle(article);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +26,9 @@ class ArticleCard extends HookWidget {
       color: Colors.greenAccent,
       child: Row(
         children: [
-          IconButton(onPressed: ajout(), icon: Icon(Icons.add)),
-          IconButton(onPressed: suppression(), icon: Icon(Icons.remove)),
-          Text(quantite.toString()),
+          IconButton(onPressed: () => ajout(), icon: Icon(Icons.add)),
+          IconButton(onPressed: () => suppression(), icon: Icon(Icons.remove)),
+          Text(article.quantite.toString()),
           Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
           Expanded(
             child:

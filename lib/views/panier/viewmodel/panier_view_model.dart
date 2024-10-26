@@ -4,7 +4,6 @@ import 'package:la_bonne_franquette_front/models/panier.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 
 class PanierViewModel {
-
   static final PanierViewModel _singleton = PanierViewModel._internal();
 
   factory PanierViewModel() {
@@ -13,7 +12,8 @@ class PanierViewModel {
 
   PanierViewModel._internal();
 
-  ValueNotifier<List<Article>> articlesNotifier = ValueNotifier<List<Article>>(Panier.articles);
+  ValueNotifier<List<Article>> articlesNotifier =
+      ValueNotifier<List<Article>>(Panier.articles);
 
   Future<bool> sendOrder() async {
     if (Panier.articles.isEmpty) {
@@ -29,7 +29,8 @@ class PanierViewModel {
       "prixHT": Panier.prixTotal * 100,
     };
     try {
-      await ApiService.post(endpoint: '/commandes', body: commandeBody, token: true);
+      await ApiService.post(
+          endpoint: '/commandes', body: commandeBody, token: true);
     } on Exception {
       rethrow;
     }
@@ -47,17 +48,22 @@ class PanierViewModel {
 
   void clearPanier() {
     Panier.viderLePanier();
-    articlesNotifier.value = Panier.articles;
+    Future.microtask(() {
+      articlesNotifier.value = Panier.articles;
+    });
   }
 
   void ajouterArticle(Article article) {
     Panier.ajouterAuPanier(article);
-    articlesNotifier.value = List.from(Panier.articles);
-    print("depuis viewmodel"+articlesNotifier.value.length.toString());
+    Future.microtask(() {
+      articlesNotifier.value = List.from(Panier.articles);
+    });
   }
 
   void supprimerArticle(Article article) {
     Panier.supprimerDuPanier(article);
-    articlesNotifier.value = List.from(Panier.articles);
+    Future.microtask(() {
+      articlesNotifier.value = List.from(Panier.articles);
+    });
   }
 }
