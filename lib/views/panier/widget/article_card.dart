@@ -23,17 +23,46 @@ class ArticleCard extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.greenAccent,
-      child: Row(
+      color: (article.ingredients.isNotEmpty || article.extraSet.isNotEmpty) ? Colors.redAccent :Colors.greenAccent,
+      child: Column(
         children: [
-          IconButton(onPressed: () => ajout(), icon: Icon(Icons.add)),
-          IconButton(onPressed: () => suppression(), icon: Icon(Icons.remove)),
-          Text(article.quantite.toString()),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
-          Expanded(
-            child:
-                Text(maxLines: 2, overflow: TextOverflow.visible, article.nom),
+          Row(
+            children: [
+              IconButton(onPressed: () => ajout(), icon: Icon(Icons.add)),
+              IconButton(onPressed: () => suppression(), icon: Icon(Icons.remove)),
+              Text(article.quantite.toString()),
+              Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
+              Text(maxLines: 2, overflow: TextOverflow.visible, article.nom),
+            ],
           ),
+          (article!.ingredients.isNotEmpty || article!.extraSet.isNotEmpty) ? Column(
+            children: [
+              if (article?.extraSet != null && article!.extraSet.isNotEmpty) ...article.extraSet.map((e) => Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 100.0),
+                    child: Icon(Icons.add),
+                  ),
+                  Text(
+                      style: TextStyle(fontSize: 14),
+                      e.nom),
+                ],
+              )),
+              if (article?.extraSet != null && article!.ingredients.isNotEmpty) ...article.ingredients.map((e) => Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left:100.0),
+                    child: Icon(Icons.remove),
+                  ),
+                  Text(
+                    style: TextStyle(fontSize: 14),
+                      e.nom),
+                ],
+              ))
+            ],
+          ) : SizedBox(),
         ],
       ),
     );
