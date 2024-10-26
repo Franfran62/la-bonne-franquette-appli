@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/panier_widget.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
+
+import '../panier/widget/panier_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
