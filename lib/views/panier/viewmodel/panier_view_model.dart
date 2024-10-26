@@ -1,12 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/panier.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 
 class PanierViewModel {
 
-  Future<bool> sendOrder() async {
+  static final PanierViewModel _singleton = PanierViewModel._internal();
 
-    if(Panier.articles.isEmpty) {
+  factory PanierViewModel() {
+    return _singleton;
+  }
+
+  PanierViewModel._internal();
+
+  ValueNotifier<List<Article>> articlesNotifier = ValueNotifier<List<Article>>(Panier.articles);
+
+  Future<bool> sendOrder() async {
+    if (Panier.articles.isEmpty) {
       throw Exception("Le panier est vide.");
     }
 
@@ -16,7 +26,7 @@ class PanierViewModel {
       "paiementSet": [],
       "status": "EN_COURS",
       "articles": Panier.articles.map((article) => article.toJson()).toList(),
-      "prixHT": Panier.prixTotal*100,
+      "prixHT": Panier.prixTotal * 100,
     };
     try {
       await ApiService.post(endpoint: '/commandes', body: commandeBody, token: true);
@@ -28,7 +38,7 @@ class PanierViewModel {
   }
 
   List<Article> getArticles() {
-    return Panier.articles;
+    return articlesNotifier.value;
   }
 
   double getTotalPriceTTC() {
@@ -37,5 +47,17 @@ class PanierViewModel {
 
   void clearPanier() {
     Panier.viderLePanier();
+    articlesNotifier.value = Panier.articles;
+  }
+
+  void ajouterArticle(Article article) {
+    Panier.ajouterAuPanier(article);
+    articlesNotifier.value = List.from(Panier.articles);
+    print("depuis viewmodel"+articlesNotifier.value.length.toString());
+  }
+
+  void supprimerArticle(Article article) {
+    Panier.supprimerDuPanier(article);
+    articlesNotifier.value = List.from(Panier.articles);
   }
 }

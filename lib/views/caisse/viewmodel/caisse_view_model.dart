@@ -3,6 +3,7 @@ import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/panier.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
+import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
 
 class CaisseViewModel {
   
@@ -18,6 +19,7 @@ class CaisseViewModel {
         ingredients: [],
         extraSet: [],
       );
-      Panier.ajouterAuPanier(article);
+      PanierViewModel().ajouterArticle(article);
+      //Panier.ajouterAuPanier(article);
     }
 }

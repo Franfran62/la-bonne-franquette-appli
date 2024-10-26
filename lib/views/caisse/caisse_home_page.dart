@@ -32,7 +32,8 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const double defaultHeight = 500;
+    const double defaultHeight = 600;
+    const double titleSize = 20;
     return MainScaffold(
       destination: "/cuisine",
       title: "Passer une commande",
@@ -43,14 +44,29 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
             children: [
               Flexible(
                 fit: FlexFit.tight,
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return SizedBox(
-                      height: defaultHeight,
-                      width: constraints.maxWidth / 4,
-                      child: PanierWidget(height: defaultHeight),
-                    );
-                  },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        style: TextStyle(
+                          fontSize: titleSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                          "Votre Commande"
+                      ),
+                    ),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        return SizedBox(
+                          height: defaultHeight-titleSize,
+                          width: constraints.maxWidth,
+                          child: PanierWidget(height: defaultHeight),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
               Expanded(
