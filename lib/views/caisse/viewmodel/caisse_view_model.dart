@@ -5,6 +5,13 @@ import 'package:la_bonne_franquette_front/services/stores/database_service.dart'
 import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
 
 class CaisseViewModel {
+  static final CaisseViewModel _singleton = CaisseViewModel._internal();
+
+  factory CaisseViewModel() {
+    return _singleton;
+  }
+
+  CaisseViewModel._internal();
   
     Future<List<Produit>?> getProduits() async {
       return await DatabaseService.findAll<Produit>(Tables.produit, Produit.fromMap);
@@ -19,6 +26,5 @@ class CaisseViewModel {
         extraSet: [],
       );
       PanierViewModel().ajouterArticle(article);
-      //Panier.ajouterAuPanier(article);
     }
 }

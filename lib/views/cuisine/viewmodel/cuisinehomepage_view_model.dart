@@ -2,7 +2,13 @@ import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 
 class CuisineHomepageViewModel {
+  static final CuisineHomepageViewModel _singleton = CuisineHomepageViewModel._internal();
 
+  factory CuisineHomepageViewModel() {
+    return _singleton;
+  }
+
+  CuisineHomepageViewModel._internal();
 
   Future<List<Commande>> getCommandeEnCours() async {
     try {

@@ -23,7 +23,7 @@ class CommandeCardCommandeWidget extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  title: Text(' ${commande.articles[articleIndex].nom}'),
+                  title: Text('${commande.articles[articleIndex].quantite} ${commande.articles[articleIndex].nom}'),
                 ),
                 ListView.builder(
                   shrinkWrap: true,
