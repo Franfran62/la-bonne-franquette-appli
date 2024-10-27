@@ -7,6 +7,14 @@ import '../../../services/api/connection_service.dart';
 
 class LoginPageViewModel {
 
+  static final LoginPageViewModel _singleton = LoginPageViewModel._internal();
+
+  factory LoginPageViewModel() {
+    return _singleton;
+  }
+
+  LoginPageViewModel._internal();
+
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
       return 'Veuillez entrer votre nom d\'utilisateur';
