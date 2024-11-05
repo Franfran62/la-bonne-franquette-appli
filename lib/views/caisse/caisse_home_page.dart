@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_list_view.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
 import '../panier/widget/panier_widget.dart';
@@ -78,32 +79,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
             child: produits != null && produits!.isNotEmpty
                 ? SizedBox(
                     height: defaultHeight,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        ...produits!
-                            .map((produit) => ListTile(
-                                  onTap: () {
-                                    viewModel.ajouterAuPanier(produit);
-                                  },
-                                  title: Text(produit.nom),
-                                  leading: Text(
-                                      "${(produit.prixHt * 1.1 / 100).toStringAsFixed(2)} €"),
-                                ))
-                            .toList(),
-                        Center(
-                          child: Container(
-                            margin: const EdgeInsets.all(10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                context.go("/panier");
-                              },
-                              child: const Text('Valider'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: CaisseProduitListView(list: produits, viewModel: viewModel),
                   )
                 : Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -115,3 +91,4 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     );
   }
 }
+

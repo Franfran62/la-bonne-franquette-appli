@@ -1,11 +1,34 @@
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:collection/collection.dart';
+import 'package:la_bonne_franquette_front/models/menu.dart';
+import 'package:la_bonne_franquette_front/models/produit.dart';
 
 class Panier {
   static List<Article> articles = [];
+  static List<Produit> produits = [];
+  static List<Menu> menus = [];
   static double prixTotal = 0;
 
+  static void ajouterProduit(Produit produit) {
+    produits.add(produit);
+    print("produits:"+produits.length.toString());
+    Article article = Article(
+      nom: produit.nom,
+      quantite: 1,
+      prixHT: produit.prixHt,
+      ingredients: [],
+      extraSet: [],
+    );
+    ajouterAuPanier(article);
+    articles.map((e) => print(e.nom));
+  }
 
+  static void ajouterMenu(Menu menu) {
+    menus.add(menu);
+    for(var produit in menu.produits) {
+      ajouterProduit(produit);
+    }
+  }
 
   static void ajouterAuPanier(Article article) {
     Article? existingArticle = articles.firstWhereOrNull((a) {
@@ -25,6 +48,28 @@ class Panier {
       articles.add(article);
     }
     calculerLePrixTotal();
+    print("articles:"+articles.length.toString());
+  }
+
+  static void supprimerProduit(Produit produit) {
+    produits.add(produit);
+    produits.remove(produit);
+
+    Article article = Article(
+      nom: produit.nom,
+      quantite: 1,
+      prixHT: produit.prixHt,
+      ingredients: [],
+      extraSet: [],
+    );
+    supprimerDuPanier(article);
+  }
+
+  static void supprimerMenu(Menu menu) {
+    menus.remove(menu);
+    for(var produit in menu.produits) {
+      supprimerProduit(produit);
+    }
   }
 
   static void supprimerDuPanier(Article article) {
@@ -49,7 +94,10 @@ class Panier {
   }
 
   static void viderLePanier() {
+    print("clearing...");
     articles = [];
+    produits = [];
+    menus = [];
     prixTotal = 0;
   }
 
