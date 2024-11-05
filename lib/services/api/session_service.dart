@@ -4,13 +4,15 @@ import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
 import 'package:go_router/go_router.dart';
 
+import '../stores/secured_storage.dart';
+
 class SessionService {
 
     static bool connected = false;
 
   static Future<void> isConnected() async {
     try {
-      connected = await ApiService.get(endpoint: "/auth/is-connected", token: true);
+      if( await SecuredStorage().readSecret('adresseServeur') !=  null) connected = await ApiService.get(endpoint: "/auth/is-connected", token: true);
     } catch (e) {
       throw Exception(e);
     }

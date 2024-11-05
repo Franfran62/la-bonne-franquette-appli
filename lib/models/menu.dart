@@ -18,7 +18,7 @@ class Menu implements Identifiable {
     required this.produits,
   });
 
-  factory Menu.fromJson(Map<String, dynamic> json) {
+  factory Menu.fromMap(Map<String, dynamic> json) {
     try {
       var produitList = json['produitSet'] as List<dynamic>;
 
