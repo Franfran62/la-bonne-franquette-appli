@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
@@ -17,6 +18,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel viewModel = CaisseViewModel();
 
   List<Produit>? produits;
+  List<Menu>? menus;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -30,6 +32,11 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     setState(() {});
   }
 
+  void loadMenus() async {
+    menus = await viewModel.getMenus();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     const double defaultHeight = 600;
@@ -38,76 +45,70 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
       destination: "/cuisine",
       title: "Passer une commande",
       scaffoldKey: _scaffoldKey,
-      body: Column(
+      body: Row(
         children: [
-          Row(
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        style: TextStyle(
-                          fontSize: titleSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                          "Votre Commande"
+          Flexible(
+            fit: FlexFit.tight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Text(
+                      style: TextStyle(
+                        fontSize: titleSize,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        return SizedBox(
-                          height: defaultHeight-titleSize,
-                          width: constraints.maxWidth,
-                          child: PanierWidget(height: defaultHeight),
-                        );
-                      },
-                    ),
-                  ],
+                      "Votre Commande"),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: produits != null && produits!.isNotEmpty
-                    ? SizedBox(
-                        height: defaultHeight,
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: produits!
-                              .map((produit) => ListTile(
-                                    onTap: () {
-                                      viewModel.ajouterAuPanier(produit);
-                                    },
-                                    title: Text(produit.nom),
-                                    leading: Text(
-                                        "${(produit.prixHt * 1.1 / 100).toStringAsFixed(2)} €"),
-                                  ))
-                              .toList(),
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.go("/panier");
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SizedBox(
+                      height: defaultHeight - titleSize,
+                      width: constraints.maxWidth,
+                      child: PanierWidget(height: defaultHeight),
+                    );
                   },
-                  child: const Text('Valider'),
                 ),
-              ),
-            ],
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: produits != null && produits!.isNotEmpty
+                ? SizedBox(
+                    height: defaultHeight,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        ...produits!
+                            .map((produit) => ListTile(
+                                  onTap: () {
+                                    viewModel.ajouterAuPanier(produit);
+                                  },
+                                  title: Text(produit.nom),
+                                  leading: Text(
+                                      "${(produit.prixHt * 1.1 / 100).toStringAsFixed(2)} €"),
+                                ))
+                            .toList(),
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.go("/panier");
+                              },
+                              child: const Text('Valider'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  ),
           ),
         ],
       ),
