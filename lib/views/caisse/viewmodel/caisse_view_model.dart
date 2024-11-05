@@ -22,14 +22,12 @@ class CaisseViewModel {
       return await DatabaseService.findAll<Menu>(Tables.menu, Menu.fromMap);
     }
 
-    void ajouterAuPanier(Produit produit)  {
-      Article article = Article(
-        nom: produit.nom,
-        quantite: 1,
-        prixHT: produit.prixHt,
-        ingredients: [],
-        extraSet: [],
-      );
-      PanierViewModel().ajouterArticle(article);
+    void ajouterProduitAuPanier(Produit produit) {
+      print(produit.nom);
+      PanierViewModel().ajouterProduit(produit);
+    }
+
+    void ajouterMenuAuPanier(Menu menu) {
+      PanierViewModel().ajouterMenu(menu);
     }
 }

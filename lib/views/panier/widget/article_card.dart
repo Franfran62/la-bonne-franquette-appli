@@ -31,8 +31,8 @@ class ArticleCard extends HookWidget {
             IconButton(onPressed: ajout, icon: Icon(Icons.add)),
             IconButton(onPressed: suppression, icon: Icon(Icons.remove)),
             Text(article.quantite.toString()),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 4.0)),
-            Text(maxLines: 2, overflow: TextOverflow.visible, article.nom),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 2.0)),
+            Expanded(child: Text(maxLines: 1, overflow: TextOverflow.clip, article.nom)),
           ],
         ),
         if (article.ingredients.isNotEmpty || article.extraSet.isNotEmpty)

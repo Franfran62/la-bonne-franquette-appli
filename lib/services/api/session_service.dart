@@ -11,10 +11,13 @@ class SessionService {
     static bool connected = false;
 
   static Future<void> isConnected() async {
-    try {
-      if( await SecuredStorage().readSecret('adresseServeur') !=  null) connected = await ApiService.get(endpoint: "/auth/is-connected", token: true);
-    } catch (e) {
-      throw Exception(e);
+    String? result = await SecuredStorage().readSecret('adresseServeur');
+    if( result != null && result.isNotEmpty ) {
+      try {
+        connected = await ApiService.get(endpoint: "/auth/is-connected", token: true);
+      } catch (e) {
+        throw Exception(e);
+      }
     }
   }
 
