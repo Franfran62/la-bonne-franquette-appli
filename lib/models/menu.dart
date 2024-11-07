@@ -18,23 +18,32 @@ class Menu implements Identifiable {
     required this.produits,
   });
 
-  factory Menu.fromMap(Map<String, dynamic> json) {
+  factory Menu.fromJson(Map<String, dynamic> json) {
     try {
       var produitList = json['produitSet'] as List<dynamic>;
 
       List<Produit> produits = produitList
         .map((produitJson) => Produit.fromJson(produitJson))
         .toList();
-
       return Menu(
             id: json['id'] as int,
             nom: json['nom'] as String,
             prixHT: json['prixHT'] as int,
-            produits: produits
+            produits: produits,
           ); 
     } catch (e) {
+      print(e);
       throw Exception("Impossible de créer un Menu à partir de $json");
     }
+  }
+
+  static Menu fromMap(Map<String, dynamic> map) {
+    return Menu(
+      id: map["id"],
+      nom: map["nom"],
+      prixHT: map["prixht"],
+      produits: map['produits'] ?? [],
+    );
   }
 
   Map<String, dynamic> register() {

@@ -1,4 +1,3 @@
-import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
@@ -28,6 +27,7 @@ class CaisseViewModel {
     }
 
     void ajouterMenuAuPanier(Menu menu) {
+      print(menu.nom);
       PanierViewModel().ajouterMenu(menu);
     }
 }

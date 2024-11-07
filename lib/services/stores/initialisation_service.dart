@@ -56,7 +56,10 @@ class InitialisationService {
           break;
         case "menu":
           for (var i in response){
-            Menu menu = Menu.fromMap(i);
+            //print(i.toString());
+            print(i.keys);
+            Menu menu = Menu.fromJson(i);
+            print(menu.nom+" -- "+menu.produits.length.toString());
             List<Produit> produitsInMenu = menu.getProduits();
 
             await DatabaseService.insert(Tables.menu, menu.register());
