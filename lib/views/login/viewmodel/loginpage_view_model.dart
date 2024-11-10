@@ -7,7 +7,7 @@ import '../../../services/api/connection_service.dart';
 
 class LoginPageViewModel {
 
-  static final LoginPageViewModel _singleton = LoginPageViewModel._internal();
+  static final LoginPageViewModel _singleton = LoginPageViewModel._internal();  
 
   factory LoginPageViewModel() {
     return _singleton;
@@ -32,9 +32,6 @@ class LoginPageViewModel {
   Future<bool> submitForm({required String username, required String password}) async {
 
     try {
-      final connection = await ConnectionService.testConnection();
-      
-      if (connection) {
         User user = User(username: username.trim(), password: password.trim());
         await SessionService.login(user: user);
         final String apiVersion = await CacheService.getApiCacheVersion();
@@ -44,10 +41,7 @@ class LoginPageViewModel {
         } else {
           isStores = true;
         }
-
         return isStores;
-      }
-      return false;
     } catch (e) {
       throw Exception(e.toString());  
     }
