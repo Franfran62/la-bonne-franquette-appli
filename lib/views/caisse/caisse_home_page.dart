@@ -44,7 +44,6 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     const double titleSize = 20;
     return MainScaffold(
       destination: "/cuisine",
-      title: "Passer une commande",
       scaffoldKey: _scaffoldKey,
       body: Row(
         children: [
