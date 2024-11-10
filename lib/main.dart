@@ -10,10 +10,8 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Vérifie si l'utilisateur est encore connecté et récupére la dernière page visitée
-  await SessionService.isConnected();
   String initialRoute = '/';
-  if (SessionService.connected) {
+  if (await SessionService.isConnected()) {
     initialRoute = await getLastVisitedPage();
   }
 
