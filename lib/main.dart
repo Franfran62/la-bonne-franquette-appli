@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/router/routes.dart';
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
@@ -11,10 +12,9 @@ void main() async {
 
   // Vérifie si l'utilisateur est encore connecté et récupére la dernière page visitée
   await SessionService.isConnected();
-  String initialRoute = '/login';
+  String initialRoute = '/';
   if (SessionService.connected) {
-    final prefs = await SharedPreferences.getInstance();
-    initialRoute = prefs.getString('lastVisitedPage') ?? '/';
+    initialRoute = await getLastVisitedPage();
   }
 
   runApp(MyApp(initialRoute: initialRoute));
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: createRouter(initialRoute),
       title: 'La Bonne Franquette',
       theme: CustomTheme.getTheme()
     );
