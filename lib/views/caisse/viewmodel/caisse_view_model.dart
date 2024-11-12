@@ -18,7 +18,7 @@ class CaisseViewModel {
     }
 
     Future<List<Menu>?> getMenus() async {
-      return await DatabaseService.findAll<Menu>(Tables.menu, Menu.fromMap);
+      return await DatabaseService.findAllMenus();
     }
 
     void ajouterProduitAuPanier(Produit produit) {

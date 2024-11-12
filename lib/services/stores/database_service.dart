@@ -1,6 +1,9 @@
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
+import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import '../../models/menu.dart';
 
 class DatabaseService {
   static Database? database;
@@ -96,6 +99,36 @@ class DatabaseService {
     );
   }
 
+  static Future<List<Menu>?> findAllMenus() async {
+    List<Menu> menus = [];
+    final List<Map<String, Object?>>? result = await database?.query(Tables.menu.name, columns: ["id"]);
+    List<int> menuIDs = result?.map((e) => e.values.first as int).toList() ?? [];
+
+    for (int e in menuIDs) {
+      final List<Map<String, Object?>>? produitsInMenu = await database?.query(Tables.menuContientProduit.name, where: "menu_id = $e");
+      List<int> produitIDs = produitsInMenu?.map((e) => e["produit_id"] as int).toList() ?? [];
+      for (var f in produitIDs) print("menu id $e -> $f");
+
+      List<Produit> produits = [];
+
+      for(int i in produitIDs) {
+        final List<Map<String, Object?>>? produitsList = await database?.query(Tables.produit.name, where: "id = $i");
+
+        produitsList?.forEach((produit) {
+          produits.add(Produit.fromMap(produit));
+        });
+      }
+
+      final List<Map<String, Object?>>? maps = await database?.query(Tables.menu.name, where: "id = $e");
+      Map<String, Object?> map = Map<String, Object?>.from(maps?.first ?? {});
+
+      map["produits"] = produits;
+      menus.add(Menu.fromMap(map));
+    }
+
+    return menus;
+  }
+  
 static Future<List<T>?> findAll<T>(Tables table, T Function(Map<String, dynamic>) fromMap) async {
   final List<Map<String, Object?>>? maps = await database?.query(table.name);
   return maps?.map(fromMap).toList();
