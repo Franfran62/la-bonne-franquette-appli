@@ -11,14 +11,13 @@ void main() async {
 
   // Vérifie si l'utilisateur est encore connecté et récupére la dernière page visitée
   try {
-    await SessionService.isConnected();
-  } catch (e) {
+  await SessionService.isConnected();
+  } catch(e) {
     print('Connection error: $e');
   }
-  String initialRoute = '/login';
+  String initialRoute = '/';
   if (SessionService.connected) {
-    final prefs = await SharedPreferences.getInstance();
-    initialRoute = prefs.getString('lastVisitedPage') ?? '/';
+    initialRoute = await getLastVisitedPage();
   }
 
   runApp(MyApp(initialRoute: initialRoute));
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp.router(
-      routerConfig: router,
+      routerConfig: createRouter(initialRoute),
       title: 'La Bonne Franquette',
       theme: CustomTheme.getTheme()
     );

@@ -5,14 +5,14 @@ import 'package:la_bonne_franquette_front/widgets/sideMenu/side_menu_widget.dart
 class MainScaffold extends StatefulWidget {
   final Widget body;
   final String destination;
-  final String title;
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final String? title;
 
   MainScaffold(
       {required this.body,
       required this.destination,
-      required this.title,
       required this.scaffoldKey,
+      this.title,
       super.key});
 
   @override
@@ -25,14 +25,15 @@ class _MainScaffoldState  extends State<MainScaffold> {
     return Scaffold(
         key: widget.scaffoldKey,
         drawer: SideMenuWidget(destination: widget.destination, context: context, scaffoldKey: widget.scaffoldKey),
-        appBar: AppBar(
-          leading: IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () => widget.scaffoldKey.currentState?.openDrawer()
+        appBar: 
+          AppBar(
+              leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => widget.scaffoldKey.currentState?.openDrawer()
+              ),
+              title: Text(widget.title ?? ""),
           ),
-          title: Text(widget.title),
-        ),
-        body: widget.body
+        body: widget.body,
     );
   }
 }
