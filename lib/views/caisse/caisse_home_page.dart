@@ -78,10 +78,10 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
           ),
           Expanded(
             flex: 3,
-            child: produits != null && produits!.isNotEmpty
+            child: menus != null && menus!.isNotEmpty
                 ? SizedBox(
                     height: defaultHeight,
-                    child: CaisseMenuListView(list: menus),
+                    child: CaisseMenuListView(menus: menus),
                   )
                 : Padding(
                     padding: const EdgeInsets.all(8.0),

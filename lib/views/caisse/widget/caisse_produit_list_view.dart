@@ -14,7 +14,8 @@ class CaisseProduitListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return GridView(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       children: [
@@ -25,7 +26,7 @@ class CaisseProduitListView extends StatelessWidget {
                     onPressed: () => {
             viewModel.ajouterProduitAuPanier(element)
                     },
-                    child: Text(element.nom),
+                    child: Text(element.nom, textAlign: TextAlign.center,),
                   ),
           )),
       ],
