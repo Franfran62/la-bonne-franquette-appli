@@ -10,7 +10,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Vérifie si l'utilisateur est encore connecté et récupére la dernière page visitée
-  await SessionService.isConnected();
+  try {
+    await SessionService.isConnected();
+  } catch (e) {
+    print('Connection error: $e');
+  }
   String initialRoute = '/login';
   if (SessionService.connected) {
     final prefs = await SharedPreferences.getInstance();
