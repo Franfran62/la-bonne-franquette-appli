@@ -1,4 +1,3 @@
-import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
@@ -19,7 +18,7 @@ class CaisseViewModel {
     }
 
     Future<List<Menu>?> getMenus() async {
-      return await DatabaseService.findAll<Menu>(Tables.menu, Menu.fromMap);
+      return await DatabaseService.findAllMenus();
     }
 
     void ajouterProduitAuPanier(Produit produit) {
@@ -28,6 +27,7 @@ class CaisseViewModel {
     }
 
     void ajouterMenuAuPanier(Menu menu) {
+      print(menu.nom);
       PanierViewModel().ajouterMenu(menu);
     }
 }
