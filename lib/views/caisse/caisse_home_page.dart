@@ -18,6 +18,7 @@ class CaisseHomePage extends StatefulWidget {
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel viewModel = CaisseViewModel();
+  bool showMenu = false;
 
   List<Produit>? produits;
   List<Menu>? menus;
@@ -37,6 +38,11 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   void loadMenus() async {
     menus = await viewModel.getMenus();
+    setState(() {});
+  }
+
+  void updateMenuChoice() {
+    showMenu = !showMenu;
     setState(() {});
   }
 
@@ -77,23 +83,18 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
           ),
           Expanded(
             flex: 3,
-            child: menus != null && menus!.isNotEmpty
-                ? SizedBox(
-                    height: defaultHeight,
-                    child: CaisseMenuListView(menus: menus),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  ),
+            child: Column(
+              children: [
+                ElevatedButton(onPressed: (updateMenuChoice), child: !showMenu ? Text("Menu") : Text("Produit")),
+                SizedBox(
+                        height: defaultHeight,
+                        child: showMenu ? CaisseMenuListView(menus: menus) : CaisseProduitListView(produits: produits,),
+                      ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-/*
-                        CaisseMenuListView(list: menus),
-                        CaisseProduitListView(list: produits),
- */

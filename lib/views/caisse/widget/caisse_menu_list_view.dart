@@ -15,7 +15,7 @@ class CaisseMenuListView extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      children: [
+      children: menus != null && menus!.isNotEmpty ? [
         ...menus!
             .map((element) => Padding(
           padding: EdgeInsets.all(2.0),
@@ -23,9 +23,11 @@ class CaisseMenuListView extends StatelessWidget {
             onPressed: () => {
               viewModel.ajouterMenuAuPanier(element)
             },
-            child: Text(element.nom, textAlign: TextAlign.center,),
+            child: Text(element.nom, textAlign: TextAlign.center,textScaler: TextScaler.linear(1)),
           ),
         )),
+      ] : [
+        CircularProgressIndicator()
       ],
     );
   }

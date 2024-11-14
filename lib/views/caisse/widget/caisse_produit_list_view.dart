@@ -6,10 +6,10 @@ import '../viewmodel/caisse_view_model.dart';
 class CaisseProduitListView extends StatelessWidget {
   CaisseProduitListView({
     super.key,
-    required this.list,
+    required this.produits,
   });
 
-  final List<Produit>? list;
+  final List<Produit>? produits;
   final CaisseViewModel viewModel = CaisseViewModel();
 
   @override
@@ -18,17 +18,19 @@ class CaisseProduitListView extends StatelessWidget {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
-      children: [
-        ...list!
+      children: produits != null && produits!.isNotEmpty ? [
+        ...produits!
           .map((element) => Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.0),
+          padding: EdgeInsets.all(2.0),
           child: ElevatedButton(
                     onPressed: () => {
             viewModel.ajouterProduitAuPanier(element)
                     },
-                    child: Text(element.nom, textAlign: TextAlign.center,),
+                    child: Text(element.nom, textAlign: TextAlign.center, textScaler: TextScaler.linear(1),),
                   ),
           )),
+      ] : [
+        CircularProgressIndicator()
       ],
     );
   }
