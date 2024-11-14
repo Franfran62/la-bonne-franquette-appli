@@ -15,7 +15,7 @@ class CaisseProduitListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       children: produits != null && produits!.isNotEmpty ? [

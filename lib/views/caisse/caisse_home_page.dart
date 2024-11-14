@@ -48,7 +48,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const double defaultHeight = 600;
+    const double defaultHeight = 550;
     const double titleSize = 20;
     return MainScaffold(
       destination: "/cuisine",
@@ -85,11 +85,37 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
             flex: 3,
             child: Column(
               children: [
-                ElevatedButton(onPressed: (updateMenuChoice), child: !showMenu ? Text("Menu") : Text("Produit")),
+                Row(
+                  children: [
+                    ChoiceChip(
+                      label: Text("Produit"),
+                      selected: !showMenu,
+                      onSelected: (selected) {
+                        setState(() {
+                          updateMenuChoice();
+                        });
+                      },
+                    ),
+                    SizedBox(width: 8.0,),
+                    ChoiceChip(
+                      label: Text("Menu"),
+                      selected: showMenu,
+                      onSelected: (selected) {
+                        setState(() {
+                          updateMenuChoice();
+                        });
+                      },
+                    ),
+                  ],
+                ),
                 SizedBox(
-                        height: defaultHeight,
-                        child: showMenu ? CaisseMenuListView(menus: menus) : CaisseProduitListView(produits: produits,),
-                      ),
+                  height: defaultHeight,
+                  child: showMenu
+                      ? CaisseMenuListView(menus: menus)
+                      : CaisseProduitListView(
+                          produits: produits,
+                        ),
+                ),
               ],
             ),
           ),
