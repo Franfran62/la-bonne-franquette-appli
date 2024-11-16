@@ -86,6 +86,7 @@ class PanierViewModel {
   }
 
   void ajouterMenu(Menu menu) {
+    print(menu.produits.length.toString());
     menus.add(menu);
     for(var produit in menu.produits) {
       ajouterProduit(produit);

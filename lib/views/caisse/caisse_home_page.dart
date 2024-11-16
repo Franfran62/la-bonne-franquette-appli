@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_produit_list_view.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
 import '../panier/widget/panier_widget.dart';
@@ -17,6 +17,7 @@ class CaisseHomePage extends StatefulWidget {
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel viewModel = CaisseViewModel();
+  bool showMenu = false;
 
   List<Produit>? produits;
   List<Menu>? menus;
@@ -26,6 +27,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   void initState() {
     super.initState();
     loadProduits();
+    loadMenus();
   }
 
   void loadProduits() async {
@@ -38,10 +40,16 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     setState(() {});
   }
 
+  void updateMenuChoice() {
+    showMenu = !showMenu;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    const double defaultHeight = 600;
+    const double defaultHeight = 550;
     const double titleSize = 20;
+    const double choiceLabelPadding = 10.0;
     return MainScaffold(
       destination: "/cuisine",
       scaffoldKey: _scaffoldKey,
@@ -75,19 +83,58 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
           ),
           Expanded(
             flex: 3,
-            child: produits != null && produits!.isNotEmpty
-                ? SizedBox(
-                    height: defaultHeight,
-                    child: CaisseProduitListView(list: produits, viewModel: viewModel),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    ChoiceChip(
+                      label: Text(
+                        "A l'unité",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
+                      selected: !showMenu,
+                      onSelected: (selected) {
+                        setState(() {
+                          updateMenuChoice();
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    ChoiceChip(
+                      label: Text(
+                        "Menu",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
+                      selected: showMenu,
+                      onSelected: (selected) {
+                        setState(() {
+                          updateMenuChoice();
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: defaultHeight,
+                  child: showMenu
+                      ? CaisseMenuListView(menus: menus)
+                      : CaisseProduitListView(
+                          produits: produits,
+                        ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 }
-
