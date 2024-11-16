@@ -10,21 +10,34 @@ class SessionService {
 
     static bool connected = false;
 
-  static Future<void> isConnected() async {
-    String? result = await SecuredStorage().readSecret('adresseServeur');
+  static Future<bool> isConnected() async {
+    connected = false;
+  String? result = await ApiUtilsService.getUrl();
     if( result != null && result.isNotEmpty ) {
       try {
         connected = await ApiService.get(endpoint: "/auth/is-connected", token: true);
       } catch (e) {
-        throw Exception(e);
+        print(e);
       }
+    }
+    return connected;
+  }
+
+  static Future<void> login({required User user}) async {
+    try {
+      final Map<String, dynamic> tokens = await ApiService.post(endpoint: "/auth/login", body: user.toJson(), token: false);
+      await ApiUtilsService.setToken(token: tokens['accessToken']);
+      await ApiUtilsService.setRefreshToken(token: tokens['refreshToken']);
+      connected = true;
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
-    static Future<void> login({required User user}) async {
+  static Future<void> refresh() async {
     try {
-      final Map<String, dynamic> token = await ApiService.post(endpoint: "/auth/login", body: user.toJson(), token: false);
-      await ApiUtilsService.setToken(token: token['token']);
+      final Map<String, dynamic> newAccessToken = await ApiService.post(endpoint: "/auth/refresh", body: {"refreshToken": await ApiUtilsService.getRefreshToken()}, token: false);
+      await ApiUtilsService.setToken(token: newAccessToken['accessToken']);
       connected = true;
     } catch (e) {
       throw Exception(e);
@@ -32,12 +45,16 @@ class SessionService {
   }
 
   static Future<void> logout(BuildContext context) async {
-    Map tokenJSON = {
-      "token" : await ApiUtilsService.getToken()
-    };
     try {
-      ApiService.post(endpoint: '/auth/logout', body: tokenJSON, token: true);
-      ApiUtilsService.setToken(token: "");
+      await ApiService.post(
+        endpoint: '/auth/logout', 
+        body: {
+          "accessToken" : await ApiUtilsService.getToken(),
+          "refreshToken": await ApiUtilsService.getRefreshToken()
+        }, 
+        token: true
+      );
+      await ApiUtilsService.setToken(token: "");
       connected = false;
       context.go('/');
     } catch (e) {

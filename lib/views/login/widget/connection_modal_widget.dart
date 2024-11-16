@@ -10,8 +10,8 @@ class ConnectionModalWidget extends StatelessWidget {
   final _serverAddressController = TextEditingController();
 
   ConnectionModalWidget({super.key}) {
-    SecuredStorage().readSecret('adresseServeur').then((value) => {
-          _serverAddressController.text = value!.isNotEmpty ? value : ""
+    ApiUtilsService.getUrl().then((value) => {
+          _serverAddressController.text = value.isNotEmpty ? value : ""
         });
   }
 
@@ -22,10 +22,10 @@ class ConnectionModalWidget extends StatelessWidget {
     return null;
   }
 
-  Future<bool> saveAddress(String adresse) async {
+  Future<bool> configure(String adresse) async {
     try {
       await ConnectionService.testConnectionToNewServer(adresse: adresse);
-      ApiUtilsService.setUrl(adresse: adresse);
+      await ApiUtilsService.setUrl(adresse: adresse);
       return true;
     } catch (e) {
       throw Exception(e);
@@ -81,7 +81,7 @@ class ConnectionModalWidget extends StatelessWidget {
                 child: const Text('Enregistrer'),
                 onPressed: () async {
                   try {
-                    await saveAddress(_serverAddressController.text);
+                    await configure(_serverAddressController.text);
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Connexion réussi.")));

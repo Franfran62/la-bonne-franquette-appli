@@ -8,16 +8,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-
+  
+  String initialRoute = '/';
   // Vérifie si l'utilisateur est encore connecté et récupére la dernière page visitée
   try {
-  await SessionService.isConnected();
+    if (await SessionService.isConnected()) {
+      initialRoute = await getLastVisitedPage();
+    }
   } catch(e) {
     print('Connection error: $e');
-  }
-  String initialRoute = '/';
-  if (SessionService.connected) {
-    initialRoute = await getLastVisitedPage();
   }
 
   runApp(MyApp(initialRoute: initialRoute));

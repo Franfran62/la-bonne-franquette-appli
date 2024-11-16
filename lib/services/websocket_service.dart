@@ -1,3 +1,4 @@
+import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
 import 'package:la_bonne_franquette_front/services/stores/secured_storage.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -11,7 +12,7 @@ class WebSocketService {
   String? url;
 
   Future<void> setWebSocketServerAdress() async {
-    await SecuredStorage().readSecret('adresseServeur').then((value) {
+    await ApiUtilsService.getUrl().then((value) {
       url = 'ws://$value/ws';
     });
   }
@@ -43,8 +44,8 @@ class WebSocketService {
             stompClient?.deactivate();
           }
         },
-        stompConnectHeaders: {'auth-token': await SecuredStorage().readSecret("auth-token") ?? ""},
-        webSocketConnectHeaders: {'auth-token': await SecuredStorage().readSecret("auth-token") ?? ""}, 
+        stompConnectHeaders: {'auth-token': await ApiUtilsService.getToken()},
+        webSocketConnectHeaders: {'auth-token': await ApiUtilsService.getToken()}, 
       ),
     );
 
