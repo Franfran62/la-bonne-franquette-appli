@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
@@ -18,6 +17,7 @@ class CaisseHomePage extends StatefulWidget {
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel viewModel = CaisseViewModel();
+  bool showMenu = false;
 
   List<Produit>? produits;
   List<Menu>? menus;
@@ -40,10 +40,16 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     setState(() {});
   }
 
+  void updateMenuChoice() {
+    showMenu = !showMenu;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    const double defaultHeight = 600;
+    const double defaultHeight = 550;
     const double titleSize = 20;
+    const double choiceLabelPadding = 10.0;
     return MainScaffold(
       destination: "/cuisine",
       scaffoldKey: _scaffoldKey,
@@ -77,23 +83,58 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
           ),
           Expanded(
             flex: 3,
-            child: menus != null && menus!.isNotEmpty
-                ? SizedBox(
-                    height: defaultHeight,
-                    child: CaisseMenuListView(menus: menus),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    ChoiceChip(
+                      label: Text(
+                        "A l'unité",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
+                      selected: !showMenu,
+                      onSelected: (selected) {
+                        setState(() {
+                          updateMenuChoice();
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    ChoiceChip(
+                      label: Text(
+                        "Menu",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
+                      selected: showMenu,
+                      onSelected: (selected) {
+                        setState(() {
+                          updateMenuChoice();
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: defaultHeight,
+                  child: showMenu
+                      ? CaisseMenuListView(menus: menus)
+                      : CaisseProduitListView(
+                          produits: produits,
+                        ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-/*
-                        CaisseMenuListView(list: menus),
-                        CaisseProduitListView(list: produits),
- */

@@ -14,19 +14,21 @@ class CaisseMenuListView extends StatelessWidget {
     return GridView(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      children: [
-        ...menus!
-            .map((element) => Padding(
-          padding: EdgeInsets.all(2.0),
-          child: ElevatedButton(
-            onPressed: () => {
-              viewModel.ajouterMenuAuPanier(element)
-            },
-            child: Text(element.nom, textAlign: TextAlign.center,),
-          ),
-        )),
-      ],
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      children: menus != null && menus!.isNotEmpty
+          ? [
+              ...menus!.map((element) => Padding(
+                    padding: EdgeInsets.all(2.0),
+                    child: ElevatedButton(
+                      onPressed: () => {viewModel.ajouterMenuAuPanier(element)},
+                      child: Text(element.nom,
+                          textAlign: TextAlign.center,
+                          textScaler: TextScaler.linear(1)),
+                    ),
+                  )),
+            ]
+          : [CircularProgressIndicator()],
     );
   }
 }
