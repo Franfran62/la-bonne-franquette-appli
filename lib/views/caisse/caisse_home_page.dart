@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
@@ -50,6 +49,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   Widget build(BuildContext context) {
     const double defaultHeight = 550;
     const double titleSize = 20;
+    const double choiceLabelPadding = 10.0;
     return MainScaffold(
       destination: "/cuisine",
       scaffoldKey: _scaffoldKey,
@@ -88,7 +88,13 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                 Row(
                   children: [
                     ChoiceChip(
-                      label: Text("Produit"),
+                      label: Text(
+                        "A l'unité",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: !showMenu,
                       onSelected: (selected) {
                         setState(() {
@@ -96,9 +102,17 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                         });
                       },
                     ),
-                    SizedBox(width: 8.0,),
+                    SizedBox(
+                      width: 8.0,
+                    ),
                     ChoiceChip(
-                      label: Text("Menu"),
+                      label: Text(
+                        "Menu",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: showMenu,
                       onSelected: (selected) {
                         setState(() {
