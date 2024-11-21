@@ -21,7 +21,11 @@ class ApiUtilsService {
     await SecuredStorage().writeSecrets('refresh-token', token); 
   }
 
-  static Future<String> getUrl({String endpoint = ""}) async {
+  static Future<String?> getUrl({String endpoint = ""}) async {
+    return await SecuredStorage().readSecret('adresseServeur');
+  }
+
+  static Future<String> getComputedUrl({String endpoint = ""}) async {
     final String? adresseServeur = await SecuredStorage().readSecret('adresseServeur');
     return 'http://$adresseServeur/api/v1$endpoint';
   }

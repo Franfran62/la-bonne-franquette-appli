@@ -12,7 +12,7 @@ class WebSocketService {
   String? url;
 
   Future<void> setWebSocketServerAdress() async {
-    await ApiUtilsService.getUrl().then((value) {
+    await ApiUtilsService.getComputedUrl().then((value) {
       url = 'ws://$value/ws';
     });
   }

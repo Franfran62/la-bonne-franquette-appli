@@ -11,7 +11,7 @@ class ConnectionModalWidget extends StatelessWidget {
 
   ConnectionModalWidget({super.key}) {
     ApiUtilsService.getUrl().then((value) => {
-          _serverAddressController.text = value.isNotEmpty ? value : ""
+          _serverAddressController.text = value!.isNotEmpty ? value : ""
         });
   }
 
