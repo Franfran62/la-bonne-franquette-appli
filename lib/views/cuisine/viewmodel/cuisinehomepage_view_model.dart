@@ -19,4 +19,6 @@ class CuisineHomepageViewModel {
       throw Exception("Impossible de récupérer les commandes en cours");
     }
   }
+
+  //TODO Modifier afin de récupérer tous les articles des menus dans un seul liste d'article
 }

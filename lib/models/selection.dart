@@ -3,7 +3,7 @@ import 'package:la_bonne_franquette_front/models/article.dart';
 class Selection {
   final String nom;
   final List<Article> articles;
-  final int quantite;
+  int quantite;
   final int prixHT;
 
   Selection({

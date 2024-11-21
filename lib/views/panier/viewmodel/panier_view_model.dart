@@ -2,8 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
-import 'package:la_bonne_franquette_front/models/menu_commande.dart';
-import 'package:la_bonne_franquette_front/models/panier.dart';
+import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 
 import '../../../models/produit.dart';
@@ -12,7 +11,7 @@ class PanierViewModel {
   static final PanierViewModel _singleton = PanierViewModel._internal();
 
   static List<Article> articles = [];
-  static List<MenuCommande> menus = [];
+  static List<Selection> menus = [];
   double prixTotal = 0;
 
   factory PanierViewModel() {
@@ -24,19 +23,17 @@ class PanierViewModel {
   ValueNotifier<List<Article>> articlesNotifier =
       ValueNotifier<List<Article>>(articles);
 
-  ValueNotifier<List<MenuCommande>> menusNotifier =
-      ValueNotifier<List<MenuCommande>>(menus);
+  ValueNotifier<List<Selection>> menusNotifier =
+      ValueNotifier<List<Selection>>(menus);
 
   Future<bool> sendOrder() async {
-    if (articles.isEmpty && menus.isNotEmpty) {
+    if (articles.isEmpty && menus.isEmpty) {
       throw Exception("Le panier est vide.");
     }
 
-    //TODO Ajouter la consolidation de la liste menus dans celle d'article
-
     Map commandeBody = {
       "surPlace": true,
-      "menus": [],
+      "menus": menus.map((menu) => menu.toJson()).toList(),
       "paiementSet": [],
       "status": "EN_COURS",
       "articles": articles.map((article) => article.toJson()).toList(),
@@ -56,7 +53,7 @@ class PanierViewModel {
     return articlesNotifier.value;
   }
 
-  List<MenuCommande> getMenus() {
+  List<Selection> getMenus() {
     return menusNotifier.value;
   }
 
@@ -102,7 +99,7 @@ class PanierViewModel {
           extraSet: []));
     });
 
-    MenuCommande menuCommande = MenuCommande(
+    Selection menuCommande = Selection(
         nom: menu.nom, quantite: 1, articles: articles, prixHT: menu.prixHT);
     ajouterMenuAuPanier(menuCommande);
   }
@@ -128,7 +125,7 @@ class PanierViewModel {
     });
   }
 
-  MenuCommande? findMenu(MenuCommande menuCommande) {
+  Selection? findMenu(Selection menuCommande) {
     return menus.firstWhereOrNull((m) {
       if (m.articles.length != menuCommande.articles.length) {
         return false;
@@ -147,8 +144,8 @@ class PanierViewModel {
     });
   }
 
-  void ajouterMenuAuPanier(MenuCommande menuCommande) {
-    MenuCommande? existingMenu = findMenu(menuCommande);
+  void ajouterMenuAuPanier(Selection menuCommande) {
+    Selection? existingMenu = findMenu(menuCommande);
     if (existingMenu != null) {
       existingMenu.quantite += 1;
     } else {
@@ -160,8 +157,8 @@ class PanierViewModel {
     calculerLePrixTotal();
   }
 
-  void supprimerMenu(MenuCommande menuCommande) {
-    MenuCommande? existingMenu = findMenu(menuCommande);
+  void supprimerMenu(Selection menuCommande) {
+    Selection? existingMenu = findMenu(menuCommande);
 
     if (existingMenu != null && existingMenu.quantite > 1) {
       existingMenu.quantite -= 1;

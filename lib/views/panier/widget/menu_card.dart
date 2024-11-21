@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_bonne_franquette_front/models/menu_commande.dart';
+import 'package:la_bonne_franquette_front/models/selection.dart';
 
 import '../viewmodel/panier_view_model.dart';
 
 class MenuCard extends HookWidget {
-  final MenuCommande menu;
+  final Selection menu;
   final PanierViewModel viewModel = PanierViewModel();
 
   MenuCard({required this.menu, super.key});
