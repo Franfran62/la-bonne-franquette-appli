@@ -19,58 +19,50 @@ class PanierWidget extends HookWidget {
     final viewModel = useMemoized(() => PanierViewModel());
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0, 0),
-      child: Column(
-        children: [
-          ValueListenableBuilder(
-            valueListenable: ValueNotifier<List<dynamic>>([
-              ...viewModel.menusNotifier.value,
-              ...viewModel.articlesNotifier.value
-            ]),
-            builder: (context, items, _) {
-              return items.isNotEmpty
-                  ? SizedBox(
-                height: height-150,
-                    child: ListView(children: [
-                        ...items.map<Widget>((item) {
-                          if (item is MenuCommande) {
-                            return MenuCard(menu: item);
-                          } else if (item is Article) {
-                            return ArticleCard(article: item);
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        }).toList(),
-                      ]),
-                  )
-                  : SizedBox();
-            },
-          ),
-          Center(
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                onPressed: () {
-                  context.go("/panier");
-                },
-                child: const Text('Valider'),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 0),
+        child: ValueListenableBuilder<List<MenuCommande>>(
+          valueListenable: viewModel.menusNotifier,
+          builder: (context, menus, _) {
+            return ValueListenableBuilder<List<Article>>(
+              valueListenable: viewModel.articlesNotifier,
+              builder: (context, articles, _) {
+                final items = [...menus, ...articles];
+                return Column(
+                  children: [
+                    items.isNotEmpty
+                        ? SizedBox(
+                            height: height - 150,
+                            child: ListView(
+                              children: items.map<Widget>((item) {
+                                if (item is MenuCommande) {
+                                  return MenuCard(menu: item);
+                                } else if (item is Article) {
+                                  return ArticleCard(article: item);
+                                } else {
+                                  return SizedBox.shrink();
+                                }
+                              }).toList(),
+                            ),
+                          )
+                        : SizedBox(),
+                    items.isNotEmpty
+                        ? Center(
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  context.go("/panier");
+                                },
+                                child: const Text('Valider'),
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
+                  ],
+                );
+              },
+            );
+          },
+        ));
   }
 }
-/*
-
-Container(
-            margin: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              onPressed: () {
-                context.go("/panier");
-              },
-              child: const Text('Valider'),
-            ),
-          ),
- */

@@ -162,13 +162,14 @@ class PanierViewModel {
 
   void supprimerMenu(MenuCommande menuCommande) {
     MenuCommande? existingMenu = findMenu(menuCommande);
-    if (existingMenu != null) {
+
+    if (existingMenu != null && existingMenu.quantite > 1) {
       existingMenu.quantite -= 1;
     } else {
       menus.remove(menuCommande);
     }
     Future.microtask(() {
-      articlesNotifier.value = List.from(articles);
+      menusNotifier.value = List.from(menus);
     });
   }
 
