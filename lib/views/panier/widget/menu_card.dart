@@ -16,7 +16,7 @@ class MenuCard extends HookWidget {
   }
 
   void suppression() {
-    print("");
+    viewModel.supprimerMenu(menu);
   }
 //TODO Gérer les modification des articles du menu ainsi que la couleur de la card
 

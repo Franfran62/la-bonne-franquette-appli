@@ -79,8 +79,6 @@ class PanierViewModel {
   }
 
   void ajouterProduit(Produit produit) {
-    print(produit.nom);
-
     Article article = Article(
       nom: produit.nom,
       quantite: 1,
@@ -92,7 +90,6 @@ class PanierViewModel {
   }
 
   void ajouterMenu(Menu menu) {
-
     List<Produit> produits = menu.produits;
     List<Article> articles = [];
 
@@ -104,14 +101,35 @@ class PanierViewModel {
           ingredients: [],
           extraSet: []));
     });
-    //TODO: Gérer le cas ou le menu a déjà été ajouté, comme pour les articles
 
-    MenuCommande menuCommande = MenuCommande(nom: menu.nom, quantite: 1, articles: articles, prixHT: menu.prixHT);
+    MenuCommande menuCommande = MenuCommande(
+        nom: menu.nom, quantite: 1, articles: articles, prixHT: menu.prixHT);
     ajouterMenuAuPanier(menuCommande);
   }
 
-  void ajouterMenuAuPanier(MenuCommande menuCommande) {
-    MenuCommande? existingMenu = menus.firstWhereOrNull((m) {
+  Article? findArticle(Article article) {
+    return articles.firstWhereOrNull((a) {
+      if (article.ingredients.isEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            (a.ingredients.isEmpty && a.extraSet.isEmpty);
+      } else if (article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
+        return a.nom == article.nom &&
+            a.extraSet == article.extraSet &&
+            a.ingredients.isEmpty;
+      } else if (article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet.isEmpty;
+      } else {
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet == article.extraSet;
+      }
+    });
+  }
+
+  MenuCommande? findMenu(MenuCommande menuCommande) {
+    return menus.firstWhereOrNull((m) {
       if (m.articles.length != menuCommande.articles.length) {
         return false;
       }
@@ -119,95 +137,73 @@ class PanierViewModel {
         Article article1 = m.articles[i];
         Article article2 = menuCommande.articles[i];
         if (article1.nom != article2.nom ||
-            !ListEquality().equals(article1.ingredients, article2.ingredients) ||
+            !ListEquality()
+                .equals(article1.ingredients, article2.ingredients) ||
             !ListEquality().equals(article1.extraSet, article2.extraSet)) {
           return false;
         }
       }
       return true;
     });
+  }
 
-    print(existingMenu == null);
-
+  void ajouterMenuAuPanier(MenuCommande menuCommande) {
+    MenuCommande? existingMenu = findMenu(menuCommande);
     if (existingMenu != null) {
       existingMenu.quantite += 1;
     } else {
       menus.add(menuCommande);
     }
-
     Future.microtask(() {
       menusNotifier.value = List.from(menus);
     });
-
     calculerLePrixTotal();
   }
 
-  void ajouterAuPanier(Article article) {
-    Article? existingArticle = articles.firstWhereOrNull((a) {
-      if (article.ingredients.isEmpty && article.extraSet.isEmpty) {
-        return a.nom == article.nom &&
-            (a.ingredients.isEmpty && a.extraSet.isEmpty);
-      } else if (article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
-        return a.nom == article.nom &&
-            a.extraSet == article.extraSet &&
-            a.ingredients.isEmpty;
-      } else if (article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
-        return a.nom == article.nom &&
-            a.ingredients == article.ingredients &&
-            a.extraSet.isEmpty;
-      } else {
-        return a.nom == article.nom &&
-            a.ingredients == article.ingredients &&
-            a.extraSet == article.extraSet;
-      }
+  void supprimerMenu(MenuCommande menuCommande) {
+    MenuCommande? existingMenu = findMenu(menuCommande);
+    if (existingMenu != null) {
+      existingMenu.quantite -= 1;
+    } else {
+      menus.remove(menuCommande);
+    }
+    Future.microtask(() {
+      articlesNotifier.value = List.from(articles);
     });
+  }
+
+  void ajouterAuPanier(Article article) {
+    Article? existingArticle = findArticle(article);
     if (existingArticle != null) {
       existingArticle.quantite += 1;
     } else {
       articles.add(article);
     }
-    calculerLePrixTotal();
-    print("");
-    print("articles:" + articles.length.toString());
     Future.microtask(() {
       articlesNotifier.value = List.from(articles);
     });
+    calculerLePrixTotal();
   }
 
   void supprimerArticle(Article article) {
-    Article? existingArticle = articles.firstWhereOrNull((a) {
-      if (article.ingredients.isEmpty && article.extraSet.isEmpty) {
-        return a.nom == article.nom &&
-            (a.ingredients.isEmpty && a.extraSet.isEmpty);
-      } else if (article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
-        return a.nom == article.nom &&
-            a.extraSet == article.extraSet &&
-            a.ingredients.isEmpty;
-      } else if (article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
-        return a.nom == article.nom &&
-            a.ingredients == article.ingredients &&
-            a.extraSet.isEmpty;
-      } else {
-        return a.nom == article.nom &&
-            a.ingredients == article.ingredients &&
-            a.extraSet == article.extraSet;
-      }
-    });
-
+    Article? existingArticle = findArticle(article);
     if (existingArticle != null && existingArticle.quantite > 1) {
       existingArticle.quantite -= 1;
     } else {
       articles.remove(article);
     }
-    calculerLePrixTotal();
-
     Future.microtask(() {
       articlesNotifier.value = List.from(articles);
     });
+    calculerLePrixTotal();
   }
 
   void calculerLePrixTotal() {
     prixTotal = articles.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + element.prixHT * element.quantite / 100);
+    prixTotal += menus.fold(
         0,
         (previousValue, element) =>
             previousValue + element.prixHT * element.quantite / 100);
