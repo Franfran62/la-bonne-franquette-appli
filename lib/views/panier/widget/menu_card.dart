@@ -12,7 +12,7 @@ class MenuCard extends HookWidget {
   MenuCard({required this.menu, super.key});
 
   void ajout() {
-    print("");
+    viewModel.ajouterMenuAuPanier(menu);
   }
 
   void suppression() {

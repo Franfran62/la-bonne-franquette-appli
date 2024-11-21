@@ -47,7 +47,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const double defaultHeight = 550;
+    const double defaultHeight = 650;
     const double titleSize = 20;
     const double choiceLabelPadding = 10.0;
     return MainScaffold(
@@ -123,7 +123,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                   ],
                 ),
                 SizedBox(
-                  height: defaultHeight,
+                  height: defaultHeight-100,
                   child: showMenu
                       ? CaisseMenuListView(menus: menus)
                       : CaisseProduitListView(

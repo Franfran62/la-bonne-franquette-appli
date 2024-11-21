@@ -4,7 +4,7 @@ class MenuCommande {
   final String nom;
   final List<Article> articles;
   final int prixHT;
-  final int quantite;
+  int quantite;
 
   MenuCommande(
       {required this.nom, required this.quantite, required this.articles, required this.prixHT});

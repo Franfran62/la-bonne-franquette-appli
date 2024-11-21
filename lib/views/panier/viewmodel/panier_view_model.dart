@@ -89,13 +89,11 @@ class PanierViewModel {
       extraSet: [],
     );
     ajouterAuPanier(article);
-    articles.map((e) => print(e.nom + "\n"));
   }
 
   void ajouterMenu(Menu menu) {
 
     List<Produit> produits = menu.produits;
-
     List<Article> articles = [];
 
     produits.forEach((p) {
@@ -107,13 +105,41 @@ class PanierViewModel {
           extraSet: []));
     });
     //TODO: Gérer le cas ou le menu a déjà été ajouté, comme pour les articles
-    MenuCommande menuCommande = MenuCommande(nom: menu.nom, quantite: 1, articles: articles, prixHT: menu.prixHT);
 
-    menus.add(menuCommande);
+    MenuCommande menuCommande = MenuCommande(nom: menu.nom, quantite: 1, articles: articles, prixHT: menu.prixHT);
+    ajouterMenuAuPanier(menuCommande);
+  }
+
+  void ajouterMenuAuPanier(MenuCommande menuCommande) {
+    MenuCommande? existingMenu = menus.firstWhereOrNull((m) {
+      if (m.articles.length != menuCommande.articles.length) {
+        return false;
+      }
+      for (int i = 0; i < m.articles.length; i++) {
+        Article article1 = m.articles[i];
+        Article article2 = menuCommande.articles[i];
+        if (article1.nom != article2.nom ||
+            !ListEquality().equals(article1.ingredients, article2.ingredients) ||
+            !ListEquality().equals(article1.extraSet, article2.extraSet)) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    print(existingMenu == null);
+
+    if (existingMenu != null) {
+      existingMenu.quantite += 1;
+    } else {
+      menus.add(menuCommande);
+    }
 
     Future.microtask(() {
       menusNotifier.value = List.from(menus);
     });
+
+    calculerLePrixTotal();
   }
 
   void ajouterAuPanier(Article article) {
