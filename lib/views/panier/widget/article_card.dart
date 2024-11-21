@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/panier/widget/article_extras_and_ingredients.dart';
 
 class ArticleCard extends HookWidget {
   final Article article;
@@ -19,10 +20,12 @@ class ArticleCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = useState(
+        article.ingredients.isNotEmpty || article.extraSet.isNotEmpty
+            ? Colors.redAccent
+            : Colors.greenAccent);
     return Card(
-      color: (article.ingredients.isNotEmpty || article.extraSet.isNotEmpty)
-          ? Colors.redAccent
-          : Colors.greenAccent,
+      color: backgroundColor.value,
       child: Column(
         children: [
           Row(
@@ -37,39 +40,7 @@ class ArticleCard extends HookWidget {
             ],
           ),
           if (article.ingredients.isNotEmpty || article.extraSet.isNotEmpty)
-            Column(
-              children: [
-                if (article.extraSet != null && article.extraSet.isNotEmpty)
-                  ...article.extraSet.map((e) => Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 100.0),
-                            child: Icon(Icons.add),
-                          ),
-                          Text(
-                            style: TextStyle(fontSize: 14),
-                            e.nom,
-                          ),
-                        ],
-                      )),
-                if (article.ingredients != null &&
-                    article.ingredients.isNotEmpty)
-                  ...article.ingredients.map((e) => Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 100.0),
-                            child: Icon(Icons.remove),
-                          ),
-                          Text(
-                            style: TextStyle(fontSize: 14),
-                            e.nom,
-                          ),
-                        ],
-                      )),
-              ],
-            ),
+            ArticleExtrasAndIngredients(article: article),
         ],
       ),
     );
