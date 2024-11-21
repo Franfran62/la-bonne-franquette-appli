@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
+import 'package:la_bonne_franquette_front/models/menu_commande.dart';
 import 'package:la_bonne_franquette_front/models/panier.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 
@@ -11,8 +12,7 @@ class PanierViewModel {
   static final PanierViewModel _singleton = PanierViewModel._internal();
 
   static List<Article> articles = [];
-  List<Produit> produits = [];
-  List<Menu> menus = [];
+  static List<MenuCommande> menus = [];
   double prixTotal = 0;
 
   factory PanierViewModel() {
@@ -24,10 +24,15 @@ class PanierViewModel {
   ValueNotifier<List<Article>> articlesNotifier =
       ValueNotifier<List<Article>>(articles);
 
+  ValueNotifier<List<MenuCommande>> menusNotifier =
+      ValueNotifier<List<MenuCommande>>(menus);
+
   Future<bool> sendOrder() async {
-    if (articles.isEmpty) {
+    if (articles.isEmpty && menus.isNotEmpty) {
       throw Exception("Le panier est vide.");
     }
+
+    //TODO Ajouter la consolidation de la liste menus dans celle d'article
 
     Map commandeBody = {
       "surPlace": true,
@@ -51,17 +56,20 @@ class PanierViewModel {
     return articlesNotifier.value;
   }
 
+  List<MenuCommande> getMenus() {
+    return menusNotifier.value;
+  }
+
   double getTotalPriceTTC() {
     return prixTotal;
   }
 
   void clearPanier() {
-    print("clearing...");
     articles = [];
-    produits = [];
     menus = [];
     prixTotal = 0;
     Future.microtask(() {
+      menusNotifier.value = menus;
       articlesNotifier.value = articles;
     });
   }
@@ -69,11 +77,10 @@ class PanierViewModel {
   void ajouterArticle(Article article) {
     ajouterAuPanier(article);
   }
-  
+
   void ajouterProduit(Produit produit) {
     print(produit.nom);
-    produits.add(produit);
-    print("produits:"+produits.length.toString());
+
     Article article = Article(
       nom: produit.nom,
       quantite: 1,
@@ -82,27 +89,50 @@ class PanierViewModel {
       extraSet: [],
     );
     ajouterAuPanier(article);
-    articles.map((e) => print(e.nom+"\n"));
+    articles.map((e) => print(e.nom + "\n"));
   }
 
   void ajouterMenu(Menu menu) {
-    print(menu.produits.length.toString());
-    menus.add(menu);
-    for(var produit in menu.produits) {
-      ajouterProduit(produit);
-    }
+
+    List<Produit> produits = menu.produits;
+
+    List<Article> articles = [];
+
+    produits.forEach((p) {
+      articles.add(Article(
+          nom: p.nom,
+          quantite: 1,
+          prixHT: p.prixHt,
+          ingredients: [],
+          extraSet: []));
+    });
+    //TODO: Gérer le cas ou le menu a déjà été ajouté, comme pour les articles
+    MenuCommande menuCommande = MenuCommande(nom: menu.nom, quantite: 1, articles: articles, prixHT: menu.prixHT);
+
+    menus.add(menuCommande);
+
+    Future.microtask(() {
+      menusNotifier.value = List.from(menus);
+    });
   }
 
   void ajouterAuPanier(Article article) {
     Article? existingArticle = articles.firstWhereOrNull((a) {
-      if(article.ingredients.isEmpty && article.extraSet.isEmpty) {
-        return a.nom == article.nom && (a.ingredients.isEmpty && a.extraSet.isEmpty);
-      } else if(article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
-        return a.nom == article.nom && a.extraSet == article.extraSet && a.ingredients.isEmpty;
-      } else if(article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
-        return a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet.isEmpty;
+      if (article.ingredients.isEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            (a.ingredients.isEmpty && a.extraSet.isEmpty);
+      } else if (article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
+        return a.nom == article.nom &&
+            a.extraSet == article.extraSet &&
+            a.ingredients.isEmpty;
+      } else if (article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet.isEmpty;
       } else {
-        return a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet == article.extraSet;
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet == article.extraSet;
       }
     });
     if (existingArticle != null) {
@@ -112,31 +142,38 @@ class PanierViewModel {
     }
     calculerLePrixTotal();
     print("");
-    print("articles:"+articles.length.toString());
+    print("articles:" + articles.length.toString());
     Future.microtask(() {
       articlesNotifier.value = List.from(articles);
     });
   }
 
   void supprimerArticle(Article article) {
-      Article? existingArticle = articles.firstWhereOrNull((a) {
-        if(article.ingredients.isEmpty && article.extraSet.isEmpty) {
-          return a.nom == article.nom && (a.ingredients.isEmpty && a.extraSet.isEmpty);
-        } else if(article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
-          return a.nom == article.nom && a.extraSet == article.extraSet && a.ingredients.isEmpty;
-        } else if(article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
-          return a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet.isEmpty;
-        } else {
-          return a.nom == article.nom && a.ingredients == article.ingredients && a.extraSet == article.extraSet;
-        }
-      });
-
-      if (existingArticle != null && existingArticle.quantite > 1) {
-        existingArticle.quantite -= 1;
+    Article? existingArticle = articles.firstWhereOrNull((a) {
+      if (article.ingredients.isEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            (a.ingredients.isEmpty && a.extraSet.isEmpty);
+      } else if (article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
+        return a.nom == article.nom &&
+            a.extraSet == article.extraSet &&
+            a.ingredients.isEmpty;
+      } else if (article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet.isEmpty;
       } else {
-        articles.remove(article);
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet == article.extraSet;
       }
-      calculerLePrixTotal();
+    });
+
+    if (existingArticle != null && existingArticle.quantite > 1) {
+      existingArticle.quantite -= 1;
+    } else {
+      articles.remove(article);
+    }
+    calculerLePrixTotal();
 
     Future.microtask(() {
       articlesNotifier.value = List.from(articles);
@@ -145,7 +182,8 @@ class PanierViewModel {
 
   void calculerLePrixTotal() {
     prixTotal = articles.fold(
-        0, (previousValue, element) =>
-        previousValue + element.prixHT * element.quantite / 100);
+        0,
+        (previousValue, element) =>
+            previousValue + element.prixHT * element.quantite / 100);
   }
 }
