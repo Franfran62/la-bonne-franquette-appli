@@ -7,17 +7,11 @@ class CommandeCardCommandeWidget extends StatelessWidget {
 
   CommandeCardCommandeWidget(this.commande);
 
-  List<Article> getArticles() {
-    List<Article> articles = commande.articles;
-    commande.menus.forEach((menu) {
-      articles.addAll(menu.articles);
-    });
-    return articles;
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    List<Article> articles = getArticles();
+    List<Article> articles = commande.getArticlesConcatMenus();
     return Container(
       margin: EdgeInsets.all(15.0),
       child: ListView.builder(
