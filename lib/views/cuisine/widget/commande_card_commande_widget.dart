@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 
 class CommandeCardCommandeWidget extends StatelessWidget {
@@ -6,13 +7,22 @@ class CommandeCardCommandeWidget extends StatelessWidget {
 
   CommandeCardCommandeWidget(this.commande);
 
+  List<Article> getArticles() {
+    List<Article> articles = commande.articles;
+    commande.menus.forEach((menu) {
+      articles.addAll(menu.articles);
+    });
+    return articles;
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Article> articles = getArticles();
     return Container(
       margin: EdgeInsets.all(15.0),
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: commande.articles.length,
+        itemCount: articles.length,
         itemBuilder: (context, articleIndex) {
           return Container(
             margin: EdgeInsets.all(5),
@@ -23,11 +33,11 @@ class CommandeCardCommandeWidget extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  title: Text('${commande.articles[articleIndex].quantite} ${commande.articles[articleIndex].nom}'),
+                  title: Text('${articles[articleIndex].quantite} ${articles[articleIndex].nom}'),
                 ),
                 ListView.builder(
                   shrinkWrap: true,
-                  itemCount: commande.articles[articleIndex].extraSet.length,
+                  itemCount: articles[articleIndex].extraSet.length,
                   itemBuilder: (context, extraIndex) {
                     return ListTile(
                       title: Text(
@@ -35,7 +45,7 @@ class CommandeCardCommandeWidget extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 16,
                           ),
-                          ' ${commande.articles[articleIndex].extraSet[extraIndex].nom}'),
+                          ' ${articles[articleIndex].extraSet[extraIndex].nom}'),
                     );
                   },
                 ),
