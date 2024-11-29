@@ -54,6 +54,7 @@ class ApiService{
     final response = await request();
     if (token && response.statusCode == 401) {
       await SessionService.refresh();
+      await Future.delayed(Duration(seconds: 2));
       final retryResponse = await request();
       if (retryResponse.statusCode >= 300) {
         throw Exception('Erreur : Impossible d\'accéder à la ressource après réessai, ${retryResponse.statusCode} : ${retryResponse.body}');
