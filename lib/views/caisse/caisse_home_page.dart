@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
@@ -21,6 +22,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   List<Produit>? produits;
   List<Menu>? menus;
+  List<Extra>? extras;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -37,6 +39,11 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   void loadMenus() async {
     menus = await viewModel.getMenus();
+    setState(() {});
+  }
+
+  void loadExtras() async {
+    extras = await viewModel.getExtras();
     setState(() {});
   }
 
@@ -123,7 +130,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                   ],
                 ),
                 SizedBox(
-                  height: defaultHeight-100,
+                  height: defaultHeight - 100,
                   child: showMenu
                       ? CaisseMenuListView(menus: menus)
                       : CaisseProduitListView(
