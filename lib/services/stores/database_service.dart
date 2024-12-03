@@ -1,4 +1,6 @@
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
+import 'package:la_bonne_franquette_front/models/extra.dart';
+import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -122,6 +124,32 @@ class DatabaseService {
       menus.add(Menu.fromMap(map));
     }
     return menus;
+  }
+
+  static Future<List<Produit>> findAllProduits() async {
+    List<Produit> produits = [];
+    final result = await database?.query(Tables.produit.name, columns: ["id"]);
+    List<int> produitIDs =
+        result?.map((e) => e.values.first as int).toList() ?? [];
+
+    for (int e in produitIDs) {
+      List<Ingredient> ingredients = [];
+      final ingredientsInProduitsResult =
+          await database?.rawQuery("SELECT * FROM ${Tables.ingredient.name} i "
+              "INNER JOIN ${Tables.produitContientIngredient.name} pci "
+              "ON i.id = pci.ingredient_id "
+              "WHERE pci.produit_id = $e ");
+      ingredientsInProduitsResult?.forEach((ingredient) {
+        ingredients.add(Ingredient.fromMap(ingredient));
+      });
+      final produitResult =
+          await database?.query(Tables.produit.name, where: "id = $e");
+      Map<String, Object?> map =
+          Map<String, Object?>.from(produitResult?.first ?? {});
+      map["ingredients"] = ingredients;
+      produits.add(Produit.fromMap(map));
+    }
+    return produits;
   }
 
   static Future<List<T>?> findAll<T>(

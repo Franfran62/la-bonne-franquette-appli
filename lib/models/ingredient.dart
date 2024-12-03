@@ -1,5 +1,4 @@
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
-import 'package:la_bonne_franquette_front/models/produit.dart';
 
 class Ingredient implements Identifiable{
 
@@ -8,13 +7,11 @@ class Ingredient implements Identifiable{
   @override
   final String nom;
   final bool aCuire;
-  final List<Produit> produits;
 
   const Ingredient({
     required this.id,
     required this.nom,
     required this.aCuire,
-    this.produits = const [],
   });
 
   
@@ -40,9 +37,18 @@ class Ingredient implements Identifiable{
     return json;
   }
 
+  static Ingredient fromMap(Map<String, dynamic> map) {
+    bool acuire = map["acuire"] == 1;
+    return Ingredient(
+      id: map['id'],
+      nom: map['nom'],
+      aCuire: acuire,
+    );
+  }
+
   @override
   String toString() {
-    return 'Ingredient(id: $id, nom: $nom, aCuire: $aCuire, produits: $produits)';
+    return 'Ingredient(id: $id, nom: $nom, aCuire: $aCuire)';
   }
   int getId() {
     return id;
@@ -56,7 +62,4 @@ class Ingredient implements Identifiable{
     return aCuire;
   }
 
-  List<Produit> getProduits() {
-    return produits;
-  }
 }

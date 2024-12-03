@@ -1,4 +1,5 @@
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
+import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
@@ -14,11 +15,15 @@ class CaisseViewModel {
   CaisseViewModel._internal();
   
     Future<List<Produit>?> getProduits() async {
-      return await DatabaseService.findAll<Produit>(Tables.produit, Produit.fromMap);
+      return await DatabaseService.findAllProduits();
     }
 
     Future<List<Menu>?> getMenus() async {
       return await DatabaseService.findAllMenus();
+    }
+
+    Future<List<Extra>?> getExtras() async {
+      return await DatabaseService.findAll(Tables.extra, Extra.fromMap);
     }
 
     void ajouterProduitAuPanier(Produit produit) {
