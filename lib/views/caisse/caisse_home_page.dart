@@ -19,7 +19,7 @@ class CaisseHomePage extends StatefulWidget {
 class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel viewModel = CaisseViewModel();
   bool showMenu = false;
-
+  bool showModification = false;
   List<Produit>? produits;
   List<Menu>? menus;
   List<Extra>? extras;
@@ -49,6 +49,11 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
 
   void updateMenuChoice() {
     showMenu = !showMenu;
+    setState(() {});
+  }
+
+  void updateModificationChoice() {
+    showModification = !showModification;
     setState(() {});
   }
 
@@ -126,6 +131,25 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                           updateMenuChoice();
                         });
                       },
+                    ),
+                    Spacer(),
+                    ChoiceChip(
+                      label: Text(
+                        "Modifications",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
+                      selected: showModification,
+                      onSelected: (selected) {
+                        setState(() {
+                          updateModificationChoice();
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 100.0,
                     ),
                   ],
                 ),
