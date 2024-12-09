@@ -10,6 +10,7 @@ class Categorie implements Identifiable {
   final String categorieType;
   final int? categorieId; // id du parent
   final List<Produit> produits;
+  final List<Categorie> sousCategories;
 
   const Categorie({
     required this.id,
@@ -17,6 +18,7 @@ class Categorie implements Identifiable {
     required this.categorieType,
     this.categorieId,
     this.produits = const [],
+    this.sousCategories = const [],
   });
 
   factory Categorie.fromJson(Map<String, dynamic> json){
@@ -60,6 +62,7 @@ class Categorie implements Identifiable {
       categorieType: map['categorieType'],
       categorieId: map['categorieId'],
       produits: map['produits'],
+      sousCategories: map['sousCategories'] != null ? map['souscategories'] : [],
     );
   }
 
@@ -70,6 +73,7 @@ class Categorie implements Identifiable {
       'categorieType': categorieType,
       'categorieId': categorieId,
       'produits' : produits,
+      'sousCategories' : sousCategories,
     };
   }
 
@@ -92,5 +96,9 @@ class Categorie implements Identifiable {
 
   List<Produit> getProduits() {
     return produits;
+  }
+
+  List<Categorie> getSousCategorie() {
+    return sousCategories;
   }
 }
