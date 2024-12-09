@@ -8,11 +8,18 @@ class CaisseProduitListView extends StatelessWidget {
     super.key,
     required this.produits,
     required this.tailleText,
+    required this.onProduitSelected,
   });
 
   final List<Produit>? produits;
   final TextScaler tailleText;
   final CaisseViewModel viewModel = CaisseViewModel();
+  final void Function() onProduitSelected;
+
+  void handlePress (Produit produit) {
+    viewModel.ajouterProduitAuPanier(produit);
+    onProduitSelected();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +33,7 @@ class CaisseProduitListView extends StatelessWidget {
               ...produits!.map((element) => Padding(
                     padding: EdgeInsets.all(2.0),
                     child: ElevatedButton(
-                      onPressed: () =>
-                          {viewModel.ajouterProduitAuPanier(element)},
+                      onPressed: () => handlePress(element),
                       child: Text(
                         element.nom,
                         textAlign: TextAlign.center,

@@ -43,6 +43,14 @@ class CaisseCategorieListView extends HookWidget {
                     ...categories!.map((element) => Padding(
                           padding: EdgeInsets.all(2.0),
                           child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: element.produits ==
+                                      produitsAffiches.value
+                                  ? MaterialStateProperty.all(
+                                      Theme.of(context).colorScheme.tertiary)
+                                  : MaterialStateProperty.all(
+                                      Theme.of(context).colorScheme.primary),
+                            ),
                             onPressed: () =>
                                 {updateProduitsAffiches(element.produits)},
                             child: Text(
@@ -62,6 +70,7 @@ class CaisseCategorieListView extends HookWidget {
               ? CaisseProduitListView(
                   produits: produitsAffiches.value,
                   tailleText: tailleText,
+                  onProduitSelected: () => updateProduitsAffiches(defaultList),
                 )
               : SizedBox(),
         )
