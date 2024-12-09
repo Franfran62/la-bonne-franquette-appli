@@ -4,6 +4,7 @@ import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_categorie_list_view.dart';
 import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
 import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_produit_list_view.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
@@ -54,14 +55,6 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   void loadCategories() async {
     categories = await viewModel.getCategorie();
     setState(() {});
-    if (categories!.isNotEmpty) {
-      for(Categorie c in categories!) {
-        print(c.nom);
-        print(c.produits.length);
-        print("\n");
-      }
-
-    }
   }
 
   void updateMenuChoice() {
@@ -77,6 +70,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   @override
   Widget build(BuildContext context) {
     const double defaultHeight = 650;
+    const TextScaler defaultTailleText = TextScaler.linear(0.9);
     const double titleSize = 20;
     const double choiceLabelPadding = 10.0;
     return MainScaffold(
@@ -170,14 +164,17 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: defaultHeight - 100,
-                  child: showMenu
-                      ? CaisseMenuListView(menus: menus)
-                      : CaisseProduitListView(
-                          produits: produits,
-                        ),
-                ),
+                showMenu
+                    ? CaisseMenuListView(
+                        menus: menus,
+                        taille: defaultHeight - 200,
+                        tailleText: defaultTailleText,
+                      )
+                    : CaisseCategorieListView(
+                        categories: categories,
+                        taille: (defaultHeight - 200) / 2,
+                        tailleText: defaultTailleText,
+                      ),
               ],
             ),
           ),

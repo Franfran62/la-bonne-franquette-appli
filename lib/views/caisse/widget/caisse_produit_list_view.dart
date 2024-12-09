@@ -7,16 +7,18 @@ class CaisseProduitListView extends StatelessWidget {
   CaisseProduitListView({
     super.key,
     required this.produits,
+    required this.tailleText,
   });
 
   final List<Produit>? produits;
+  final TextScaler tailleText;
   final CaisseViewModel viewModel = CaisseViewModel();
 
   @override
   Widget build(BuildContext context) {
     return GridView(
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       children: produits != null && produits!.isNotEmpty
@@ -29,7 +31,7 @@ class CaisseProduitListView extends StatelessWidget {
                       child: Text(
                         element.nom,
                         textAlign: TextAlign.center,
-                        textScaler: TextScaler.linear(1),
+                        textScaler: tailleText,
                       ),
                     ),
                   )),
