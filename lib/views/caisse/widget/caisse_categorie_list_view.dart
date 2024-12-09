@@ -84,15 +84,23 @@ class CaisseCategorieListView extends HookWidget {
                       tailleText: tailleText,
                     )
                   : listAffiche.value["produits"]!.isNotEmpty
-                      ? CaisseProduitListView(
-                          produits:
-                              listAffiche.value["produits"] as List<Produit>,
-                          tailleText: tailleText,
-                        )
+                      ? Column(
+                        children: [
+                          SizedBox(
+                            height: taille,
+                            child: CaisseProduitListView(
+                                produits:
+                                    listAffiche.value["produits"] as List<Produit>,
+                                tailleText: tailleText,
+                              ),
+                          ),
+                          SizedBox(
+                            height: taille,
+                          )
+                        ],
+                      )
                       : SizedBox()
-              : SizedBox(
-            height: taille,
-          ),
+              : SizedBox(),
         )
       ],
     );
