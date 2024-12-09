@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
@@ -23,6 +24,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   List<Produit>? produits;
   List<Menu>? menus;
   List<Extra>? extras;
+  List<Categorie>? categories;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -30,6 +32,8 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     super.initState();
     loadProduits();
     loadMenus();
+    loadExtras();
+    loadCategories();
   }
 
   void loadProduits() async {
@@ -45,6 +49,19 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   void loadExtras() async {
     extras = await viewModel.getExtras();
     setState(() {});
+  }
+
+  void loadCategories() async {
+    categories = await viewModel.getCategorie();
+    setState(() {});
+    if (categories!.isNotEmpty) {
+      for(Categorie c in categories!) {
+        print(c.nom);
+        print(c.produits.length);
+        print("\n");
+      }
+
+    }
   }
 
   void updateMenuChoice() {

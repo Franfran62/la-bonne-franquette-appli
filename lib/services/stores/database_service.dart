@@ -1,3 +1,4 @@
+import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
@@ -126,26 +127,53 @@ class DatabaseService {
     return menus;
   }
 
+  static Future<List<Categorie>> findAllCategories() async {
+    List<Categorie> categories = [];
+    final result = await database?.query(Tables.categorie.name, columns: ["id"]);
+    List<int> categorieIDs = result?.map((e) => e.values.first as int).toList() ?? [];
+    for (int e in categorieIDs) {
+      List<Produit> produits = await findProduitsByCategorieId(e);
+      final categorieResult = await database?.query(Tables.categorie.name, where: "id = $e");
+      Map<String, Object?> map = Map<String, Object?>.from(categorieResult?.first ?? {});
+      map["produits"] = produits;
+      categories.add(Categorie.fromMap(map));
+    }
+    return categories;
+  }
+
   static Future<List<Produit>> findAllProduits() async {
-    List<Produit> produits = [];
     final result = await database?.query(Tables.produit.name, columns: ["id"]);
     List<int> produitIDs =
         result?.map((e) => e.values.first as int).toList() ?? [];
+    return findProduitByIds(produitIDs);
+  }
+
+  static Future<List<Produit>> findProduitsByCategorieId(int categorieId) async {
+    final result = await database?.query(Tables.produitAppartientCategorie.name, where: "categorie_id = $categorieId", columns: ["produit_id"]);
+    /*final result = await database?.rawQuery("SELECT produit_id FROM ${Tables.produitAppartientCategorie} pac "
+        "WHERE pac.categorie_id = $categorieId ");*/
+    List<int> produitIDs =
+        result?.map((e) => e.values.first as int).toList() ?? [];
+    return findProduitByIds(produitIDs);
+  }
+
+  static Future<List<Produit>> findProduitByIds(List<int> produitIDs) async {
+    List<Produit> produits = [];
 
     for (int e in produitIDs) {
       List<Ingredient> ingredients = [];
       final ingredientsInProduitsResult =
           await database?.rawQuery("SELECT * FROM ${Tables.ingredient.name} i "
-              "INNER JOIN ${Tables.produitContientIngredient.name} pci "
-              "ON i.id = pci.ingredient_id "
-              "WHERE pci.produit_id = $e ");
+          "INNER JOIN ${Tables.produitContientIngredient.name} pci "
+          "ON i.id = pci.ingredient_id "
+          "WHERE pci.produit_id = $e ");
       ingredientsInProduitsResult?.forEach((ingredient) {
         ingredients.add(Ingredient.fromMap(ingredient));
       });
       final produitResult =
           await database?.query(Tables.produit.name, where: "id = $e");
       Map<String, Object?> map =
-          Map<String, Object?>.from(produitResult?.first ?? {});
+      Map<String, Object?>.from(produitResult?.first ?? {});
       map["ingredients"] = ingredients;
       produits.add(Produit.fromMap(map));
     }
