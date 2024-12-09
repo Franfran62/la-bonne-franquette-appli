@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_categorie_list_view.dart';
 import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_produit_list_view.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
 import '../panier/widget/panier_widget.dart';
@@ -23,6 +24,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   List<Produit>? produits;
   List<Menu>? menus;
   List<Extra>? extras;
+  List<Categorie>? categories;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -30,6 +32,8 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     super.initState();
     loadProduits();
     loadMenus();
+    loadExtras();
+    loadCategories();
   }
 
   void loadProduits() async {
@@ -47,6 +51,11 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     setState(() {});
   }
 
+  void loadCategories() async {
+    categories = await viewModel.getCategorie();
+    setState(() {});
+  }
+
   void updateMenuChoice() {
     showMenu = !showMenu;
     setState(() {});
@@ -60,6 +69,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   @override
   Widget build(BuildContext context) {
     const double defaultHeight = 650;
+    const TextScaler defaultTailleText = TextScaler.linear(0.7);
     const double titleSize = 20;
     const double choiceLabelPadding = 10.0;
     return MainScaffold(
@@ -100,67 +110,41 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                 Row(
                   children: [
                     ChoiceChip(
-                      label: Text(
-                        "A l'unité",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
+                      label: Text("A l'unité", style: TextStyle(fontSize: 18)),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: !showMenu,
-                      onSelected: (selected) {
-                        setState(() {
-                          updateMenuChoice();
-                        });
-                      },
+                      onSelected: (selected) => setState(updateMenuChoice),
                     ),
-                    SizedBox(
-                      width: 8.0,
-                    ),
+                    SizedBox(width: 8.0),
                     ChoiceChip(
-                      label: Text(
-                        "Menu",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
+                      label: Text("Menu", style: TextStyle(fontSize: 18)),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: showMenu,
-                      onSelected: (selected) {
-                        setState(() {
-                          updateMenuChoice();
-                        });
-                      },
+                      onSelected: (selected) => setState(updateMenuChoice),
                     ),
                     Spacer(),
                     ChoiceChip(
-                      label: Text(
-                        "Modifications",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
+                      label:
+                          Text("Modifications", style: TextStyle(fontSize: 18)),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: showModification,
-                      onSelected: (selected) {
-                        setState(() {
-                          updateModificationChoice();
-                        });
-                      },
+                      onSelected: (selected) =>
+                          setState(updateModificationChoice),
                     ),
-                    SizedBox(
-                      width: 100.0,
-                    ),
+                    SizedBox(width: 100.0),
                   ],
                 ),
-                SizedBox(
-                  height: defaultHeight - 100,
-                  child: showMenu
-                      ? CaisseMenuListView(menus: menus)
-                      : CaisseProduitListView(
-                          produits: produits,
-                        ),
-                ),
+                showMenu
+                    ? CaisseMenuListView(
+                        menus: menus,
+                        taille: defaultHeight - 100,
+                        tailleText: defaultTailleText,
+                      )
+                    : CaisseCategorieListView(
+                        categories: categories,
+                        taille: (defaultHeight - 100) / 3,
+                        tailleText: defaultTailleText,
+                      ),
               ],
             ),
           ),

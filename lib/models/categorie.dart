@@ -1,4 +1,5 @@
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
+import 'package:la_bonne_franquette_front/models/produit.dart';
 
 class Categorie implements Identifiable {
 
@@ -7,17 +8,36 @@ class Categorie implements Identifiable {
   @override
   final String nom;
   final String categorieType;
-  final int? categorieId;
+  final int? categorieId; // id du parent
+  final List<Produit> produits;
+  final List<Categorie> sousCategories;
 
   const Categorie({
     required this.id,
     required this.nom,
     required this.categorieType,
-    this.categorieId
+    this.categorieId,
+    this.produits = const [],
+    this.sousCategories = const [],
   });
 
   factory Categorie.fromJson(Map<String, dynamic> json){
     return switch (json) {
+      {
+      "id": int id,
+      "nom": String nom,
+      "categorieType": String categorieType,
+      "categorieId": int? categorieId,
+      "produits": List<Produit> produits,
+      } =>
+          Categorie(id: id, nom: nom, categorieType: categorieType, categorieId: categorieId, produits: produits),
+      {
+      "id": int id,
+      "nom": String nom,
+      "categorieType": String categorieType,
+      "produits": List<Produit> produits,
+      } =>
+          Categorie(id: id, nom: nom, categorieType: categorieType, produits: produits),
       {
         "id": int id,
         "nom": String nom,
@@ -35,12 +55,25 @@ class Categorie implements Identifiable {
     };
   }
 
+  static Categorie fromMap(Map<String, dynamic> map) {
+    return Categorie(
+      id: map['id'],
+      nom: map['nom'],
+      categorieType: map['categorieType'],
+      categorieId: map['categorieId'],
+      produits: map['produits'],
+      sousCategories: map['sousCategories'] != null ? map['souscategories'] : [],
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'nom': nom,
       'categorieType': categorieType,
-      'categorieId': categorieId
+      'categorieId': categorieId,
+      'produits' : produits,
+      'sousCategories' : sousCategories,
     };
   }
 
@@ -59,5 +92,13 @@ class Categorie implements Identifiable {
 
   int? getCategorieId() {
     return categorieId;
+  }
+
+  List<Produit> getProduits() {
+    return produits;
+  }
+
+  List<Categorie> getSousCategorie() {
+    return sousCategories;
   }
 }

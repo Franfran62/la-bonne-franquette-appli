@@ -1,5 +1,5 @@
+import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
-import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:sqflite/sqflite.dart';
@@ -126,11 +126,54 @@ class DatabaseService {
     return menus;
   }
 
+  static Future<List<Categorie>> findAllCategories() async {
+    List<Categorie> categories = [];
+    final result = await database?.query(Tables.categorie.name,
+        columns: ["id"], orderBy: "categorieType");
+    List<int> categorieIDs =
+        result?.map((e) => e.values.first as int).toList() ?? [];
+    for (int e in categorieIDs) {
+      List<Produit> produits = await findProduitsByCategorieId(e);
+      final categorieResult =
+          await database?.query(Tables.categorie.name, where: "id = $e");
+
+      Map<String, Object?> map =
+          Map<String, Object?>.from(categorieResult?.first ?? {});
+
+      map["produits"] = produits;
+
+      if (map['categorieType'] == "sous-categorie") {
+        categories
+            .firstWhere((c) => c.id == map["categorieId"])
+            .sousCategories
+            .add(Categorie.fromMap(map));
+      } else {
+        categories.add(Categorie.fromMap(map));
+      }
+    }
+    return categories;
+  }
+
   static Future<List<Produit>> findAllProduits() async {
-    List<Produit> produits = [];
     final result = await database?.query(Tables.produit.name, columns: ["id"]);
     List<int> produitIDs =
         result?.map((e) => e.values.first as int).toList() ?? [];
+    return findProduitByIds(produitIDs);
+  }
+
+  static Future<List<Produit>> findProduitsByCategorieId(
+      int categorieId) async {
+    final result = await database?.query(Tables.produitAppartientCategorie.name,
+        where: "categorie_id = $categorieId", columns: ["produit_id"]);
+    /*final result = await database?.rawQuery("SELECT produit_id FROM ${Tables.produitAppartientCategorie} pac "
+        "WHERE pac.categorie_id = $categorieId ");*/
+    List<int> produitIDs =
+        result?.map((e) => e.values.first as int).toList() ?? [];
+    return findProduitByIds(produitIDs);
+  }
+
+  static Future<List<Produit>> findProduitByIds(List<int> produitIDs) async {
+    List<Produit> produits = [];
 
     for (int e in produitIDs) {
       List<Ingredient> ingredients = [];
