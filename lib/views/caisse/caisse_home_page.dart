@@ -6,6 +6,7 @@ import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
 import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_categorie_list_view.dart';
 import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
+import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
 import '../panier/widget/panier_widget.dart';
@@ -18,7 +19,8 @@ class CaisseHomePage extends StatefulWidget {
 }
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
-  CaisseViewModel viewModel = CaisseViewModel();
+  CaisseViewModel caisseViewModel = CaisseViewModel();
+  PanierViewModel panierViewModel = PanierViewModel();
   bool showMenu = false;
   bool showModification = false;
   List<Produit>? produits;
@@ -37,22 +39,22 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   }
 
   void loadProduits() async {
-    produits = await viewModel.getProduits();
+    produits = await caisseViewModel.getProduits();
     setState(() {});
   }
 
   void loadMenus() async {
-    menus = await viewModel.getMenus();
+    menus = await caisseViewModel.getMenus();
     setState(() {});
   }
 
   void loadExtras() async {
-    extras = await viewModel.getExtras();
+    extras = await caisseViewModel.getExtras();
     setState(() {});
   }
 
   void loadCategories() async {
-    categories = await viewModel.getCategorie();
+    categories = await caisseViewModel.getCategorie();
     setState(() {});
   }
 
@@ -72,6 +74,10 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     const TextScaler defaultTailleText = TextScaler.linear(0.7);
     const double titleSize = 20;
     const double choiceLabelPadding = 10.0;
+
+    panierViewModel.context = context;
+    panierViewModel.afficherModificationModal = showModification;
+
     return MainScaffold(
       destination: "/cuisine",
       scaffoldKey: _scaffoldKey,
