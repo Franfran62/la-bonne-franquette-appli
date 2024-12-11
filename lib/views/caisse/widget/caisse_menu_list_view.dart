@@ -23,7 +23,7 @@ class CaisseMenuListView extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
         gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         children: menus != null && menus!.isNotEmpty
             ? [
                 ...menus!.map((element) => Padding(

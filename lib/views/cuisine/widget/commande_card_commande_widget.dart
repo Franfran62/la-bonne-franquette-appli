@@ -7,8 +7,6 @@ class CommandeCardCommandeWidget extends StatelessWidget {
 
   CommandeCardCommandeWidget(this.commande);
 
-
-
   @override
   Widget build(BuildContext context) {
     List<Article> articles = commande.getArticlesConcatMenus();
@@ -29,20 +27,22 @@ class CommandeCardCommandeWidget extends StatelessWidget {
                 ListTile(
                   title: Text('${articles[articleIndex].quantite} ${articles[articleIndex].nom}'),
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: articles[articleIndex].extraSet.length,
-                  itemBuilder: (context, extraIndex) {
-                    return ListTile(
+                ...articles[articleIndex].ingredients.map((ingredient) => ListTile(
+                      leading: Icon(Icons.remove),
                       title: Text(
-                          textAlign: TextAlign.left,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                          ' ${articles[articleIndex].extraSet[extraIndex].nom}'),
-                    );
-                  },
-                ),
+                        ' ${ingredient.nom}',
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    )),
+                ...articles[articleIndex].extraSet.map((extra) => ListTile(
+                      leading: Icon(Icons.add),
+                      title: Text(
+                        ' ${extra.nom}',
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    )),
               ],
             ),
           );

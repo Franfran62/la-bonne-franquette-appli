@@ -1,9 +1,16 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/extra.dart';
+import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/modification_modal.dart';
 
 import '../../../models/produit.dart';
 
@@ -13,6 +20,8 @@ class PanierViewModel {
   static List<Article> articles = [];
   static List<Selection> menus = [];
   double prixTotal = 0;
+  BuildContext? context;
+  bool afficherModificationModal = false;
 
   factory PanierViewModel() {
     return _singleton;
@@ -75,28 +84,51 @@ class PanierViewModel {
     ajouterAuPanier(article);
   }
 
-  void ajouterProduit(Produit produit) {
+  void ajouterProduit(Produit produit) async {
+    Map<String, List> modifications = {
+      "ingredients": <Ingredient>[],
+      "extras": <Extra>[]
+    };
+
+    print(afficherModificationModal);
+
+
+    if (afficherModificationModal) {
+      modifications = await afficherModale(produit);
+    }
+
     Article article = Article(
       nom: produit.nom,
       quantite: 1,
       prixHT: produit.prixHt,
-      ingredients: [],
-      extraSet: [],
+      ingredients: modifications["ingredients"] as List<Ingredient>,
+      extraSet: modifications["extras"] as List<Extra>,
     );
     ajouterAuPanier(article);
   }
 
-  void ajouterMenu(Menu menu) {
+  void ajouterMenu(Menu menu) async {
     List<Produit> produits = menu.produits;
+
     List<Article> articles = [];
 
-    produits.forEach((p) {
+    produits.forEach((produit) async {
+      //TODO Gérer les produits ici
+      Map<String, List> modifications = {
+        "ingredients": <Ingredient>[],
+        "extras": <Extra>[]
+      };
+/*
+      if (afficherModificationModal) {
+        modifications = await afficherModale(produit);
+      }
+      */
       articles.add(Article(
-          nom: p.nom,
+          nom: produit.nom,
           quantite: 1,
-          prixHT: p.prixHt,
-          ingredients: [],
-          extraSet: []));
+          prixHT: produit.prixHt,
+          ingredients: modifications["ingredients"] as List<Ingredient>,
+          extraSet: modifications["extras"] as List<Extra>));
     });
 
     Selection menuCommande = Selection(
@@ -205,5 +237,34 @@ class PanierViewModel {
         0,
         (previousValue, element) =>
             previousValue + element.prixHT * element.quantite / 100);
+  }
+
+  Future<Map<String, List>> afficherModale(Produit produit) async {
+    Completer<Map<String, List>> modification = Completer();
+
+    if (context != null) {
+      showDialog(
+        context: context as BuildContext,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            child: Dialog(
+              insetPadding: const EdgeInsets.symmetric(
+                vertical: 175,
+                horizontal: 250,
+              ),
+              child: ModificationModal(
+                produitAModifier: produit,
+                onModificationsSelected: (modifications) {
+                  modification.complete(modifications);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          );
+        },
+      );
+    }
+
+    return modification.future;
   }
 }

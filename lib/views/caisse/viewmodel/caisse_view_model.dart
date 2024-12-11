@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
@@ -24,8 +27,14 @@ class CaisseViewModel {
       return await DatabaseService.findAllMenus();
     }
 
-    Future<List<Extra>?> getExtras() async {
-      return await DatabaseService.findAll(Tables.extra, Extra.fromMap);
+    Future<List<Extra>>? getExtras() async {
+
+      var resultat = await DatabaseService.findAll(Tables.extra, Extra.fromMap);
+      if(resultat == null) {
+        return <Extra>[];
+      } else {
+        return resultat;
+      }
     }
 
     Future<List<Categorie>?> getCategorie() async {
@@ -33,12 +42,10 @@ class CaisseViewModel {
     }
 
     void ajouterProduitAuPanier(Produit produit) {
-      print(produit.nom);
       PanierViewModel().ajouterProduit(produit);
     }
 
     void ajouterMenuAuPanier(Menu menu) {
-      print(menu.nom);
       PanierViewModel().ajouterMenu(menu);
     }
 }
