@@ -6,8 +6,8 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'username': this.username,
-      'password': this.password,
+      'username': username,
+      'password': password,
     };
   }
 

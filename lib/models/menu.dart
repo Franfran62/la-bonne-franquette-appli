@@ -6,6 +6,7 @@ class Menu implements Identifiable {
   
   @override
   final int id;
+  @override
   final String nom;
   final int prixHT;
   final List<Produit> produits;
@@ -24,16 +25,25 @@ class Menu implements Identifiable {
       List<Produit> produits = produitList
         .map((produitJson) => Produit.fromJson(produitJson))
         .toList();
-
       return Menu(
             id: json['id'] as int,
             nom: json['nom'] as String,
             prixHT: json['prixHT'] as int,
-            produits: produits
+            produits: produits,
           ); 
     } catch (e) {
+      print(e);
       throw Exception("Impossible de créer un Menu à partir de $json");
     }
+  }
+
+  static Menu fromMap(Map<String, dynamic> map) {
+    return Menu(
+      id: map["id"],
+      nom: map["nom"],
+      prixHT: map["prixht"],
+      produits: map['produits'] ?? [],
+    );
   }
 
   Map<String, dynamic> register() {

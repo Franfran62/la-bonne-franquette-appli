@@ -6,6 +6,7 @@ class Produit implements Identifiable {
 
   @override
   final int id;
+  @override
   final String nom;
   final int prixHt;
   final List<Ingredient> ingredients;

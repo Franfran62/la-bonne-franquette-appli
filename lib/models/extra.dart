@@ -23,6 +23,15 @@ class Extra extends Ingredient {
     };
   }
 
+  static Extra fromMap(Map<String, dynamic> map) {
+    bool acuire = map["acuire"] == 1;
+    return Extra(
+      id: map['id'],
+      nom: map['nom'],
+      prixHT: map['prixht'],
+      aCuire: acuire
+    );
+  }
    @override
      Map<String, dynamic> toJson() {
     return {

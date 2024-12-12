@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
@@ -59,10 +60,12 @@ class Commande {
     return Commande(
       commandeId: json['commandeId'],
       numero: json['numero'],
-      dateSaisie: DateTime.parse(json['dateSaisie']),
-      dateLivraison: json['dateLivraison'] != null ? DateTime.parse(json['dateLivraison']) : null,
+      dateSaisie: DateTime.parse(json['dateSaisie']).toLocal(),
+      dateLivraison: json['dateLivraison'] != null
+          ? DateTime.parse(json['dateLivraison'])
+          : null,
       status: StatusCommande.values.firstWhere(
-        (status) => status.toString().split('.').last == json['status']),
+          (status) => status.toString().split('.').last == json['status']),
       surPlace: json['surPlace'],
       nbArticle: json['nbArticle'],
       prixHT: json['prixHT'],
@@ -75,9 +78,12 @@ class Commande {
   }
 
   Map<String, dynamic> toJson() {
-    List<Map<String, dynamic>> articlesJson = articles.map((article) => article.toJson()).toList();
-    List<Map<String, dynamic>> menusJson = menus.map((selection) => selection.toJson()).toList();
-    List<Map<String, dynamic>> paiementSetJson = paiementSet.map((paiement) => paiement.toJsonForCommande()).toList();
+    List<Map<String, dynamic>> articlesJson =
+        articles.map((article) => article.toJson()).toList();
+    List<Map<String, dynamic>> menusJson =
+        menus.map((selection) => selection.toJson()).toList();
+    List<Map<String, dynamic>> paiementSetJson =
+        paiementSet.map((paiement) => paiement.toJsonForCommande()).toList();
 
     return {
       'commandeId': commandeId,
@@ -95,8 +101,44 @@ class Commande {
       'paiementTypeCommande': paiementTypeCommande,
     };
   }
+
   int getCommandeId() {
     return commandeId;
   }
 
+  Article? findArticle(Article article) {
+    return articles.firstWhereOrNull((a) {
+      if (article.ingredients.isEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            (a.ingredients.isEmpty && a.extraSet.isEmpty);
+      } else if (article.ingredients.isEmpty && article.extraSet.isNotEmpty) {
+        return a.nom == article.nom &&
+            a.extraSet == article.extraSet &&
+            a.ingredients.isEmpty;
+      } else if (article.ingredients.isNotEmpty && article.extraSet.isEmpty) {
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet.isEmpty;
+      } else {
+        return a.nom == article.nom &&
+            a.ingredients == article.ingredients &&
+            a.extraSet == article.extraSet;
+      }
+    });
+  }
+
+  List<Article> getArticlesConcatMenus() {
+    List<Article> articlesConcatMenus = List.from(articles);
+    for (var menu in menus) {
+      for (var article in menu.articles) {
+        var existingArticle = findArticle(article);
+        if (existingArticle != null) {
+          existingArticle.quantite += 1;
+        } else {
+          articlesConcatMenus.add(article);
+        }
+      }
+    }
+    return articlesConcatMenus;
+  }
 }
