@@ -68,6 +68,11 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     setState(() {});
   }
 
+  void updateDestinationChoice() {
+    panierViewModel.updateSurplace();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     const double defaultHeight = 650;
@@ -129,6 +134,18 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                       onSelected: (selected) => setState(updateMenuChoice),
                     ),
                     Spacer(),
+                    ChoiceChip(
+                      label: Text(
+                          panierViewModel.getSurPlace()
+                              ? "Sur place"
+                              : "À emporter",
+                          style: TextStyle(fontSize: 18)),
+                      labelPadding: EdgeInsets.all(choiceLabelPadding),
+                      selected: panierViewModel.getSurPlace(),
+                      onSelected: (selected) =>
+                          setState(updateDestinationChoice),
+                    ),
+                    SizedBox(width: 8.0),
                     ChoiceChip(
                       label:
                           Text("Modifications", style: TextStyle(fontSize: 18)),

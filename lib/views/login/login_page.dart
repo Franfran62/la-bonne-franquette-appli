@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
               if (connected) {
                 switchView
                   ? context.go('/cuisine')
-                  : context.go('/caisse');
+                  : context.go('/destinationCommande');
               }
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(

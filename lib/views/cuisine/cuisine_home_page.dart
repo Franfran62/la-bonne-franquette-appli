@@ -20,7 +20,7 @@ class CuisineHomePage extends StatelessWidget {
             );
           }
         },
-        child: MainScaffold(body: CommandeListView(), destination: "/caisse", title: "Commandes", scaffoldKey: _scaffoldKey)
+        child: MainScaffold(body: CommandeListView(), destination: "/destinationCommande", title: "Commandes", scaffoldKey: _scaffoldKey)
     );
   }
 }

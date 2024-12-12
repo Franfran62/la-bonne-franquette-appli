@@ -19,6 +19,7 @@ class PanierViewModel {
 
   static List<Article> articles = [];
   static List<Selection> menus = [];
+  static bool surPlace = true;
   double prixTotal = 0;
   BuildContext? context;
   bool afficherModificationModal = false;
@@ -35,13 +36,26 @@ class PanierViewModel {
   ValueNotifier<List<Selection>> menusNotifier =
       ValueNotifier<List<Selection>>(menus);
 
+  void setSurPlace(bool surPlace) {
+    PanierViewModel.surPlace = surPlace;
+    print(surPlace);
+  }
+
+  bool getSurPlace() {
+    return PanierViewModel.surPlace;
+  }
+
+  bool updateSurplace() {
+    return PanierViewModel.surPlace = !PanierViewModel.surPlace;
+  }
+
   Future<bool> sendOrder() async {
     if (articles.isEmpty && menus.isEmpty) {
       throw Exception("Le panier est vide.");
     }
 
     Map commandeBody = {
-      "surPlace": true,
+      "surPlace": surPlace,
       "menus": menus.map((menu) => menu.toJson()).toList(),
       "paiementSet": [],
       "status": "EN_COURS",
