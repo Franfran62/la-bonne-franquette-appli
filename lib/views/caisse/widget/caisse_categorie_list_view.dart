@@ -54,7 +54,7 @@ class CaisseCategorieListView extends HookWidget {
                                   ? MaterialStateProperty.all(
                                       Theme.of(context).colorScheme.tertiary)
                                   : MaterialStateProperty.all(
-                                      Theme.of(context).colorScheme.primary),
+                                      Theme.of(context).colorScheme.inversePrimary),
                             ),
                             onPressed: () => {
                               updateProduitsAffiches({
@@ -64,6 +64,9 @@ class CaisseCategorieListView extends HookWidget {
                             },
                             child: Text(
                               element.nom,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                               textAlign: TextAlign.center,
                               textScaler: tailleText,
                             ),

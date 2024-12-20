@@ -24,11 +24,14 @@ class DestinationPage extends StatelessWidget {
           padding: EdgeInsets.all(tailleContenu * 2),
           child: ElevatedButton(
             onPressed: () => handleChoice(surPlace),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, size: tailleContenu),
-                Text(text, style: TextStyle(fontSize: tailleContenu)),
+                Icon(icon, size: tailleContenu, color: Colors.white,),
+                Text(text, style: TextStyle(fontSize: tailleContenu, color: Colors.white)),
               ],
             ),
           ),
@@ -40,7 +43,7 @@ class DestinationPage extends StatelessWidget {
       body: Center(
         child: Row(
           children: [
-            buildButton(true, Icons.table_bar_outlined, "Sur place"),
+            buildButton(true, Icons.table_bar_outlined, "Sur place",),
             buildButton(false, Icons.shopping_bag_outlined, "À emporter"),
           ],
         ),

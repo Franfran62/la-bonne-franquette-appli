@@ -13,7 +13,8 @@ class CustomTheme {
         error: Color(0xFFFF521B),
         surface: Colors.white,
         onSurface: Colors.black,
-        surfaceContainer: Colors.white
+        surfaceContainer: Colors.white,
+        inversePrimary: Color(0xFF020122),
       ),
       
       textTheme: TextTheme(

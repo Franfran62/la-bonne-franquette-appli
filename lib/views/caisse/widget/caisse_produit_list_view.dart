@@ -32,7 +32,13 @@ class CaisseProduitListView extends StatelessWidget {
                       padding: EdgeInsets.all(2.0),
                       child: ElevatedButton(
                         onPressed: () => handlePress(element),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
+                        ),
                         child: Text(
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                           element.nom,
                           textAlign: TextAlign.center,
                           textScaler: tailleText,

@@ -31,7 +31,14 @@ class CaisseMenuListView extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () =>
                             {viewModel.ajouterMenuAuPanier(element)},
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.inversePrimary),
+                        ),
                         child: Text(element.nom,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                             textAlign: TextAlign.center,
                             textScaler: tailleText),
                       ),
