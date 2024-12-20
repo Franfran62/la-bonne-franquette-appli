@@ -33,11 +33,12 @@ jobs:
           flutter-version: '3.22.2'
           channel: 'stable'
           architecture: x64
-
       - run: flutter pub get
       - run: flutter --version
       - run: flutter build apk --release
+      - run: mkdir staging
+      - run: mv build/app/outputs/flutter-apk/app-release.apk staging/La_bonne_Franquette.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: Package
-          path: build/app/outputs/flutter-apk/
+          name: La_bonne_Franquette
+          path: staging/La_bonne_Franquette.apk
