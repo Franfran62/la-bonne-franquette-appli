@@ -28,7 +28,7 @@ class CommandeCard extends StatelessWidget {
   @override
 Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(40.0),
+      margin: const EdgeInsets.all(10.0),
       child: Card(
         color: Theme.of(context).colorScheme.primary,
         child: Column(

@@ -6,6 +6,7 @@ import 'package:la_bonne_franquette_front/models/produit.dart';
 import '../../../models/categorie.dart';
 import '../viewmodel/caisse_view_model.dart';
 import 'caisse_produit_list_view.dart';
+import 'element_button.dart';
 
 class CaisseSousCategorieListView extends HookWidget {
   final List<Categorie>? categories;
@@ -43,22 +44,12 @@ class CaisseSousCategorieListView extends HookWidget {
                 ? [
                     ...categories!.map((element) => Padding(
                           padding: EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: element.produits ==
-                                      listAffiche.value
-                                  ? MaterialStateProperty.all(
-                                      Theme.of(context).colorScheme.tertiary)
-                                  : MaterialStateProperty.all(
-                                      Theme.of(context).colorScheme.primary),
-                            ),
+                          child: ElementButton(
+                            element: element,
+                            tailleText: tailleText,
                             onPressed: () =>
                                 updateProduitsAffiches(element.produits),
-                            child: Text(
-                              element.nom,
-                              textAlign: TextAlign.center,
-                              textScaler: tailleText,
-                            ),
+                            isSelected: element.produits == listAffiche.value,
                           ),
                         )),
                   ]

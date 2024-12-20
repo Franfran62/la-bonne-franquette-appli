@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
 import '../viewmodel/caisse_view_model.dart';
 
 class CaisseProduitListView extends StatelessWidget {
@@ -14,7 +16,7 @@ class CaisseProduitListView extends StatelessWidget {
   final TextScaler tailleText;
   final CaisseViewModel viewModel = CaisseViewModel();
 
-  void handlePress (Produit produit) {
+  void handlePress(Produit produit) {
     viewModel.ajouterProduitAuPanier(produit);
   }
 
@@ -30,20 +32,10 @@ class CaisseProduitListView extends StatelessWidget {
             ? [
                 ...produits!.map((element) => Padding(
                       padding: EdgeInsets.all(2.0),
-                      child: ElevatedButton(
-                        onPressed: () => handlePress(element),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary),
-                        ),
-                        child: Text(
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          element.nom,
-                          textAlign: TextAlign.center,
-                          textScaler: tailleText,
-                        ),
-                      ),
+                      child: ElementButton(
+                          element: element,
+                          tailleText: tailleText,
+                          onPressed: () => handlePress(element)),
                     )),
               ]
             : [],

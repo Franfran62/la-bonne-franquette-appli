@@ -4,6 +4,7 @@ import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_produit_list_view.dart';
 import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_sous_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
 
 import '../viewmodel/caisse_view_model.dart';
 
@@ -29,6 +30,7 @@ class CaisseCategorieListView extends HookWidget {
     final listAffiche = useState<Map<String, List>>(defaultList);
 
     updateProduitsAffiches(Map<String, List> nouvelleList) {
+      print("update");
       listAffiche.value = nouvelleList;
     }
 
@@ -45,31 +47,19 @@ class CaisseCategorieListView extends HookWidget {
                 ? [
                     ...categories!.map((element) => Padding(
                           padding: EdgeInsets.all(2.0),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: (element.produits ==
-                                          listAffiche.value["produits"] ||
-                                      element.sousCategories ==
-                                          listAffiche.value["sous-categories"])
-                                  ? MaterialStateProperty.all(
-                                      Theme.of(context).colorScheme.tertiary)
-                                  : MaterialStateProperty.all(
-                                      Theme.of(context).colorScheme.inversePrimary),
-                            ),
-                            onPressed: () => {
+                          child: ElementButton(
+                            element: element,
+                            tailleText: tailleText,
+                            onPressed: () {
                               updateProduitsAffiches({
                                 "produits": element.produits,
                                 "sous-categories": element.sousCategories
-                              })
+                              });
                             },
-                            child: Text(
-                              element.nom,
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
-                              textScaler: tailleText,
-                            ),
+                            isSelected: (element.produits ==
+                                    listAffiche.value["produits"] ||
+                                element.sousCategories ==
+                                    listAffiche.value["sous-categories"]),
                           ),
                         )),
                   ]
@@ -88,20 +78,20 @@ class CaisseCategorieListView extends HookWidget {
                     )
                   : listAffiche.value["produits"]!.isNotEmpty
                       ? Column(
-                        children: [
-                          SizedBox(
-                            height: taille,
-                            child: CaisseProduitListView(
-                                produits:
-                                    listAffiche.value["produits"] as List<Produit>,
+                          children: [
+                            SizedBox(
+                              height: taille,
+                              child: CaisseProduitListView(
+                                produits: listAffiche.value["produits"]
+                                    as List<Produit>,
                                 tailleText: tailleText,
                               ),
-                          ),
-                          SizedBox(
-                            height: taille,
-                          )
-                        ],
-                      )
+                            ),
+                            SizedBox(
+                              height: taille,
+                            )
+                          ],
+                        )
                       : SizedBox()
               : SizedBox(),
         )
