@@ -51,7 +51,7 @@ class PanierWidget extends HookWidget {
                               margin: const EdgeInsets.all(10),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  context.go("/panier");
+                                  context.push("/panier");
                                 },
                                 child: const Text('Valider'),
                               ),

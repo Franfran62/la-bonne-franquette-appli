@@ -15,7 +15,7 @@ class DestinationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     void handleChoice(bool surPlace) {
       viewModel.setSurPlace(surPlace);
-      context.go('/caisse');
+      context.push('/caisse');
     }
 
     Widget buildButton(bool surPlace, IconData icon, String text) {

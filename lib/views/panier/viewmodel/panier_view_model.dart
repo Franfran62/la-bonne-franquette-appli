@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
@@ -38,7 +36,6 @@ class PanierViewModel {
 
   void setSurPlace(bool surPlace) {
     PanierViewModel.surPlace = surPlace;
-    print(surPlace);
   }
 
   bool getSurPlace() {
@@ -103,9 +100,6 @@ class PanierViewModel {
       "ingredients": <Ingredient>[],
       "extras": <Extra>[]
     };
-
-    print(afficherModificationModal);
-
 
     if (afficherModificationModal) {
       modifications = await afficherModale(produit);
@@ -260,18 +254,35 @@ class PanierViewModel {
       showDialog(
         context: context as BuildContext,
         builder: (BuildContext context) {
+          Offset panStartPosition = Offset.zero;
+          double distance = 0.0;
+
           return SingleChildScrollView(
             child: Dialog(
               insetPadding: const EdgeInsets.symmetric(
                 vertical: 175,
                 horizontal: 250,
               ),
-              child: ModificationModal(
-                produitAModifier: produit,
-                onModificationsSelected: (modifications) {
-                  modification.complete(modifications);
-                  Navigator.pop(context);
+              child: GestureDetector(
+                onPanStart: (details) {
+                  panStartPosition = details.localPosition;
                 },
+                onPanUpdate: (details) {
+                  distance = details.localPosition.dy - panStartPosition.dy;
+                },
+                onPanEnd: (details) {
+                  if (distance > 400) {
+                    Navigator.pop(context);
+                  }
+                  distance = 0.0; // Reset distance
+                },
+                child: ModificationModal(
+                  produitAModifier: produit,
+                  onModificationsSelected: (modifications) {
+                    modification.complete(modifications);
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             ),
           );
