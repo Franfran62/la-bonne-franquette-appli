@@ -254,35 +254,18 @@ class PanierViewModel {
       showDialog(
         context: context as BuildContext,
         builder: (BuildContext context) {
-          Offset panStartPosition = Offset.zero;
-          double distance = 0.0;
-
           return SingleChildScrollView(
             child: Dialog(
               insetPadding: const EdgeInsets.symmetric(
                 vertical: 175,
                 horizontal: 250,
               ),
-              child: GestureDetector(
-                onPanStart: (details) {
-                  panStartPosition = details.localPosition;
+              child: ModificationModal(
+                produitAModifier: produit,
+                onModificationsSelected: (modifications) {
+                  modification.complete(modifications);
+                  Navigator.pop(context);
                 },
-                onPanUpdate: (details) {
-                  distance = details.localPosition.dy - panStartPosition.dy;
-                },
-                onPanEnd: (details) {
-                  if (distance > 400) {
-                    Navigator.pop(context);
-                  }
-                  distance = 0.0; // Reset distance
-                },
-                child: ModificationModal(
-                  produitAModifier: produit,
-                  onModificationsSelected: (modifications) {
-                    modification.complete(modifications);
-                    Navigator.pop(context);
-                  },
-                ),
               ),
             ),
           );
