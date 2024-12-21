@@ -58,6 +58,7 @@ class SessionService {
       connected = false;
       context.go('/');
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Erreur lors de la déconnexion.")));
     }
   }

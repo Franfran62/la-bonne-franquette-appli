@@ -49,7 +49,7 @@ class _PanierPageState extends State<PanierPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Commande envoyée avec succès !"))
                     );
-                    context.go('/caisse');
+                    context.push('/destination');
                   }
                 } on Exception catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -62,10 +62,10 @@ class _PanierPageState extends State<PanierPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Abandon de la commande."))
                 );
-                context.go('/caisse');
+                context.push('/caisse');
               }),
               _buildButton(context, "Retour à la caisse", () {
-                context.go('/caisse');
+                context.push('/caisse');
               }),
             ],
           ),

@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
@@ -38,7 +36,6 @@ class PanierViewModel {
 
   void setSurPlace(bool surPlace) {
     PanierViewModel.surPlace = surPlace;
-    print(surPlace);
   }
 
   bool getSurPlace() {
@@ -103,9 +100,6 @@ class PanierViewModel {
       "ingredients": <Ingredient>[],
       "extras": <Extra>[]
     };
-
-    print(afficherModificationModal);
-
 
     if (afficherModificationModal) {
       modifications = await afficherModale(produit);
