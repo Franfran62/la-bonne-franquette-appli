@@ -49,7 +49,7 @@ class _PanierPageState extends State<PanierPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Commande envoyée avec succès !"))
                     );
-                    context.push('/destination');
+                    context.push('/destinationCommande');
                   }
                 } on Exception catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
