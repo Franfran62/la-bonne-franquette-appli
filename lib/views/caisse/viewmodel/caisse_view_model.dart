@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
+import 'package:la_bonne_franquette_front/models/menuItem.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
@@ -25,7 +26,7 @@ class CaisseViewModel {
 
     Future<List<Menu>?> getMenus() async {
       return await DatabaseService.findAllMenus();
-    }
+  }
 
     Future<List<Extra>>? getExtras() async {
 
@@ -45,7 +46,7 @@ class CaisseViewModel {
       PanierViewModel().ajouterProduit(produit);
     }
 
-    void ajouterMenuAuPanier(Menu menu) {
-      PanierViewModel().ajouterMenu(menu);
+    void ajouterMenuAuPanier(Menu menu, List<Produit> produits) {
+      PanierViewModel().ajouterMenu(menu, produits);
     }
 }

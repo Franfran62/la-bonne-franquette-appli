@@ -55,19 +55,35 @@ class InitialisationService {
           }
           break;
         case "menu":
-          for (var i in response){
-            //print(i.toString());
-            Menu menu = Menu.fromJson(i);
-            List<Produit> produitsInMenu = menu.getProduits();
-
-            await DatabaseService.insert(Tables.menu, menu.register());
-            await link<Produit>(Tables.menuContientProduit, i['id'], produitsInMenu);
+          for (var i in response) {
+            Menu menu = await Menu.fromJson(i);
+            await DatabaseService.insert(Tables.menu, {
+              "id": menu.id,
+              "nom": menu.nom,
+              "prixHT": menu.prixHT,
+            });
+            for (var menuItem in menu.menuItemSet) {
+              await DatabaseService.insert(Tables.menuItem, {
+                "id": menuItem.id,
+                "optional": menuItem.optional ? 1 : 0,
+                "extraPriceHT": menuItem.extraPriceHT,
+                "menu_id": menu.id,
+              });
+              for (var produit in menuItem.produitSet) {
+                await DatabaseService.insert(Tables.menuItemContientProduit, {
+                  "menu_item_id": menuItem.id,
+                  "produit_id": produit.id,
+                });
+              }
+            }
           }
           break;
+
         default:
           throw Exception('Impossible d\'initialiser le store pour le modèle $T');
       }
     } catch(e) {
+      print(e);
       throw Exception(e);
     }
   }

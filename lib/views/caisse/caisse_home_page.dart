@@ -158,16 +158,16 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                   ],
                 ),
                 showMenu
-                    ? CaisseMenuListView(
-                        menus: menus,
-                        taille: defaultHeight - 100,
-                        tailleText: defaultTailleText,
-                      )
-                    : CaisseCategorieListView(
-                        categories: categories,
-                        taille: (defaultHeight - 100) / 3,
-                        tailleText: defaultTailleText,
-                      ),
+                  ? CaisseMenuListView(
+                      menus: menus,
+                      taille: (defaultHeight - 100) / 3,
+                      tailleText: defaultTailleText,
+                    )
+                  : CaisseCategorieListView(
+                      categories: categories,
+                      taille: (defaultHeight - 100) / 3,
+                      tailleText: defaultTailleText,
+                    ),
               ],
             ),
           ),

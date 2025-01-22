@@ -1,5 +1,6 @@
 import "package:la_bonne_franquette_front/models/categorie.dart";
 import "package:la_bonne_franquette_front/models/interface/identifiable.dart";
+import "package:la_bonne_franquette_front/services/stores/database_service.dart";
 import "ingredient.dart";
 
 class Produit implements Identifiable {
@@ -53,6 +54,10 @@ class Produit implements Identifiable {
       ingredients: map['ingredients'] ?? [],
       categories: map['categories'] ?? [],
     );
+  }
+
+  static Future<Produit?> fromId(int id) async {
+    return await DatabaseService.getProduitById(id);
   }
 
   Map<String, dynamic> register () {

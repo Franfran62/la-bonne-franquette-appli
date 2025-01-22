@@ -23,12 +23,6 @@ class Panier {
     articles.map((e) => print(e.nom));
   }
 
-  static void ajouterMenu(Menu menu) {
-    menus.add(menu);
-    for(var produit in menu.produits) {
-      ajouterProduit(produit);
-    }
-  }
 
   static void ajouterAuPanier(Article article) {
     Article? existingArticle = articles.firstWhereOrNull((a) {
@@ -65,12 +59,12 @@ class Panier {
     supprimerDuPanier(article);
   }
 
-  static void supprimerMenu(Menu menu) {
-    menus.remove(menu);
-    for(var produit in menu.produits) {
-      supprimerProduit(produit);
-    }
-  }
+  // static void supprimerMenu(Menu menu) {
+  //   menus.remove(menu);
+  //   for(var produit in menu.produits) {
+  //     supprimerProduit(produit);
+  //   }
+  // }
 
   static void supprimerDuPanier(Article article) {
     Article? existingArticle = articles.firstWhereOrNull((a) {

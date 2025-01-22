@@ -115,8 +115,7 @@ class PanierViewModel {
     ajouterAuPanier(article);
   }
 
-  void ajouterMenu(Menu menu) async {
-    List<Produit> produits = menu.produits;
+  void ajouterMenu(Menu menu, List<Produit> produits) async {
 
     List<Article> articles = [];
 

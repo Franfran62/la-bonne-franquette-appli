@@ -1,6 +1,7 @@
 import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
+import 'package:la_bonne_franquette_front/models/menuItem.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -57,6 +58,23 @@ class DatabaseService {
           );
         ''');
         db.execute('''
+          CREATE TABLE menu_item (
+            id INTEGER PRIMARY KEY,
+            optional INTEGER NOT NULL,
+            extraPriceHT INTEGER,
+            menu_id INTEGER NOT NULL,
+            FOREIGN KEY (menu_id) REFERENCES menu(id)
+          );
+        ''');
+        db.execute('''
+          CREATE TABLE menu_item_contient_produit (
+            menu_item_id INTEGER NOT NULL,
+            produit_id INTEGER NOT NULL,
+            FOREIGN KEY (menu_item_id) REFERENCES menu_item(id),
+            FOREIGN KEY (produit_id) REFERENCES produit(id)
+          );
+        ''');
+        db.execute('''
           CREATE TABLE produit_contient_ingredient (
             produit_id INTEGER,
             ingredient_id INTEGER,
@@ -70,14 +88,6 @@ class DatabaseService {
             categorie_id INTEGER,
             FOREIGN KEY (produit_id) REFERENCES produit(id),
             FOREIGN KEY (categorie_id) REFERENCES categorie(id)
-          );
-        ''');
-        db.execute('''
-          CREATE TABLE menu_contient_produit (
-            menu_id INTEGER,
-            produit_id INTEGER,
-            FOREIGN KEY (menu_id) REFERENCES menu(id),
-            FOREIGN KEY (produit_id) REFERENCES produit(id)
           );
         ''');
       },
@@ -100,31 +110,50 @@ class DatabaseService {
     );
   }
 
-  static Future<List<Menu>?> findAllMenus() async {
+  static Future<List<Menu>> findAllMenus() async {
     List<Menu> menus = [];
-    final result = await database?.query(Tables.menu.name, columns: ["id"]);
-    List<int> menuIDs =
-        result?.map((e) => e.values.first as int).toList() ?? [];
+    final result = await database?.query('menu');
 
-    for (int e in menuIDs) {
-      List<Produit> produits = [];
-      final produitsInMenuResult =
-          await database?.rawQuery("SELECT * FROM ${Tables.produit.name} p "
-              "INNER JOIN ${Tables.menuContientProduit.name} mcp "
-              "ON p.id = mcp.produit_id "
-              "WHERE mcp.menu_id = $e ");
-      produitsInMenuResult?.forEach((produit) {
-        produits.add(Produit.fromMap(produit));
-      });
-      final menusResult =
-          await database?.query(Tables.menu.name, where: "id = $e");
-      Map<String, Object?> map =
-          Map<String, Object?>.from(menusResult?.first ?? {});
-      map["produits"] = produits;
-      menus.add(Menu.fromMap(map));
+    for (var menuMap in result ?? []) {
+      List<MenuItem> menuItems = [];
+      final menuItemsResult = await database?.query(
+        'menu_item',
+        where: 'menu_id = ?',
+        whereArgs: [menuMap['id']],
+      );
+      for (var itemMap in menuItemsResult ?? []) {
+        final produitResult = await database?.query(
+          'menu_item_contient_produit',
+          where: 'menu_item_id = ?',
+          whereArgs: [itemMap['id']],
+        );
+        List<Produit> produits = [];
+        for (var el in (produitResult ?? [])) {
+          final produit = await Produit.fromId(el['produit_id'] as int);
+          if (produit != null) {
+            produits.add(produit);
+          } else {
+            print("Produit introuvable pour produit_id=${el['produit_id']}");
+          }
+        }
+        menuItems.add(MenuItem(
+          id: itemMap['id'],
+          optional: itemMap['optional'] == 1,
+          extraPriceHT: itemMap['extraPriceHT'],
+          produitSet: produits,
+        ));
+      }
+
+      menus.add(Menu(
+        id: menuMap['id'],
+        nom: menuMap['nom'],
+        prixHT: menuMap['prixHT'] ?? menuMap['prixht'],
+        menuItemSet: menuItems,
+      ));
     }
-    return menus;
-  }
+  return menus;
+}
+
 
   static Future<List<Categorie>> findAllCategories() async {
     List<Categorie> categories = [];
@@ -160,6 +189,20 @@ class DatabaseService {
         result?.map((e) => e.values.first as int).toList() ?? [];
     return findProduitByIds(produitIDs);
   }
+
+  static Future<Produit?> getProduitById(int id) async {
+    final result = await DatabaseService.database?.query(
+      Tables.produit.name,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+
+    if (result != null && result.isNotEmpty) {
+      return Produit.fromMap(result.first);
+    }
+    return null;
+  }
+
 
   static Future<List<Produit>> findProduitsByCategorieId(
       int categorieId) async {
@@ -199,5 +242,18 @@ class DatabaseService {
       Tables table, T Function(Map<String, dynamic>) fromMap) async {
     final List<Map<String, Object?>>? maps = await database?.query(table.name);
     return maps?.map(fromMap).toList();
+  }
+
+  static Future<List<MenuItem>> getMenuItemsByMenuId(int menuId) async {
+    final result = await database?.query(
+      'menu_item',
+      where: 'menu_id = ?',
+      whereArgs: [menuId],
+    );
+
+    if (result != null) {
+      return result.map((item) => MenuItem.fromMap(item)).toList();
+    }
+    return [];
   }
 }

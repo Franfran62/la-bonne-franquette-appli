@@ -30,7 +30,6 @@ class CaisseCategorieListView extends HookWidget {
     final listAffiche = useState<Map<String, List>>(defaultList);
 
     updateProduitsAffiches(Map<String, List> nouvelleList) {
-      print("update");
       listAffiche.value = nouvelleList;
     }
 
