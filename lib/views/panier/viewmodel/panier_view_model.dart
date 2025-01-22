@@ -19,7 +19,6 @@ class PanierViewModel {
   static List<Selection> menus = [];
   static bool surPlace = true;
   double prixTotal = 0;
-  BuildContext? context;
   bool afficherModificationModal = false;
 
   factory PanierViewModel() {
@@ -95,25 +94,6 @@ class PanierViewModel {
     ajouterAuPanier(article);
   }
 
-  void ajouterProduit(Produit produit) async {
-    Map<String, List> modifications = {
-      "ingredients": <Ingredient>[],
-      "extras": <Extra>[]
-    };
-
-    if (afficherModificationModal) {
-      modifications = await afficherModale(produit);
-    }
-
-    Article article = Article(
-      nom: produit.nom,
-      quantite: 1,
-      prixHT: produit.prixHt,
-      ingredients: modifications["ingredients"] as List<Ingredient>,
-      extraSet: modifications["extras"] as List<Extra>,
-    );
-    ajouterAuPanier(article);
-  }
 
   void ajouterMenu(Menu menu, List<Produit> produits) async {
 
@@ -244,34 +224,5 @@ class PanierViewModel {
         0,
         (previousValue, element) =>
             previousValue + element.prixHT * element.quantite / 100);
-  }
-
-  Future<Map<String, List>> afficherModale(Produit produit) async {
-    Completer<Map<String, List>> modification = Completer();
-
-    if (context != null) {
-      showDialog(
-        context: context as BuildContext,
-        builder: (BuildContext context) {
-          return SingleChildScrollView(
-            child: Dialog(
-              insetPadding: const EdgeInsets.symmetric(
-                vertical: 175,
-                horizontal: 250,
-              ),
-              child: ModificationModal(
-                produitAModifier: produit,
-                onModificationsSelected: (modifications) {
-                  modification.complete(modifications);
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    return modification.future;
   }
 }
