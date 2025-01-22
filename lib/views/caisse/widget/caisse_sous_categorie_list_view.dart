@@ -45,7 +45,7 @@ class CaisseSousCategorieListView extends HookWidget {
                     ...categories!.map((element) => Padding(
                           padding: EdgeInsets.all(2.0),
                           child: ElementButton(
-                            element: element,
+                            element: element.nom,
                             tailleText: tailleText,
                             onPressed: () =>
                                 updateProduitsAffiches(element.produits),

@@ -33,7 +33,7 @@ class CaisseProduitListView extends StatelessWidget {
                 ...produits!.map((element) => Padding(
                       padding: EdgeInsets.all(2.0),
                       child: ElementButton(
-                          element: element,
+                          element: element.nom,
                           tailleText: tailleText,
                           onPressed: () => handlePress(element)),
                     )),

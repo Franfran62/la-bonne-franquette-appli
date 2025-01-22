@@ -28,29 +28,45 @@ class CaisseMenuListView extends HookWidget {
     final selectedMenuItems = useState<MenuItem?>(null);
     final selectedProduits = useState<List<Produit>>([]);
     final selectedIndexMenuItems = useState<int>(0);
+    final selectedProduitInMenuItems = useState<List<bool>>([]);
 
-    updateMenuItems(Menu menu) {
+    void updateMenuItems(Menu menu) {
       selectedMenu.value = menu;
       selectedMenuItems.value = menu.menuItemSet.first;
       selectedProduits.value = [];
       selectedIndexMenuItems.value = 0;
+      selectedProduitInMenuItems.value = [];
     }
 
-    displayNextMenuItems() {
+    void displayNextMenuItems() {
       selectedIndexMenuItems.value++;
-      if (selectedIndexMenuItems.value <= (selectedMenu.value!.menuItemSet.length - 1)) {
-        selectedMenuItems.value = selectedMenu.value?.menuItemSet[selectedIndexMenuItems.value]; 
+      if (selectedIndexMenuItems.value < selectedMenu.value!.menuItemSet.length) {
+        selectedMenuItems.value = selectedMenu.value?.menuItemSet[selectedIndexMenuItems.value];
       } else if (selectedMenu.value != null) {
         viewModel.ajouterMenuAuPanier(selectedMenu.value!, selectedProduits.value);
         selectedMenuItems.value = null;
       }
     }
 
-    hook(Produit? produit) {
+    void hookAdd(Produit? produit) {
       if (produit != null) {
         selectedProduits.value.add(produit);
+        selectedProduitInMenuItems.value.add(true);
       }
       displayNextMenuItems();
+    }
+
+    void hookNext() {
+      selectedProduitInMenuItems.value.add(false);
+      displayNextMenuItems();
+    }
+
+    void hookBack() {
+      selectedIndexMenuItems.value--;
+      selectedMenuItems.value = selectedMenu.value?.menuItemSet[selectedIndexMenuItems.value];
+      if (selectedProduitInMenuItems.value[selectedIndexMenuItems.value] == true) {
+        selectedProduits.value.removeAt(selectedIndexMenuItems.value);
+      }
     }
 
     return Column(
@@ -58,33 +74,40 @@ class CaisseMenuListView extends HookWidget {
         SizedBox(
           height: taille,
           child: GridView(
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             children: menus != null && menus!.isNotEmpty
-                ? [
-                    ...menus!.map((menu) => Padding(
-                          padding: EdgeInsets.all(2.0),
-                          child: ElementButton(
-                            element: menu,
-                            tailleText: tailleText,
-                            onPressed: () => updateMenuItems(menu),
-                            isSelected: selectedMenu.value == menu,
-                          ),
-                        )),
-                  ]
+                ? menus!.map((menu) => Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: ElementButton(
+                        element: menu.nom,
+                        tailleText: tailleText,
+                        onPressed: () => updateMenuItems(menu),
+                        isSelected: selectedMenu.value == menu,
+                      ),
+                    )).toList()
                 : [CircularProgressIndicator()],
           ),
         ),
         if (selectedMenu.value != null)
-          SizedBox(
-          height: taille * 2,
-          child: CaisseMenuItemsListView(
-            menuItem: selectedMenuItems.value, 
-            tailleText: tailleText,
-            onProduitPressed: hook 
-            )
+          Container(
+            alignment: Alignment.topLeft,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: taille,
+                  child: CaisseMenuItemsListView(
+                    menuItem: selectedMenuItems.value,
+                    menuItemCount: selectedIndexMenuItems.value,
+                    tailleText: tailleText,
+                    onProduitPressed: hookAdd,
+                    onSkipOptional: hookNext,
+                    onReturn : hookBack,
+                  ),
+                ),
+              ],
+            ),
           ),
       ],
     );
