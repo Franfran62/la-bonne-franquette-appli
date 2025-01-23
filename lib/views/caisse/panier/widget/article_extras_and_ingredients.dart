@@ -18,11 +18,12 @@ class ArticleExtrasAndIngredients extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 100.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: Icon(Icons.add),
               ),
               Text(
                 style: TextStyle(fontSize: 14),
+                overflow: TextOverflow.clip,
                 e.nom,
               ),
             ],
@@ -32,11 +33,12 @@ class ArticleExtrasAndIngredients extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 100.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: Icon(Icons.remove),
               ),
               Text(
                 style: TextStyle(fontSize: 14),
+                overflow: TextOverflow.clip,
                 e.nom,
               ),
             ],

@@ -10,22 +10,30 @@ import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/menuItem.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
+import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/modification_modal.dart';
-import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/modification_modal.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
 
-import '../../../models/categorie.dart';
+import '../../../../models/categorie.dart';
 
 class CaisseViewModel {
   static final CaisseViewModel _singleton = CaisseViewModel._internal();
   BuildContext? context;
   bool showModification = false;
+  Selection menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0);
 
   factory CaisseViewModel() {
     return _singleton;
   }
 
   CaisseViewModel._internal();
+
+  void init(bool surPlace) {
+    PanierViewModel().init(surPlace);
+    showModification = false;
+    menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0);
+  }
   
     Future<List<Produit>?> getProduits() async {
       return await DatabaseService.findAllProduits();
@@ -72,10 +80,46 @@ class CaisseViewModel {
       );
 
       PanierViewModel().ajouterAuPanier(article);
+      showModification = false;
     }
 
-    void ajouterMenuAuPanier(Menu menu, List<Produit> produits) {
-      PanierViewModel().ajouterMenu(menu, produits);
+    void initMenuEnCours({String nom = ""}) {
+      menuEnConstruction.articles = [];
+      menuEnConstruction.nom = nom;
+      menuEnConstruction.quantite = 1;  
+      menuEnConstruction.prixHT = 0;
+    }
+
+    Future<void> ajouterMenuEnCours(Produit produit) async {
+      Map<String, List> modifications = {
+        "ingredients": <Ingredient>[],
+        "extras": <Extra>[]
+      };
+      if (showModification) {
+        modifications = await displayModificationModal(produit);
+      }
+      menuEnConstruction.addArticle(Article(
+        nom: produit.nom, 
+        quantite: 1,
+        prixHT: produit.prixHt, 
+        ingredients:  modifications["ingredients"] as List<Ingredient>, 
+        extraSet: modifications["extras"] as List<Extra>));
+        showModification = false;
+    }
+
+    void retirerMenuEnCours(int index) {
+      menuEnConstruction.removeArticleByIndex(index);
+    }
+
+    void ajouterMenuAuPanier() async {
+      Selection nouveauMenu = Selection(
+        nom: menuEnConstruction.nom,
+        articles:List.from(menuEnConstruction.articles),
+        quantite: menuEnConstruction.quantite,
+        prixHT: menuEnConstruction.prixHT
+      );
+      await PanierViewModel().ajouterMenu(nouveauMenu);
+      initMenuEnCours();
     }
 
     Future<Map<String, List>> displayModificationModal(Produit produit) async {
@@ -97,7 +141,7 @@ class CaisseViewModel {
                 },
               ),
             ),
-          );
+        );
         }
       );
     return modification.future;

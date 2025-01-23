@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/menuItem.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_items_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_menu_items_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/element_button.dart';
 
 class CaisseMenuListView extends HookWidget {
 
@@ -26,14 +26,13 @@ class CaisseMenuListView extends HookWidget {
     final CaisseViewModel viewModel = CaisseViewModel();
     final selectedMenu = useState<Menu?>(null);
     final selectedMenuItems = useState<MenuItem?>(null);
-    final selectedProduits = useState<List<Produit>>([]);
     final selectedIndexMenuItems = useState<int>(0);
     final selectedProduitInMenuItems = useState<List<bool>>([]);
 
     void updateMenuItems(Menu menu) {
       selectedMenu.value = menu;
       selectedMenuItems.value = menu.menuItemSet.first;
-      selectedProduits.value = [];
+      viewModel.initMenuEnCours(nom: menu.nom);
       selectedIndexMenuItems.value = 0;
       selectedProduitInMenuItems.value = [];
     }
@@ -43,14 +42,14 @@ class CaisseMenuListView extends HookWidget {
       if (selectedIndexMenuItems.value < selectedMenu.value!.menuItemSet.length) {
         selectedMenuItems.value = selectedMenu.value?.menuItemSet[selectedIndexMenuItems.value];
       } else if (selectedMenu.value != null) {
-        viewModel.ajouterMenuAuPanier(selectedMenu.value!, selectedProduits.value);
+        viewModel.ajouterMenuAuPanier();
         selectedMenuItems.value = null;
       }
     }
 
-    void hookAdd(Produit? produit) {
+    void hookAdd(Produit? produit) async {
       if (produit != null) {
-        selectedProduits.value.add(produit);
+        await viewModel.ajouterMenuEnCours(produit);
         selectedProduitInMenuItems.value.add(true);
       }
       displayNextMenuItems();
@@ -65,7 +64,7 @@ class CaisseMenuListView extends HookWidget {
       selectedIndexMenuItems.value--;
       selectedMenuItems.value = selectedMenu.value?.menuItemSet[selectedIndexMenuItems.value];
       if (selectedProduitInMenuItems.value[selectedIndexMenuItems.value] == true) {
-        selectedProduits.value.removeAt(selectedIndexMenuItems.value);
+         viewModel.retirerMenuEnCours(selectedIndexMenuItems.value);
       }
     }
 

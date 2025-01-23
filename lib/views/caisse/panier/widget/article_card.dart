@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
-import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
-import 'package:la_bonne_franquette_front/views/panier/widget/article_extras_and_ingredients.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/widget/article_extras_and_ingredients.dart';
 
 class ArticleCard extends HookWidget {
   final Article article;
@@ -11,7 +11,7 @@ class ArticleCard extends HookWidget {
   ArticleCard({required this.article, super.key});
 
   void ajout() {
-    PanierViewModel().ajouterArticle(article);
+    PanierViewModel().ajouterAuPanier(article);
   }
 
   void suppression() {

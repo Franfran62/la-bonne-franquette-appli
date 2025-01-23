@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_produit_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_sous_categorie_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_produit_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_sous_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/element_button.dart';
 
 import '../viewmodel/caisse_view_model.dart';
 
@@ -69,28 +69,34 @@ class CaisseCategorieListView extends HookWidget {
           height: taille * 2,
           child: listAffiche.value.isNotEmpty
               ? listAffiche.value["sous-categories"]!.isNotEmpty
-                  ? CaisseSousCategorieListView(
-                      categories: listAffiche.value['sous-categories']
-                          as List<Categorie>,
-                      taille: taille,
-                      tailleText: tailleText,
-                    )
+                  ? Container(
+                    alignment: Alignment.topLeft,
+                    child: CaisseSousCategorieListView(
+                        categories: listAffiche.value['sous-categories']
+                            as List<Categorie>,
+                        taille: taille,
+                        tailleText: tailleText,
+                      ),
+                  )
                   : listAffiche.value["produits"]!.isNotEmpty
-                      ? Column(
-                          children: [
-                            SizedBox(
-                              height: taille,
-                              child: CaisseProduitListView(
-                                produits: listAffiche.value["produits"]
-                                    as List<Produit>,
-                                tailleText: tailleText,
+                      ? Container(
+                        alignment: Alignment.topLeft,
+                        child: Column(
+                            children: [
+                              SizedBox(
+                                height: taille,
+                                child: CaisseProduitListView(
+                                  produits: listAffiche.value["produits"]
+                                      as List<Produit>,
+                                  tailleText: tailleText,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: taille,
-                            )
-                          ],
-                        )
+                              SizedBox(
+                                height: taille,
+                              )
+                            ],
+                          ),
+                      )
                       : SizedBox()
               : SizedBox(),
         )

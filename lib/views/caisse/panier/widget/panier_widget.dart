@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
-import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
-import 'package:la_bonne_franquette_front/views/panier/widget/article_card.dart';
-import 'package:la_bonne_franquette_front/views/panier/widget/menu_card.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/widget/article_card.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/widget/menu_card.dart';
 
-import '../../../models/article.dart';
+import '../../../../models/article.dart';
 
 class PanierWidget extends HookWidget {
   final double height;
@@ -47,14 +47,21 @@ class PanierWidget extends HookWidget {
                         : SizedBox(),
                     items.isNotEmpty
                         ? Center(
-                            child: Container(
-                              margin: const EdgeInsets.all(10),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  context.push("/panier");
-                                },
-                                child: const Text('Valider'),
-                              ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.all(10),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      viewModel.sendOrder();
+                                    },
+                                    child: const Text('Valider'),
+                                  ),
+                                ),
+                                Text(
+                                  'Total en cours : ${viewModel.prixTotal.toStringAsFixed(2)} €', 
+                                  style: TextStyle(fontSize: 20)),
+                              ],
                             ),
                           )
                         : SizedBox(),

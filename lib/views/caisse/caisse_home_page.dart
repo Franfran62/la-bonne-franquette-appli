@@ -3,13 +3,13 @@ import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_categorie_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
-import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_menu_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
-import '../panier/widget/panier_widget.dart';
+import 'panier/widget/panier_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
