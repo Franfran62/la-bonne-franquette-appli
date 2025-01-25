@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/views/caisse/caisse_home_page.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/cuisine_home_page.dart';
-import 'package:la_bonne_franquette_front/views/destination/destination_page.dart';
+import 'package:la_bonne_franquette_front/views/destinationCommande/destination_page.dart';
 import 'package:la_bonne_franquette_front/views/login/login_page.dart';
-import 'package:la_bonne_franquette_front/views/panier/panier_page.dart';
+import 'package:la_bonne_franquette_front/views/commande/commande_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
   Future<void> saveLastVisitedPage(String route) async {
@@ -28,16 +28,16 @@ GoRouter createRouter(String initialRoute) {
           path: '/cuisine',
           builder: (context, state) => CuisineHomePage()
       ),
-      GoRoute(
-          path: '/panier',
-          builder: (context, state) => PanierPage()
+      GoRoute(path: '/destinationCommande',
+        builder: (context, state) => DestinationPage(),
       ),
       GoRoute(
           path: '/caisse',
           builder: (context, state) => CaisseHomePage()
       ),
-      GoRoute(path: '/destinationCommande',
-        builder: (context, state) => DestinationPage(),
+      GoRoute(
+          path: '/commande',
+          builder: (context, state) => CommandePage()
       ),
     ],
     redirect: (context, state) async {

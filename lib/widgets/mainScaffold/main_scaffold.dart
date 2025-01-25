@@ -38,7 +38,6 @@ class _MainScaffoldState extends State<MainScaffold> {
           InkWell(
             onTap: () {
               if (GoRouter.of(context).canPop()) {
-                print("test");
                 GoRouter.of(context).pop();
               }
             },

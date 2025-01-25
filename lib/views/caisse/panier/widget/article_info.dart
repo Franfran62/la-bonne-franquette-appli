@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
-import 'package:la_bonne_franquette_front/views/panier/widget/article_extras_and_ingredients.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/widget/article_extras_and_ingredients.dart';
 
 class ArticleInfos extends StatelessWidget {
 
@@ -16,8 +16,9 @@ class ArticleInfos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 40.0),
+      padding: const EdgeInsets.only(left: 20.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             maxLines: 1,

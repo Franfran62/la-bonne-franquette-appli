@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/interface/identifiable.dart';
-
 class ElementButton extends StatelessWidget {
-  final Identifiable element;
+  final String element;
   final TextScaler tailleText;
   final void Function() onPressed;
   final bool isSelected;
+  final bool isNavigator;
 
   ElementButton(
       {required this.element,
       required this.tailleText,
       required this.onPressed,
-      this.isSelected = false});
+      this.isSelected = false,
+      this.isNavigator = false});
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +24,16 @@ class ElementButton extends StatelessWidget {
         )),
         backgroundColor: isSelected
             ? MaterialStateProperty.all(Theme.of(context).colorScheme.tertiary)
-            : MaterialStateProperty.all(
-                Theme.of(context).colorScheme.inversePrimary),
+            : 
+            isNavigator 
+              ? MaterialStateProperty.all(Theme.of(context).colorScheme.secondary)
+              : MaterialStateProperty.all(Theme.of(context).colorScheme.inversePrimary)
       ),
       child: Text(
         style: TextStyle(
-          color: Colors.white,
+          color: isNavigator ? Colors.black : Colors.white,
         ),
-        element.nom,
+        element,
         textAlign: TextAlign.center,
         textScaler: tailleText,
       ),

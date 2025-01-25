@@ -1,4 +1,5 @@
 
+import "package:collection/collection.dart";
 import "package:la_bonne_franquette_front/models/interface/identifiable.dart";
 import "package:la_bonne_franquette_front/models/menuItem.dart";
 import "produit.dart";
@@ -27,4 +28,19 @@ class Menu implements Identifiable {
       menuItemSet: await Future.wait(items.map((item) => MenuItem.fromMenuJson(item))),
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Menu otherMenu = other as Menu;
+    return nom == otherMenu.nom &&
+        ListEquality().equals(menuItemSet, otherMenu.menuItemSet);
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        nom,
+        ListEquality().hash(menuItemSet),
+      );
 }

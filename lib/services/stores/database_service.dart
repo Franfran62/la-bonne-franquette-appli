@@ -183,13 +183,6 @@ class DatabaseService {
     return categories;
   }
 
-  static Future<List<Produit>> findAllProduits() async {
-    final result = await database?.query(Tables.produit.name, columns: ["id"]);
-    List<int> produitIDs =
-        result?.map((e) => e.values.first as int).toList() ?? [];
-    return findProduitByIds(produitIDs);
-  }
-
   static Future<Produit?> getProduitById(int id) async {
     final result = await DatabaseService.database?.query(
       Tables.produit.name,
@@ -208,8 +201,6 @@ class DatabaseService {
       int categorieId) async {
     final result = await database?.query(Tables.produitAppartientCategorie.name,
         where: "categorie_id = $categorieId", columns: ["produit_id"]);
-    /*final result = await database?.rawQuery("SELECT produit_id FROM ${Tables.produitAppartientCategorie} pac "
-        "WHERE pac.categorie_id = $categorieId ");*/
     List<int> produitIDs =
         result?.map((e) => e.values.first as int).toList() ?? [];
     return findProduitByIds(produitIDs);
@@ -217,22 +208,9 @@ class DatabaseService {
 
   static Future<List<Produit>> findProduitByIds(List<int> produitIDs) async {
     List<Produit> produits = [];
-
     for (int e in produitIDs) {
-      List<Ingredient> ingredients = [];
-      final ingredientsInProduitsResult =
-          await database?.rawQuery("SELECT * FROM ${Tables.ingredient.name} i "
-              "INNER JOIN ${Tables.produitContientIngredient.name} pci "
-              "ON i.id = pci.ingredient_id "
-              "WHERE pci.produit_id = $e ");
-      ingredientsInProduitsResult?.forEach((ingredient) {
-        ingredients.add(Ingredient.fromMap(ingredient));
-      });
-      final produitResult =
-          await database?.query(Tables.produit.name, where: "id = $e");
-      Map<String, Object?> map =
-          Map<String, Object?>.from(produitResult?.first ?? {});
-      map["ingredients"] = ingredients;
+      final produitResult = await database?.query(Tables.produit.name, where: "id = $e");
+      Map<String, Object?> map = Map<String, Object?>.from(produitResult?.first ?? {});
       produits.add(Produit.fromMap(map));
     }
     return produits;
@@ -255,5 +233,22 @@ class DatabaseService {
       return result.map((item) => MenuItem.fromMap(item)).toList();
     }
     return [];
+  }
+
+  static Future<List<Produit>> findAllProduits() async {
+    final result = await database?.query(Tables.produit.name);
+    return result?.map((e) => Produit.fromMap(e)).toList() ?? [];
+  }
+
+  static Future<List<Ingredient>> findIngredientsByProduitId(int produitId) async {
+    final result = await database?.rawQuery('''
+      SELECT ingredient.*
+      FROM ingredient
+      INNER JOIN produit_contient_ingredient
+      ON ingredient.id = produit_contient_ingredient.ingredient_id
+      WHERE produit_contient_ingredient.produit_id = ?
+    ''', [produitId]);
+
+    return result?.map((e) => Ingredient.fromMap(e)).toList() ?? [];
   }
 }

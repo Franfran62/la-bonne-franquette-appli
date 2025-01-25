@@ -1,10 +1,10 @@
 import 'package:la_bonne_franquette_front/models/article.dart';
 
 class Selection {
-  final String nom;
-  final List<Article> articles;
+  String nom;
+  List<Article> articles;
   int quantite;
-  final int prixHT;
+  int prixHT;
 
   Selection({
     required this.nom,
@@ -37,4 +37,27 @@ class Selection {
       'prixHT': prixHT,
     };
   }
+
+  void addArticle(Article article) {
+    if (articles.contains(article)) {
+      articles[articles.indexOf(article)].quantite++;
+    } else {
+    articles.add(article);
+    }
+    calculatePrice();
+  }
+
+
+  void removeArticleByIndex(int index) {
+    if (articles[index].quantite > 1) {
+      articles[index].quantite--;
+    } else {
+    articles.removeAt(index);
+    }
+    calculatePrice();
+  }
+
+  calculatePrice() {
+    prixHT = articles.fold(0, (sum, article) => sum + article.prixHT * article.quantite);
+  } 
 }

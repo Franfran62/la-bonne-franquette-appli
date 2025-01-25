@@ -3,13 +3,13 @@ import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_categorie_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
-import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_menu_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
-import '../panier/widget/panier_widget.dart';
+import 'panier/widget/panier_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
@@ -22,7 +22,6 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel caisseViewModel = CaisseViewModel();
   PanierViewModel panierViewModel = PanierViewModel();
   bool showMenu = false;
-  bool showModification = false;
   List<Produit>? produits;
   List<Menu>? menus;
   List<Extra>? extras;
@@ -32,28 +31,13 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   @override
   void initState() {
     super.initState();
-    loadProduits();
-    loadMenus();
-    loadExtras();
-    loadCategories();
+    loadCarte();
   }
 
-  void loadProduits() async {
+  void loadCarte() async {
     produits = await caisseViewModel.getProduits();
-    setState(() {});
-  }
-
-  void loadMenus() async {
     menus = await caisseViewModel.getMenus();
-    setState(() {});
-  }
-
-  void loadExtras() async {
     extras = await caisseViewModel.getExtras();
-    setState(() {});
-  }
-
-  void loadCategories() async {
     categories = await caisseViewModel.getCategorie();
     setState(() {});
   }
@@ -64,7 +48,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   }
 
   void updateModificationChoice() {
-    showModification = !showModification;
+    caisseViewModel.updateShowModification();
     setState(() {});
   }
 
@@ -80,8 +64,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     const double titleSize = 20;
     const double choiceLabelPadding = 10.0;
 
-    panierViewModel.context = context;
-    panierViewModel.afficherModificationModal = showModification;
+    caisseViewModel.context = context;
 
     return MainScaffold(
       destination: "/cuisine",
@@ -150,7 +133,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                       label:
                           Text("Modifications", style: TextStyle(fontSize: 18)),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
-                      selected: showModification,
+                      selected: CaisseViewModel().showModification,
                       onSelected: (selected) =>
                           setState(updateModificationChoice),
                     ),

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 
@@ -78,4 +79,21 @@ class Article {
   List<Ingredient> getIngredients() {
     return ingredients;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Article otherArticle = other as Article;
+    return nom == otherArticle.nom &&
+        ListEquality().equals(ingredients, otherArticle.ingredients) &&
+        ListEquality().equals(extraSet, otherArticle.extraSet);
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        nom,
+        ListEquality().hash(ingredients),
+        ListEquality().hash(extraSet),
+      );
 }

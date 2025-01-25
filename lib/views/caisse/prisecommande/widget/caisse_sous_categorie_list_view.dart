@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 
-import '../../../models/categorie.dart';
+import '../../../../models/categorie.dart';
 import '../viewmodel/caisse_view_model.dart';
 import 'caisse_produit_list_view.dart';
 import 'element_button.dart';
@@ -45,7 +45,7 @@ class CaisseSousCategorieListView extends HookWidget {
                     ...categories!.map((element) => Padding(
                           padding: EdgeInsets.all(2.0),
                           child: ElementButton(
-                            element: element,
+                            element: element.nom,
                             tailleText: tailleText,
                             onPressed: () =>
                                 updateProduitsAffiches(element.produits),

@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:la_bonne_franquette_front/views/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
 class DestinationPage extends StatelessWidget {
-  final PanierViewModel viewModel = PanierViewModel();
+  final CaisseViewModel viewModel = CaisseViewModel();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final double tailleContenu = 32.0;
 
@@ -14,7 +15,7 @@ class DestinationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void handleChoice(bool surPlace) {
-      viewModel.setSurPlace(surPlace);
+      viewModel.init(surPlace);
       context.push('/caisse');
     }
 
