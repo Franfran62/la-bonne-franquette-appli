@@ -52,8 +52,9 @@ class PanierWidget extends HookWidget {
                                 Container(
                                   margin: const EdgeInsets.all(10),
                                   child: ElevatedButton(
-                                    onPressed: () {
-                                      viewModel.sendOrder();
+                                    onPressed: ()  {
+                                      viewModel.sendOrderToCommandePage();
+                                      context.go("/commande");
                                     },
                                     child: const Text('Valider'),
                                   ),

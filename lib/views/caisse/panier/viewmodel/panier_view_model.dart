@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/commande.dart';
+import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
+import 'package:la_bonne_franquette_front/services/api/api_service.dart';
+import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
 
 
 class PanierViewModel {
@@ -121,7 +125,14 @@ class PanierViewModel {
             previousValue + element.prixHT * element.quantite / 100);
   }
 
-  void sendOrder() {
-    
+  void sendOrderToCommandePage() {
+    CommandeViewModel.commandeBody = {
+      "surPlace": surPlace,
+      "menus": menus.map((menu) => menu.toJson()).toList(),
+      "paiementSet": [],
+      "status": StatusCommande.EN_COURS.name,
+      "articles": articles.map((article) => article.toJson()).toList(),
+      "prixHT": prixTotal * 100,
+    }; 
   }
 }
