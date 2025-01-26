@@ -79,10 +79,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                      style: TextStyle(
-                        fontSize: titleSize,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                       "Votre Commande"),
                 ),
                 LayoutBuilder(
@@ -104,14 +101,14 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                 Row(
                   children: [
                     ChoiceChip(
-                      label: Text("A l'unité", style: TextStyle(fontSize: 18)),
+                      label: Text("A l'unité", style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: !showMenu,
                       onSelected: (selected) => setState(updateMenuChoice),
                     ),
                     SizedBox(width: 8.0),
                     ChoiceChip(
-                      label: Text("Menu", style: TextStyle(fontSize: 18)),
+                      label: Text("Menu", style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: showMenu,
                       onSelected: (selected) => setState(updateMenuChoice),
@@ -122,7 +119,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                           panierViewModel.getSurPlace()
                               ? "Sur place"
                               : "À emporter",
-                          style: TextStyle(fontSize: 18)),
+                          style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: panierViewModel.getSurPlace(),
                       onSelected: (selected) =>
@@ -131,7 +128,9 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     SizedBox(width: 8.0),
                     ChoiceChip(
                       label:
-                          Text("Modifications", style: TextStyle(fontSize: 18)),
+                          Text(
+                            "Modifications", 
+                            style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: CaisseViewModel().showModification,
                       onSelected: (selected) =>

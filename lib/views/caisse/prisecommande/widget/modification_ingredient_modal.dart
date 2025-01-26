@@ -33,7 +33,7 @@ class ModificationIngredientModal extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Ingrédients",
-                  style: TextStyle(fontSize: 24),
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
             ),
@@ -44,7 +44,10 @@ class ModificationIngredientModal extends StatelessWidget {
                       return InkWell(
                         child: Row(
                           children: [
-                            Text(ingredient.nom),
+                            Text(
+                              ingredient.nom,
+                              style: Theme.of(context).textTheme.bodyMedium
+                              ),
                             if (ingredientsARetirer.value.contains(ingredient))
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),

@@ -32,7 +32,7 @@ class ModificationExtraModal extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Extras",
-                  style: TextStyle(fontSize: 24),
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             ),
@@ -43,7 +43,10 @@ class ModificationExtraModal extends StatelessWidget {
                       return InkWell(
                         child: Row(
                           children: [
-                            Text(extra.nom),
+                            Text(
+                              extra.nom,
+                              style: Theme.of(context).textTheme.bodyMedium
+                              ),
                             if (extrasPourProduit.value.contains(extra))
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),

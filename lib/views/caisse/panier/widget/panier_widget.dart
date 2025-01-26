@@ -56,12 +56,16 @@ class PanierWidget extends HookWidget {
                                       viewModel.sendOrderToCommandePage();
                                       context.go("/commande");
                                     },
-                                    child: const Text('Valider'),
+                                    child: Text(
+                                      'Valider',
+                                      style: Theme.of(context).textTheme.bodyLarge,
+                                      ),
                                   ),
                                 ),
                                 Text(
                                   'Total en cours : ${viewModel.prixTotal.toStringAsFixed(2)} €', 
-                                  style: TextStyle(fontSize: 20)),
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                )
                               ],
                             ),
                           )

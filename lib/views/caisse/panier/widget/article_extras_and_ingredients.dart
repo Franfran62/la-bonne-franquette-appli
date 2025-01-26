@@ -18,11 +18,11 @@ class ArticleExtrasAndIngredients extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Icon(Icons.add),
+                padding: const EdgeInsets.only(left: 20.0, right: 8.0),
+                child: Icon(Icons.add_circle_outline),
               ),
               Text(
-                style: TextStyle(fontSize: 14),
+                style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.clip,
                 e.nom,
               ),
@@ -33,16 +33,17 @@ class ArticleExtrasAndIngredients extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Icon(Icons.remove),
+                padding: const EdgeInsets.only(left: 20.0, right: 8.0),
+                child: Icon(Icons.remove_circle_outline),
               ),
               Text(
-                style: TextStyle(fontSize: 14),
+                style: Theme.of(context).textTheme.bodySmall,
                 overflow: TextOverflow.clip,
                 e.nom,
               ),
             ],
           )),
+          Padding(padding: EdgeInsets.only(bottom: 8.0)),
       ],
     );
   }

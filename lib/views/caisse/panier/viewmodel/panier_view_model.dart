@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
-import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
-import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
 
 
@@ -66,6 +64,7 @@ class PanierViewModel {
   }
 
   Future<void> ajouterMenu(Selection menu) async {
+
       if (menus.contains(menu)) {
         Selection existingMenu = menus.firstWhere((m) => m == menu);
         existingMenu.quantite += 1;
@@ -80,7 +79,6 @@ class PanierViewModel {
 
   void ajouterQuantiteMenu(Selection menu) {
     Selection existingMenu = menus.firstWhere((m) => m == menu);
-    print(existingMenu);
     existingMenu.quantite += 1;
     Future.microtask(() {
       menusNotifier.value = List.from(menus);

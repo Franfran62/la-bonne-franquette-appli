@@ -5,12 +5,14 @@ class Selection {
   List<Article> articles;
   int quantite;
   int prixHT;
+  bool isModified;
 
   Selection({
     required this.nom,
     required this.articles,
     required this.quantite,
     required this.prixHT,
+    required this.isModified
   });
 
   factory Selection.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class Selection {
       articles: articles,
       quantite: json['quantite'],
       prixHT: json['prixHT'],
+      isModified: json['isModified'],
     );
   }
 
@@ -35,6 +38,7 @@ class Selection {
       'articles': articlesJson,
       'quantite': quantite,
       'prixHT': prixHT,
+      'isModified': isModified,
     };
   }
 
@@ -42,7 +46,10 @@ class Selection {
     if (articles.contains(article)) {
       articles[articles.indexOf(article)].quantite++;
     } else {
-    articles.add(article);
+      articles.add(article);
+      if (article.isModified) {
+        isModified = true;
+      }
     }
     calculatePrice();
   }
@@ -52,7 +59,8 @@ class Selection {
     if (articles[index].quantite > 1) {
       articles[index].quantite--;
     } else {
-    articles.removeAt(index);
+      articles.removeAt(index);
+      isModified = articles.any((article) => article.isModified);
     }
     calculatePrice();
   }

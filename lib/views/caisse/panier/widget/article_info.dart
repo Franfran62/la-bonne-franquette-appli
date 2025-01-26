@@ -5,11 +5,9 @@ import 'package:la_bonne_franquette_front/views/caisse/panier/widget/article_ext
 class ArticleInfos extends StatelessWidget {
 
   final Article article;
-  final double fontSize;
   
   const ArticleInfos({
     required this.article,
-    this.fontSize = 14,
     super.key,
   });
 
@@ -24,7 +22,7 @@ class ArticleInfos extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.clip,
             article.nom,
-            style: TextStyle(fontSize: fontSize),
+            style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.start,
           ),
           ArticleExtrasAndIngredients(article: article),
