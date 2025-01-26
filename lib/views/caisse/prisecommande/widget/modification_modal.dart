@@ -36,7 +36,7 @@ class ModificationModal extends HookWidget {
                 child: Center(
                   child: Text(
                     produitAModifier.nom,
-                    style: TextStyle(fontSize: 24),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
               ),
@@ -64,6 +64,7 @@ class ModificationModal extends HookWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 250.0),
                   child: ElevatedButton(
+                    style: Theme.of(context).elevatedButtonTheme.style,
                     onPressed: () {
                       Map<String, List> modifications = {
                         "ingredients": ingredientsARetirer.value,
