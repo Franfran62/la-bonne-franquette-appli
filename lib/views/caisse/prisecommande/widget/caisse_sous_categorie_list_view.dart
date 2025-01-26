@@ -12,12 +12,14 @@ class CaisseSousCategorieListView extends HookWidget {
   final List<Categorie>? categories;
   final double taille;
   final TextScaler tailleText;
+  final VoidCallback onAjout;
 
   CaisseSousCategorieListView({
     super.key,
     required this.categories,
     required this.taille,
     required this.tailleText,
+    required this.onAjout,
   });
 
   final CaisseViewModel viewModel = CaisseViewModel();
@@ -62,6 +64,7 @@ class CaisseSousCategorieListView extends HookWidget {
               ? CaisseProduitListView(
                   produits: listAffiche.value,
                   tailleText: tailleText,
+                  onAjout: onAjout,
                 )
               : SizedBox(),
         )

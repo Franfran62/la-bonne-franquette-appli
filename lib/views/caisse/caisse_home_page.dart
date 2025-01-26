@@ -145,11 +145,13 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                       menus: menus,
                       taille: (defaultHeight - 100) / 3,
                       tailleText: defaultTailleText,
+                      onAjout: () => setState(() {}),
                     )
                   : CaisseCategorieListView(
                       categories: categories,
                       taille: (defaultHeight - 100) / 3,
                       tailleText: defaultTailleText,
+                      onAjout: () => setState(() {}),
                     ),
               ],
             ),

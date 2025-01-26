@@ -13,7 +13,7 @@ class ArticleExtrasAndIngredients extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (article.extraSet != null && article.extraSet.isNotEmpty)
+        if (article.extraSet.isNotEmpty)
           ...article.extraSet.map((e) => Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -28,7 +28,7 @@ class ArticleExtrasAndIngredients extends StatelessWidget {
               ),
             ],
           )),
-        if (article.ingredients != null && article.ingredients.isNotEmpty)
+        if (article.ingredients.isNotEmpty)
           ...article.ingredients.map((e) => Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
