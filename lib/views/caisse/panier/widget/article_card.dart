@@ -21,7 +21,7 @@ class ArticleCard extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = useState(
-        article.ingredients.isNotEmpty || article.extraSet.isNotEmpty
+        article.isModified
             ? Colors.redAccent
             : Colors.greenAccent);
     return Card(

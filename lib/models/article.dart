@@ -8,6 +8,7 @@ class Article {
   final int prixHT;
   List<Ingredient> ingredients;
   List<Extra> extraSet;
+  bool isModified = false;
 
   Article({
     required this.nom,
@@ -15,6 +16,7 @@ class Article {
     required this.prixHT,
     required this.ingredients,
     required this.extraSet,
+    isModified,
   });
 
   factory Article.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class Article {
       prixHT: json['prixHT'],
       ingredients: ingredients,
       extraSet: extraSet,
+      isModified: json['isModified']
     );
   }
 
@@ -50,6 +53,7 @@ class Article {
       'prixHT': prixHT,
       'ingredients': ingredientsJson,
       'extraSet': extraSetJson,
+      "isModified": isModified
     };
   }
 
@@ -60,12 +64,13 @@ class Article {
       'prixHT': prixHT,
       'ingredients': [],
       'extraSet': extraSet.map((e) => e.toJson()).toList(),
+      "isModified": isModified
     };
   } 
 
   @override
   String toString() {
-    return 'Article(nom: $nom, quantite: $quantite, prixHT: $prixHT, ingredients: $ingredients, extraSet: $extraSet)';
+    return 'Article(nom: $nom, quantite: $quantite, prixHT: $prixHT, ingredients: $ingredients, extraSet: $extraSet, isModified: $isModified)';
   }
 
   double getPriceTTC(){

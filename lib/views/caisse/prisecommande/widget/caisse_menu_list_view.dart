@@ -12,18 +12,20 @@ class CaisseMenuListView extends HookWidget {
   final List<Menu>? menus;
   final double taille;
   final TextScaler tailleText;
+  final VoidCallback onAjout;
+  final CaisseViewModel viewModel = CaisseViewModel();
 
   CaisseMenuListView({
     super.key,
     required this.menus,
     required this.taille,
     required this.tailleText,
+    required this.onAjout,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    final CaisseViewModel viewModel = CaisseViewModel();
     final selectedMenu = useState<Menu?>(null);
     final selectedMenuItems = useState<MenuItem?>(null);
     final selectedIndexMenuItems = useState<int>(0);
@@ -43,7 +45,9 @@ class CaisseMenuListView extends HookWidget {
         selectedMenuItems.value = selectedMenu.value?.menuItemSet[selectedIndexMenuItems.value];
       } else if (selectedMenu.value != null) {
         viewModel.ajouterMenuAuPanier();
-        selectedMenuItems.value = null;
+        selectedMenuItems.value = null; 
+        selectedMenu.value = null;
+        onAjout();   
       }
     }
 
@@ -51,6 +55,7 @@ class CaisseMenuListView extends HookWidget {
       if (produit != null) {
         await viewModel.ajouterMenuEnCours(produit);
         selectedProduitInMenuItems.value.add(true);
+        onAjout();
       }
       displayNextMenuItems();
     }

@@ -10,14 +10,17 @@ class CaisseProduitListView extends StatelessWidget {
     super.key,
     required this.produits,
     required this.tailleText,
+    required this.onAjout,
   });
 
   final List<Produit>? produits;
   final TextScaler tailleText;
   final CaisseViewModel viewModel = CaisseViewModel();
+  final VoidCallback onAjout;
 
   Future<void> handlePress(Produit produit) async {
     await viewModel.ajouterProduitAuPanier(produit);
+    onAjout();
   }
 
   @override
