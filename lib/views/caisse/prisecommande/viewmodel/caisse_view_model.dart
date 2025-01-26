@@ -16,7 +16,7 @@ class CaisseViewModel {
   static final CaisseViewModel _singleton = CaisseViewModel._internal();
   BuildContext? context;
   bool showModification = false;
-  Selection menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0);
+  Selection menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0, isModified: false);
 
   factory CaisseViewModel() {
     return _singleton;
@@ -27,7 +27,7 @@ class CaisseViewModel {
   void init(bool surPlace) {
     PanierViewModel().init(surPlace);
     showModification = false;
-    menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0);
+    menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0, isModified: false);
   }
   
     Future<List<Produit>?> getProduits() async {
@@ -87,6 +87,7 @@ class CaisseViewModel {
       menuEnConstruction.nom = nom;
       menuEnConstruction.quantite = 1;  
       menuEnConstruction.prixHT = 0;
+      menuEnConstruction.isModified = false;
     }
 
     Future<void> ajouterMenuEnCours(Produit produit) async {
@@ -122,7 +123,8 @@ class CaisseViewModel {
         nom: menuEnConstruction.nom,
         articles:List.from(menuEnConstruction.articles),
         quantite: menuEnConstruction.quantite,
-        prixHT: menuEnConstruction.prixHT
+        prixHT: menuEnConstruction.prixHT,
+        isModified: menuEnConstruction.isModified
       );
       await PanierViewModel().ajouterMenu(nouveauMenu);
       initMenuEnCours();
