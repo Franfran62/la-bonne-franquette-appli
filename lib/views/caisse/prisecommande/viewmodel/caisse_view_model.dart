@@ -131,27 +131,25 @@ class CaisseViewModel {
     }
 
     Future<Map<String, List>> displayModificationModal(Produit produit) async {
-    Completer<Map<String, List>> modification = Completer();
+      Completer<Map<String, List>> modification = Completer();
       showDialog(
         context: context as BuildContext,
         builder: (BuildContext context) {
-          return SingleChildScrollView(
-            child: Dialog(
-              insetPadding: const EdgeInsets.symmetric(
-                vertical: 175,
-                horizontal: 250,
-              ),
-              child: ModificationModal(
-                produitAModifier: produit,
-                onModificationsSelected: (modifications) {
-                  modification.complete(modifications);
-                  Navigator.pop(context);
-                },
-              ),
+          return Dialog(
+            insetPadding: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * 0.2,
+              horizontal: MediaQuery.of(context).size.width * 0.2,
             ),
-        );
-        }
+            child: ModificationModal(
+              produitAModifier: produit,
+              onModificationsSelected: (modifications) {
+                modification.complete(modifications);
+                Navigator.pop(context);
+              },
+            ),
+          );
+        },
       );
-    return modification.future;
-  }
+      return modification.future;
+    }
 }
