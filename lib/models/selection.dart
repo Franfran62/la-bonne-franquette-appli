@@ -1,4 +1,5 @@
 import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:collection/collection.dart';
 
 class Selection {
   String nom;
@@ -68,4 +69,25 @@ class Selection {
   calculatePrice() {
     prixHT = articles.fold(0, (sum, article) => sum + article.prixHT * article.quantite);
   } 
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Selection otherSelection = other as Selection;
+    return nom == otherSelection.nom &&
+        ListEquality().equals(articles, otherSelection.articles) &&
+        quantite == otherSelection.quantite &&
+        prixHT == otherSelection.prixHT &&
+        isModified == otherSelection.isModified;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        nom,
+        ListEquality().hash(articles),
+        quantite,
+        prixHT,
+        isModified,
+      );
 }
