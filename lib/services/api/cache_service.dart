@@ -8,8 +8,16 @@ class CacheService {
     try {
       await SessionService.isConnected();
       if (SessionService.connected) {
-        await ApiService.get(endpoint: "/cache/rafraichir", token: true);
+        await ApiService.get(endpoint: "/cache/rafraichir", token: false);
       }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+    static Future<void> refreshCacheWhileDisconnected() async {
+    try {
+      await ApiService.get(endpoint: "/cache/rafraichir", token: false);
     } catch (e) {
       throw Exception(e);
     }

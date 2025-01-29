@@ -13,7 +13,7 @@ class SessionService {
   static Future<bool> isConnected() async {
     connected = false;
   String? result = await ApiUtilsService.getComputedUrl();
-    if( result != null && result.isNotEmpty ) {
+    if(result.isNotEmpty) {
       try {
         connected = await ApiService.get(endpoint: "/auth/is-connected", token: true);
       } catch (e) {
@@ -55,6 +55,7 @@ class SessionService {
         token: true
       );
       await ApiUtilsService.setToken(token: "");
+      await ApiUtilsService.setRefreshToken(token: "");
       connected = false;
       context.go('/');
     } catch (e) {
