@@ -60,25 +60,23 @@ class ModificationModal extends HookWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32.0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 250.0),
-                  child: ElevatedButton(
-                    style: Theme.of(context).elevatedButtonTheme.style,
-                    onPressed: () {
-                      Map<String, List> modifications = {
-                        "ingredients": ingredientsARetirer.value,
-                        "extras": extrasPourProduit.value,
-                      };
-                      onModificationsSelected(modifications);
-                    },
-                    child: Text("Valider"),
-                  ),
-                ),
-              ),
               SizedBox(height: 25),
             ],
+          ),
+        ),
+        Positioned(
+          bottom: 15,
+          width: 150,
+          child: ElevatedButton(
+            style: Theme.of(context).elevatedButtonTheme.style,
+              onPressed: () {
+                Map<String, List> modifications = {
+                  "ingredients": ingredientsARetirer.value,
+                  "extras": extrasPourProduit.value,
+                };
+                onModificationsSelected(modifications);
+              },
+              child: Text("Valider"),
           ),
         ),
         Positioned(

@@ -32,11 +32,12 @@ class ModificationIngredientModal extends StatelessWidget {
               padding: const EdgeInsets.only(top: 24.0),
               child: Center(
                 child: Text(
-                  "Ingrédients",
+                  "Ingrédients à retirer",
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
             ),
+            Padding(padding: EdgeInsets.only(top: 12)),
             ...ingredients.map((ingredient) => Padding(
                   padding: EdgeInsets.all(8.0),
                   child: StatefulBuilder(

@@ -34,11 +34,12 @@ class ModificationExtraModal extends StatelessWidget {
               padding: const EdgeInsets.only(top: 24.0),
               child: Center(
                 child: Text(
-                  "Extras",
+                  "Extras disponibles",
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             ),
+            Padding(padding: EdgeInsets.only(top: 12)),
             ...extras.map((extra) => Padding(
                   padding: EdgeInsets.all(8.0),
                   child: StatefulBuilder(
