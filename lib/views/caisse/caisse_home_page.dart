@@ -139,19 +139,23 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     SizedBox(width: 100.0),
                   ],
                 ),
-                showMenu
-                  ? CaisseMenuListView(
-                      menus: menus,
-                      taille: (defaultHeight - 100) / 3,
-                      tailleText: defaultTailleText,
-                      onAjout: () => setState(() {}),
-                    )
-                  : CaisseCategorieListView(
-                      categories: categories,
-                      taille: (defaultHeight - 100) / 3,
-                      tailleText: defaultTailleText,
-                      onAjout: () => setState(() {}),
-                    ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: 
+                    showMenu
+                      ? CaisseMenuListView(
+                          menus: menus,
+                          taille: (defaultHeight - 100) / 3,
+                          tailleText: defaultTailleText,
+                          onAjout: () => setState(() {}),
+                        )
+                      : CaisseCategorieListView(
+                          categories: categories,
+                          taille: (defaultHeight - 100) / 3,
+                          tailleText: defaultTailleText,
+                          onAjout: () => setState(() {}),
+                        ),
+                ),
               ],
             ),
           ),
