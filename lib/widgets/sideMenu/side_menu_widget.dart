@@ -44,13 +44,15 @@ class SideMenuWidget extends StatelessWidget {
     );
   }
 
-  void refreshCache() {
+  void refreshCache() async {
     try {
-      CacheService.refreshCache();
+      await CacheService.refreshCache();
+      await SessionService.logout(context);
     } on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Une erreur s'est produite: $e")));
+          SnackBar(content: Text("Une erreur s'est produite, vous allez être déconnecté")));
       scaffoldKey.currentState?.closeDrawer();
+      context.go('/');
       return;
     }
     ScaffoldMessenger.of(context)

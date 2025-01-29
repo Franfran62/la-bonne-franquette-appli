@@ -66,7 +66,7 @@ class ConnectionModalWidget extends StatelessWidget {
                         fontWeight: FontWeight.normal)),
                 onPressed: () async {
                   try {
-                    await CacheService.refreshCache();
+                    await CacheService.refreshCacheWhileDisconnected();
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Cache rafraîchi.")));
                   } catch (e) {
