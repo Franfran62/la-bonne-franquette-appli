@@ -35,6 +35,11 @@ class CaisseCategorieListView extends HookWidget {
       listAffiche.value = nouvelleList;
     }
 
+    onAjoutProduit() {
+      updateProduitsAffiches(defaultList);
+      onAjout();
+    }
+
     return Column(
       children: [
         Container(
@@ -93,7 +98,7 @@ class CaisseCategorieListView extends HookWidget {
                                   produits: listAffiche.value["produits"]
                                       as List<Produit>,
                                   tailleText: tailleText,
-                                  onAjout: onAjout,
+                                  onAjout: onAjoutProduit,
                                 ),
                               ),
                               SizedBox(
