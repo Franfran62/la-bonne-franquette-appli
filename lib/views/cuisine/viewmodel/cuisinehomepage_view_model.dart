@@ -13,12 +13,10 @@ class CuisineHomepageViewModel {
   Future<List<Commande>> getCommandeEnCours() async {
     try {
       final response = await ApiService.fetchAll(endpoint: '/commandes/status/en-cours', token: true);
-        List<Commande> commandes = List<Commande>.from(response.map((commande) => Commande.fromJson(commande)));
+      List<Commande> commandes = List<Commande>.from(response.map((commande) => Commande.fromJson(commande)));
       return commandes;
     } catch (e) {
       throw Exception("Impossible de récupérer les commandes en cours");
     }
   }
-
-  //TODO Modifier afin de récupérer tous les articles des menus dans un seul liste d'article
 }

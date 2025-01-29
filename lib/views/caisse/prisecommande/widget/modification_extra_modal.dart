@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
+import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
 
 class ModificationExtraModal extends StatelessWidget {
+  final int produitId;
   final ValueNotifier<List<Extra>> extrasPourProduit;
   final CaisseViewModel caisseViewModel = CaisseViewModel();
 
   ModificationExtraModal({
+    required this.produitId,
     required this.extrasPourProduit,
     super.key,
   });
@@ -14,7 +17,7 @@ class ModificationExtraModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Extra>>(
-      future: caisseViewModel.getExtras(),
+      future: DatabaseService.findExtrasByProduitId(produitId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());

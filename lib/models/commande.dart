@@ -66,7 +66,7 @@ class Commande {
           : null,
       status: StatusCommande.values.firstWhere(
           (status) => status.toString().split('.').last == json['status']),
-      surPlace: json['surPlace'],
+      surPlace: json['surPlace'] ?? false,
       nbArticle: json['nbArticle'],
       prixHT: json['prixHT'],
       tauxTVA: json['tauxTVA'],
