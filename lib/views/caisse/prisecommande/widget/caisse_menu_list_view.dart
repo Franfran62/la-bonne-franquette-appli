@@ -75,25 +75,26 @@ class CaisseMenuListView extends HookWidget {
 
     return Column(
       children: [
-        SizedBox(
-          height: taille,
-          child: GridView(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: menus != null && menus!.isNotEmpty
-                ? menus!.map((menu) => Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: ElementButton(
-                        element: menu.nom,
-                        tailleText: tailleText,
-                        onPressed: () => updateMenuItems(menu),
-                        isSelected: selectedMenu.value == menu,
-                      ),
-                    )).toList()
-                : [CircularProgressIndicator()],
+        Container(
+            height: taille,
+            alignment: Alignment.topLeft,
+            child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              children: menus != null && menus!.isNotEmpty
+                  ? menus!.map((menu) => Padding(
+                        padding: EdgeInsets.all(2.0),
+                        child: ElementButton(
+                            element: menu.nom,
+                            tailleText: tailleText,
+                            onPressed: () => updateMenuItems(menu),
+                            isSelected: selectedMenu.value == menu,
+                          ),
+                      )).toList()
+                  : [CircularProgressIndicator()],
+            ),
           ),
-        ),
         if (selectedMenu.value != null)
           Container(
             alignment: Alignment.topLeft,

@@ -37,7 +37,8 @@ class CaisseCategorieListView extends HookWidget {
 
     return Column(
       children: [
-        SizedBox(
+        Container(
+          alignment: Alignment.topLeft,
           height: taille,
           child: GridView(
             gridDelegate:
