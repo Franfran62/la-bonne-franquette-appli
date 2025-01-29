@@ -1,5 +1,6 @@
 import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
+import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/menuItem.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
@@ -80,6 +81,14 @@ class DatabaseService {
             ingredient_id INTEGER,
             FOREIGN KEY (produit_id) REFERENCES produit(id),
             FOREIGN KEY (ingredient_id) REFERENCES ingredient(id)
+          );
+        ''');
+        db.execute('''
+          CREATE TABLE produit_contient_extra (
+            produit_id INTEGER,
+            extra_id INTEGER,
+            FOREIGN KEY (produit_id) REFERENCES produit(id),
+            FOREIGN KEY (extra_id) REFERENCES extra(id)
           );
         ''');
         db.execute('''
@@ -250,5 +259,17 @@ class DatabaseService {
     ''', [produitId]);
 
     return result?.map((e) => Ingredient.fromMap(e)).toList() ?? [];
+  }
+
+  static Future<List<Extra>> findExtrasByProduitId(int produitId) async {
+    final result = await database?.rawQuery('''
+      SELECT extra.*
+      FROM extra
+      INNER JOIN produit_contient_extra
+      ON extra.id = produit_contient_extra.extra_id
+      WHERE produit_contient_extra.produit_id = ?
+    ''', [produitId]);
+
+    return result?.map((e) => Extra.fromMap(e)).toList() ?? [];
   }
 }

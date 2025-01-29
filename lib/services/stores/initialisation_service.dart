@@ -48,10 +48,12 @@ class InitialisationService {
             Produit produit = Produit.fromJson(i);
             List<Categorie> categories = produit.getCategories();
             List<Ingredient> ingredients = produit.getIngredients();
+            List<Extra> extras = produit.getExtras();
 
             await DatabaseService.insert(Tables.produit, produit.register());
             await link<Categorie>(Tables.produitAppartientCategorie, i['id'], categories);
             await link<Ingredient>(Tables.produitContientIngredient, i['id'], ingredients);
+            await link<Extra>(Tables.produitContientExtra, i['id'], extras);
           }
           break;
         case "menu":

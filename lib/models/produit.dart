@@ -2,6 +2,7 @@ import "package:la_bonne_franquette_front/models/categorie.dart";
 import "package:la_bonne_franquette_front/models/interface/identifiable.dart";
 import "package:la_bonne_franquette_front/services/stores/database_service.dart";
 import "ingredient.dart";
+import "extra.dart"; 
 
 class Produit implements Identifiable {
 
@@ -12,6 +13,7 @@ class Produit implements Identifiable {
   final int prixHt;
   final List<Ingredient> ingredients;
   final List<Categorie> categories;
+  final List<Extra> extras; 
 
   Produit ({
     required this.id,
@@ -19,12 +21,14 @@ class Produit implements Identifiable {
     required this.prixHt,
     required this.ingredients,
     required this.categories,
+    required this.extras, 
   });
 
   factory Produit.fromJson(Map<String, dynamic> json) {
     try {
       var ingredientList = json['ingredientSet'] as List<dynamic>;
       var categorieList = json['categorieSet'] as List<dynamic>;
+      var extraList = json['extraSet'] as List<dynamic>; 
 
       List<Ingredient> ingredients = ingredientList
         .map((ingredientJson) => Ingredient.fromJson(ingredientJson))
@@ -34,12 +38,17 @@ class Produit implements Identifiable {
         .map((categorieJson) => Categorie.fromJson(categorieJson))
         .toList();
 
+      List<Extra> extras = extraList
+        .map((extraJson) => Extra.fromJson(extraJson))
+        .toList();
+
       return Produit(
             id: json['id'] as int,
             nom: json['nom'] as String,
             prixHt: json['prixHT'] as int,
             ingredients: ingredients,
             categories: categories,
+            extras: extras, 
           ); 
     } catch (e) {
       throw Exception("Impossible de créer un Produit à partir de $json");
@@ -53,6 +62,7 @@ class Produit implements Identifiable {
       prixHt: map['prixht'],
       ingredients: map['ingredients'] ?? [],
       categories: map['categories'] ?? [],
+      extras: map['extras'] ?? [],
     );
   }
 
@@ -88,5 +98,7 @@ class Produit implements Identifiable {
     return categories;
   }
 
- 
+  List<Extra> getExtras() {
+    return extras;
+  }
 }

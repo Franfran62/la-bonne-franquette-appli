@@ -28,7 +28,7 @@ class Selection {
       articles: articles,
       quantite: json['quantite'],
       prixHT: json['prixHT'],
-      isModified: json['isModified'],
+      isModified: json['modified'],
     );
   }
 

@@ -53,6 +53,7 @@ class ModificationModal extends HookWidget {
                     ),
                     Expanded(
                       child: ModificationExtraModal(
+                        produitId: produitAModifier.id,
                         extrasPourProduit: extrasPourProduit,
                       ),
                     ),
