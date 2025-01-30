@@ -14,15 +14,13 @@ class CaisseSousCategorieListView extends HookWidget {
   final TextScaler tailleText;
   final VoidCallback onAjout;
 
-  CaisseSousCategorieListView({
+  const CaisseSousCategorieListView({
     super.key,
     required this.categories,
     required this.taille,
     required this.tailleText,
     required this.onAjout,
   });
-
-  final CaisseViewModel viewModel = CaisseViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +30,12 @@ class CaisseSousCategorieListView extends HookWidget {
     updateProduitsAffiches(List<Produit> nouvelleList) {
       listAffiche.value = nouvelleList;
     }
+
+    // Reset des produits a afficher quand on change de catégorie
+    useEffect(() {
+      updateProduitsAffiches(defaultList);
+      return null;
+    }, [categories]);
 
     return Column(
       children: [
