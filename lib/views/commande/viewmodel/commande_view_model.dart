@@ -1,9 +1,13 @@
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
+import 'package:flutter/foundation.dart';
 
-class CommandeViewModel {
+
+class CommandeViewModel extends ChangeNotifier {
 
   static final CommandeViewModel _singleton = CommandeViewModel._internal();
+  int? resteAPayer;
+  
   CommandeNotifier commandeNotifier = CommandeNotifier();
 
   factory CommandeViewModel() {
@@ -11,12 +15,21 @@ class CommandeViewModel {
   }
   CommandeViewModel._internal();
 
+  void init() {
+   if (commandeNotifier.currentCommande.paiementSet.isNotEmpty) {
+    for (var paiement in commandeNotifier.currentCommande.paiementSet) {
+      resteAPayer = commandeNotifier.currentCommande.prixHT! - paiement.prixHT;
+    }
+   } else {
+     resteAPayer = commandeNotifier.currentCommande.prixHT;
+    }
+  }
+
   Future<bool> sendOrder() async {
     try {
       if (commandeNotifier.currentCommande.articles.isEmpty && commandeNotifier.currentCommande.menus.isEmpty) {
         throw Exception("Le panier est vide.");
       }
-      print(commandeNotifier.currentCommande.toCreateCommandeJson());
       await ApiService.post(endpoint: '/commandes', body: commandeNotifier.currentCommande.toCreateCommandeJson(), token: true);
     } on Exception {
       rethrow;

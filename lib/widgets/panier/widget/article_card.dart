@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
-import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/panier/widget/article_extras_and_ingredients.dart';
-import 'package:la_bonne_franquette_front/views/caisse/panier/widget/badge_modifie.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/widget/article_extras_and_ingredients.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/widget/badge_modifie.dart';
 
 class ArticleCard extends HookWidget {
   final Article article;
