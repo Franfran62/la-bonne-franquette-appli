@@ -11,12 +11,14 @@ class ArticleCard extends HookWidget {
 
   ArticleCard({required this.article, super.key});
 
-  void ajout() {
+  void ajout(BuildContext context) {
     PanierViewModel().ajouterAuPanier(article);
+    (context as Element).markNeedsBuild();
   }
 
-  void suppression() {
+  void suppression(BuildContext context) {
     PanierViewModel().supprimerArticle(article);
+    (context as Element).markNeedsBuild();
   }
 
   @override
@@ -38,7 +40,7 @@ class ArticleCard extends HookWidget {
                 ),
           Row(
             children: [
-              IconButton(onPressed: ajout, icon: Icon(Icons.add)),
+              IconButton(onPressed: () => ajout(context), icon: Icon(Icons.add)),
               Text(article.quantite.toString()),
               Padding(padding: EdgeInsets.symmetric(horizontal: 1.0)),
               Expanded(
@@ -48,7 +50,7 @@ class ArticleCard extends HookWidget {
                       overflow: TextOverflow.clip, 
                       article.nom)
               ),
-              IconButton(onPressed: suppression, icon: Icon(Icons.remove)),
+              IconButton(onPressed: () => suppression(context), icon: Icon(Icons.remove)),
             ],
           ),
           if (article.ingredients.isNotEmpty || article.extraSet.isNotEmpty)

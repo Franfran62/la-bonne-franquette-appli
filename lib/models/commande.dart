@@ -5,35 +5,36 @@ import 'package:la_bonne_franquette_front/models/paiement.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 
 class Commande {
-  final int commandeId;
-  final int numero;
-  final DateTime dateSaisie;
-  final DateTime? dateLivraison;
-  final StatusCommande status;
-  final bool surPlace;
-  final int nbArticle;
-  final int prixHT;
-  final int tauxTVA;
-  final List<Article> articles;
-  final List<Selection> menus;
-  final List<Paiement> paiementSet;
-  final String? paiementTypeCommande;
+  int? commandeId;
+  int? numero;
+  DateTime? dateSaisie;
+  DateTime? dateLivraison;
+  StatusCommande status;
+  bool surPlace;
+  int? nbArticle;
+  int? prixHT;
+  final int? tauxTVA;
+  List<Article> articles;
+  List<Selection> menus;
+  List<Paiement> paiementSet;
+  String? paiementTypeCommande;
 
   Commande({
     this.tauxTVA = 10,
-    required this.commandeId,
-    required this.numero,
-    required this.dateSaisie,
-    required this.dateLivraison,
+    this.commandeId,
+    this.numero,
+    this.dateSaisie,
+    this.dateLivraison,
     required this.status,
     required this.surPlace,
-    required this.nbArticle,
-    required this.prixHT,
-    required this.articles,
-    required this.menus,
+    this.nbArticle,
+    this.prixHT,
+    required List<Article>? articles,
+    required List<Selection>? menus,
     required this.paiementSet,
-    required this.paiementTypeCommande,
-  });
+    this.paiementTypeCommande,
+  })  : articles = articles ?? [],
+        menus = menus ?? [];
 
   factory Commande.fromJson(Map<String, dynamic> json) {
     List<Article> articles = [];
@@ -88,7 +89,7 @@ class Commande {
     return {
       'commandeId': commandeId,
       'numero': numero,
-      'dateSaisie': dateSaisie.toIso8601String(),
+      'dateSaisie': dateSaisie?.toIso8601String(),
       'dateLivraison': dateLivraison?.toIso8601String(),
       'status': status.toString(),
       'surPlace': surPlace,
@@ -102,7 +103,26 @@ class Commande {
     };
   }
 
-  int getCommandeId() {
+  Map<String, dynamic> toCreateCommandeJson() {
+
+    List<Map<String, dynamic>> articlesJson =
+      articles.map((article) => article.toJson()).toList();
+    List<Map<String, dynamic>> menusJson =
+      menus.map((selection) => selection.toJson()).toList();
+    List<Map<String, dynamic>> paiementSetJson =
+      paiementSet.map((paiement) => paiement.toJsonForCommande()).toList();
+
+    return {
+      'status': StatusCommande.EN_COURS.name,
+      'surPlace': surPlace,
+      'prixHT': prixHT,
+      'articles': articlesJson,
+      'menus': menusJson,
+      'paiementSet': paiementSetJson,
+    };
+  }
+
+  int? getCommandeId() {
     return commandeId;
   }
 
@@ -140,5 +160,10 @@ class Commande {
       }
     }
     return articlesConcatMenus;
+  }
+
+  @override
+  String toString() {
+    return 'Commande{commandeId: $commandeId, numero: $numero, dateSaisie: $dateSaisie, dateLivraison: $dateLivraison, status: $status, surPlace: $surPlace, nbArticle: $nbArticle, prixHT: $prixHT, tauxTVA: $tauxTVA, articles: $articles, menus: $menus, paiementSet: $paiementSet, paiementTypeCommande: $paiementTypeCommande}';
   }
 }
