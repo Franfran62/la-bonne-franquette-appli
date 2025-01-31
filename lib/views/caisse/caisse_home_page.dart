@@ -6,10 +6,10 @@ import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_categorie_list_view.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_menu_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
-import 'panier/widget/panier_widget.dart';
+import '../../widgets/panier/widget/panier_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
@@ -87,7 +87,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     return SizedBox(
                       height: defaultHeight - titleSize,
                       width: constraints.maxWidth,
-                      child: PanierWidget(height: defaultHeight),
+                      child: PanierWidget(height: defaultHeight, displaySmall: true),
                     );
                   },
                 ),

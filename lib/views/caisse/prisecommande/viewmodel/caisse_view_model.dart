@@ -9,7 +9,7 @@ import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/modification_modal.dart';
-import 'package:la_bonne_franquette_front/views/caisse/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/viewmodel/panier_view_model.dart';
 import '../../../../models/categorie.dart';
 
 class CaisseViewModel {
