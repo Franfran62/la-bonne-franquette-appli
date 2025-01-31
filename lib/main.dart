@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/router/routes.dart';
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
+import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   
   String initialRoute = '/';
@@ -23,18 +23,21 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   final String initialRoute;
 
   const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp.router(
-      routerConfig: createRouter(initialRoute),
-      title: 'La Bonne Franquette',
-      theme: CustomTheme.getTheme()
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CommandeNotifier()),
+      ],
+      child: MaterialApp.router(
+        routerConfig: createRouter(initialRoute),
+        title: 'La Bonne Franquette',
+        theme: CustomTheme.getTheme(),
+      ),
     );
   }
 }
