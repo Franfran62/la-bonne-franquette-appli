@@ -9,7 +9,7 @@ import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/cais
 import 'package:la_bonne_franquette_front/widgets/panier/viewmodel/panier_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
-import '../../widgets/panier/widget/panier_widget.dart';
+import 'prisecommande/widget/panier_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
@@ -87,7 +87,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     return SizedBox(
                       height: defaultHeight - titleSize,
                       width: constraints.maxWidth,
-                      child: PanierWidget(height: defaultHeight, displaySmall: true),
+                      child: PanierWidget(height: defaultHeight),
                     );
                   },
                 ),

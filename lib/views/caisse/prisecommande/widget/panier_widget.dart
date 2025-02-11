@@ -8,14 +8,13 @@ import 'package:la_bonne_franquette_front/widgets/panier/widget/article_card.dar
 import 'package:la_bonne_franquette_front/widgets/panier/widget/menu_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/article.dart';
+import '../../../../models/article.dart';
 
 class PanierWidget extends HookWidget {
 
-  final bool displaySmall;
   final double height;
 
-  const PanierWidget({required this.height, required this.displaySmall, super.key});
+  const PanierWidget({required this.height, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class PanierWidget extends HookWidget {
                         ),
                       )
                     : SizedBox(),
-                items.isNotEmpty && displaySmall
+                items.isNotEmpty
                     ? Center(
                         child: Column(
                           children: [
