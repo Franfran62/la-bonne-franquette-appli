@@ -103,7 +103,7 @@ class CustomTheme {
     );
   }
 
-  static InputDecoration getInputDecoration({required String label, required String placeholder, required BuildContext context}) {
+  static InputDecoration getInputDecoration({required String label, required String placeholder, required BuildContext context, suffixIcon}) {
     ThemeData theme = Theme.of(context);
     return InputDecoration(
       labelText: label,
@@ -111,6 +111,7 @@ class CustomTheme {
       hintText: 'Entrez votre $placeholder',
       hintStyle: theme.textTheme.bodyMedium,
       floatingLabelBehavior: FloatingLabelBehavior.always,
+      suffixIcon: suffixIcon,
     );
   }
 }
