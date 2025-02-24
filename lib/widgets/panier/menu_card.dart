@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/widget/badge_modifie.dart';
-
-import '../viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
+import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/badge_modifie.dart';
 import 'article_info.dart';
 
 class MenuCard extends HookWidget {
   final Selection menu;
-  final PanierViewModel viewModel = PanierViewModel();
+  CommandeNotifier commandeNotifier = CommandeNotifier();
 
   MenuCard({required this.menu, super.key});
 
   void ajout() {
-    viewModel.ajouterQuantiteMenu(menu);
+    commandeNotifier.addMenu(menu);
   }
 
   void suppression() {
-    viewModel.supprimerMenu(menu);
+    commandeNotifier.removeMenu(menu);
   }
 
 @override

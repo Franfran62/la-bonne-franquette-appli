@@ -4,9 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/modification_ingredient_modal.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/modification_extra_modal.dart';
+import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/modification_ingredient_modal.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/modification_extra_modal.dart';
 
 class ModificationModal extends HookWidget {
   final Produit produitAModifier;

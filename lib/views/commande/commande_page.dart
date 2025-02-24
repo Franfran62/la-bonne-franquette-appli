@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/views/commande/widgets/commande_side_widget.dart';
 import 'package:la_bonne_franquette_front/views/commande/widgets/paiement_side_widget.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/panier_widget.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/panier_widget.dart';
 import 'package:provider/provider.dart';
 
 

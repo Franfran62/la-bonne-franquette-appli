@@ -4,11 +4,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/widget/article_card.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/widget/menu_card.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/article_card.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/menu_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../models/article.dart';
+import '../../../models/article.dart';
 
 class PanierWidget extends HookWidget {
 

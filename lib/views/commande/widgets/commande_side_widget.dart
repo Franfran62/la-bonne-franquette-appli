@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/widget/article_card.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/widget/menu_card.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/article_card.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/menu_card.dart';
 
 class CommandeSideWidget extends StatelessWidget {
 

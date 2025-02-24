@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
 
 class ModificationExtraModal extends StatelessWidget {
   final int produitId;

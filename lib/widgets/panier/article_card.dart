@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/article.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/viewmodel/panier_view_model.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/widget/article_extras_and_ingredients.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/widget/badge_modifie.dart';
+import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
+import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/article_extras_and_ingredients.dart';
+import 'package:la_bonne_franquette_front/widgets/panier/badge_modifie.dart';
 
 class ArticleCard extends HookWidget {
   final Article article;
-  final PanierViewModel viewModel = PanierViewModel();
+  CommandeNotifier commandeNotifier = CommandeNotifier();
 
   ArticleCard({required this.article, super.key});
 
   void ajout(BuildContext context) {
-    PanierViewModel().ajouterAuPanier(article);
+    commandeNotifier.addArticle(article);
     (context as Element).markNeedsBuild();
   }
 
   void suppression(BuildContext context) {
-    PanierViewModel().supprimerArticle(article);
+    commandeNotifier.removeArticle(article);
     (context as Element).markNeedsBuild();
   }
 

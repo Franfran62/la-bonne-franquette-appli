@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/menuItem.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_menu_items_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/element_button.dart';
+import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_items_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
 
 class CaisseMenuListView extends HookWidget {
 
