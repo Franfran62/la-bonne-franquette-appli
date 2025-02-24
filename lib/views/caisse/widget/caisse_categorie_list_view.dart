@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_produit_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_sous_categorie_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/element_button.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_produit_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_sous_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
 
-import '../viewmodel/caisse_view_model.dart';
 
 class CaisseCategorieListView extends HookWidget {
   final List<Categorie>? categories;
@@ -21,7 +20,6 @@ class CaisseCategorieListView extends HookWidget {
       required this.tailleText,
       required this.onAjout});
 
-  final CaisseViewModel viewModel = CaisseViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +33,8 @@ class CaisseCategorieListView extends HookWidget {
       listAffiche.value = nouvelleList;
     }
 
-    onAjoutProduit() {
-      updateProduitsAffiches(defaultList);
-      onAjout();
-    }
-
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           alignment: Alignment.topLeft,
@@ -98,7 +92,7 @@ class CaisseCategorieListView extends HookWidget {
                                   produits: listAffiche.value["produits"]
                                       as List<Produit>,
                                   tailleText: tailleText,
-                                  onAjout: onAjoutProduit,
+                                  onAjout: onAjout,
                                 ),
                               ),
                               SizedBox(

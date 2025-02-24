@@ -3,13 +3,12 @@ import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_categorie_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/caisse_menu_list_view.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/viewmodel/panier_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
-import '../../widgets/panier/widget/panier_widget.dart';
+import 'widget/panier_widget.dart';
 
 class CaisseHomePage extends StatefulWidget {
   const CaisseHomePage({super.key});
@@ -20,7 +19,6 @@ class CaisseHomePage extends StatefulWidget {
 
 class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel caisseViewModel = CaisseViewModel();
-  PanierViewModel panierViewModel = PanierViewModel();
   bool showMenu = false;
   List<Produit>? produits;
   List<Menu>? menus;
@@ -53,7 +51,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   }
 
   void updateDestinationChoice() {
-    panierViewModel.updateSurplace();
+    caisseViewModel.updateSurplace();
     setState(() {});
   }
 
@@ -87,7 +85,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     return SizedBox(
                       height: defaultHeight - titleSize,
                       width: constraints.maxWidth,
-                      child: PanierWidget(height: defaultHeight, displaySmall: true),
+                      child: PanierWidget(height: defaultHeight),
                     );
                   },
                 ),
@@ -116,12 +114,12 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     Spacer(),
                     ChoiceChip(
                       label: Text(
-                          panierViewModel.getSurPlace()
+                          caisseViewModel.getSurPlace()
                               ? "Sur place"
                               : "À emporter",
                           style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
-                      selected: panierViewModel.getSurPlace(),
+                      selected: caisseViewModel.getSurPlace(),
                       onSelected: (selected) =>
                           setState(updateDestinationChoice),
                     ),

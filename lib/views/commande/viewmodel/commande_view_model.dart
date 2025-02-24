@@ -7,6 +7,7 @@ class CommandeViewModel extends ChangeNotifier {
 
   static final CommandeViewModel _singleton = CommandeViewModel._internal();
   int? resteAPayer;
+  String? title;
   
   CommandeNotifier commandeNotifier = CommandeNotifier();
 
@@ -23,7 +24,11 @@ class CommandeViewModel extends ChangeNotifier {
    } else {
      resteAPayer = commandeNotifier.currentCommande.prixHT;
     }
+  title = commandeNotifier.currentCommande.numero != null
+      ? "Commande numéro ${commandeNotifier.currentCommande.numero}"
+      : "Commande en cours";
   }
+
 
   Future<bool> sendOrder() async {
     try {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/menuItem.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/element_button.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
 import '../viewmodel/caisse_view_model.dart';
 
 class CaisseMenuItemsListView extends StatelessWidget {

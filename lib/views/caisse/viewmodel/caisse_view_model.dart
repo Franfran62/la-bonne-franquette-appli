@@ -7,16 +7,17 @@ import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
+import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
-import 'package:la_bonne_franquette_front/views/caisse/prisecommande/widget/modification_modal.dart';
-import 'package:la_bonne_franquette_front/widgets/panier/viewmodel/panier_view_model.dart';
-import '../../../../models/categorie.dart';
+import 'package:la_bonne_franquette_front/views/caisse/widget/modification_modal.dart';
+import '../../../models/categorie.dart';
 
 class CaisseViewModel {
   static final CaisseViewModel _singleton = CaisseViewModel._internal();
   BuildContext? context;
   bool showModification = false;
   Selection menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0, isModified: false);
+  CommandeNotifier commandeNotifier = CommandeNotifier();
 
   factory CaisseViewModel() {
     return _singleton;
@@ -25,9 +26,18 @@ class CaisseViewModel {
   CaisseViewModel._internal();
 
   void init(bool surPlace) {
-    PanierViewModel().init(surPlace);
+    commandeNotifier.currentCommande.surPlace = surPlace;
+    commandeNotifier.clearPanier();
     showModification = false;
     menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0, isModified: false);
+  }
+
+    bool getSurPlace() {
+      return commandeNotifier.currentCommande.surPlace;
+  }
+
+    bool updateSurplace() {
+    return commandeNotifier.currentCommande.surPlace = !commandeNotifier.currentCommande.surPlace;
   }
   
     Future<List<Produit>?> getProduits() async {
@@ -78,7 +88,7 @@ class CaisseViewModel {
           ? true
           : false;
 
-      PanierViewModel().ajouterAuPanier(article);
+      commandeNotifier.addArticle(article);
       showModification = false;
     }
 
@@ -126,7 +136,7 @@ class CaisseViewModel {
         prixHT: menuEnConstruction.prixHT,
         isModified: menuEnConstruction.isModified
       );
-      await PanierViewModel().ajouterMenu(nouveauMenu);
+      commandeNotifier.addMenu(nouveauMenu);
       initMenuEnCours();
     }
 

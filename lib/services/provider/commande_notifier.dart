@@ -5,6 +5,7 @@ import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 
 class CommandeNotifier extends ChangeNotifier {
+  
   static final CommandeNotifier _singleton = CommandeNotifier._internal();
 
   static Commande _currentCommande = Commande(surPlace: true, articles: [], menus: [], paiementSet: [], status: StatusCommande.EN_COURS);
