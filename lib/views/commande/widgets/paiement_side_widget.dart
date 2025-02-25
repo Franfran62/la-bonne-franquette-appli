@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/models/enums/tables.dart';
+import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
+import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 
 class PaiementSideWidget extends StatelessWidget {
   int resteAPayer;

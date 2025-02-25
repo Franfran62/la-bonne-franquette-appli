@@ -6,6 +6,7 @@ import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
+import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
@@ -19,6 +20,7 @@ class InitialisationService {
     await initStore<Categorie>('categorie');
     await initStore<Produit>('produit');
     await initStore<Menu>('menu');
+    await initStore<PaiementTypeCommande>('paiement/types');
     return;
   }
 
@@ -41,6 +43,12 @@ class InitialisationService {
         case "categorie":
           for (var i in response){
             await DatabaseService.insert(Tables.categorie, i as Map<String, dynamic>);
+          }
+          break;
+        case "paiement/types":
+          for (var i in response) {
+            print(i);
+            await DatabaseService.insert(Tables.paiementTypeCommande, i as Map<String, dynamic>);
           }
           break;
         case "produit":
