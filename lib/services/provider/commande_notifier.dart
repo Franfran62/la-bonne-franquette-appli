@@ -30,7 +30,7 @@ class CommandeNotifier extends ChangeNotifier {
 
   set currentCommande(Commande commande) {
     _currentCommande = commande;
-    notifyListeners();
+    calculerLePrixTotal();
   }
 
   void addArticle(Article article) {
@@ -40,7 +40,7 @@ class CommandeNotifier extends ChangeNotifier {
     } else {
       _currentCommande.articles.add(article);
     }
-    notifyListeners();
+    calculerLePrixTotal();
   }
 
   void addMenu(Selection menu) {
@@ -50,7 +50,7 @@ class CommandeNotifier extends ChangeNotifier {
     } else {
       _currentCommande.menus.add(menu);
     }
-    notifyListeners();
+    calculerLePrixTotal();
   }
 
   void removeArticle(Article article) {
@@ -60,7 +60,7 @@ class CommandeNotifier extends ChangeNotifier {
     } else {
       _currentCommande.articles.remove(article);
     }
-    notifyListeners();
+    calculerLePrixTotal();
   }
 
   void removeMenu(Selection menu) {
@@ -70,7 +70,7 @@ class CommandeNotifier extends ChangeNotifier {
     } else {
       _currentCommande.menus.remove(menu);
     }
-    notifyListeners();
+    calculerLePrixTotal();
   }
 
   void clearPanier() {
@@ -78,7 +78,7 @@ class CommandeNotifier extends ChangeNotifier {
     _currentCommande.menus = [];
     _currentCommande.prixHT = 0;
     _currentCommande.paiementSet = [];
-    notifyListeners();
+    calculerLePrixTotal();
   }
 
   void calculerLePrixTotal() {
