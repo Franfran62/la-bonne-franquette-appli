@@ -103,7 +103,7 @@ class DatabaseService {
           CREATE TABLE paiement_type_commande (
             id INTEGER PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
-            enable INTEGER NOT NULL
+            isEnable INTEGER NOT NULL
           );
         ''');
       },

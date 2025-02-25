@@ -11,7 +11,7 @@ class PaiementTypeCommande {
   });
 
   static PaiementTypeCommande fromJson(Map<String, dynamic> json) {
-    bool enable = json["enable"] == 1;
+    bool enable = json["isEnable"] == 1;
     return PaiementTypeCommande(
       id: json['id'],
       name: json['name'],
