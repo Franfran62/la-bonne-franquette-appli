@@ -31,15 +31,6 @@ class ApiUtilsService {
     return 'http://${dotenv.env['API_URL']}/api/v1$endpoint';
   }
 
-  static Future<bool> setUrl({required String adresse}) async {
-    try {
-      await SecuredStorage().writeSecrets("adresseServeur", adresse);
-      return true;
-    } catch (e) {
-      throw Exception('Erreur : Impossible de sauvegarder l\'adresse du serveur');
-    }
-  }
-
     static Future<Map<String, String>> setHeaders(bool token) async {
       if(token){
         String authToken = await ApiUtilsService.getToken();
