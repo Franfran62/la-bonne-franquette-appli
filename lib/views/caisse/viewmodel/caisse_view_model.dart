@@ -39,24 +39,10 @@ class CaisseViewModel {
     bool updateSurplace() {
     return commandeNotifier.currentCommande.surPlace = !commandeNotifier.currentCommande.surPlace;
   }
-  
-    Future<List<Produit>?> getProduits() async {
-      return await DatabaseService.findAllProduits();
-    }
 
     Future<List<Menu>?> getMenus() async {
       return await DatabaseService.findAllMenus();
   }
-
-    Future<List<Extra>>? getExtras() async {
-
-      var resultat = await DatabaseService.findAll(Tables.extra, Extra.fromMap);
-      if(resultat == null) {
-        return <Extra>[];
-      } else {
-        return resultat;
-      }
-    }
 
     Future<List<Categorie>?> getCategorie() async {
       return await DatabaseService.findAllCategories();

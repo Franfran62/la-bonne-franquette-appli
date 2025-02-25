@@ -20,9 +20,7 @@ class CaisseHomePage extends StatefulWidget {
 class _CaisseHomePageState extends State<CaisseHomePage> {
   CaisseViewModel caisseViewModel = CaisseViewModel();
   bool showMenu = false;
-  List<Produit>? produits;
   List<Menu>? menus;
-  List<Extra>? extras;
   List<Categorie>? categories;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -33,9 +31,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
   }
 
   void loadCarte() async {
-    produits = await caisseViewModel.getProduits();
     menus = await caisseViewModel.getMenus();
-    extras = await caisseViewModel.getExtras();
     categories = await caisseViewModel.getCategorie();
     setState(() {});
   }

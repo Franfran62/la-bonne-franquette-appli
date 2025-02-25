@@ -14,7 +14,7 @@ class DatabaseService {
   static String databaseVersion = "0";
 
   static Future<void> initDatabase() async {
-    String path = join(await getDatabasesPath(), 'carte2_database.db');
+    String path = join(await getDatabasesPath(), 'carte_database.db');
     await deleteDatabase(path);
 
     database = await openDatabase(
@@ -99,6 +99,13 @@ class DatabaseService {
             FOREIGN KEY (categorie_id) REFERENCES categorie(id)
           );
         ''');
+        db.execute('''
+          CREATE TABLE paiement_type_commande (
+            id INTEGER PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            enable INTEGER NOT NULL
+          );
+        ''');
       },
     );
   }
@@ -163,7 +170,6 @@ class DatabaseService {
   return menus;
 }
 
-
   static Future<List<Categorie>> findAllCategories() async {
     List<Categorie> categories = [];
     final result = await database?.query(Tables.categorie.name,
@@ -205,7 +211,6 @@ class DatabaseService {
     return null;
   }
 
-
   static Future<List<Produit>> findProduitsByCategorieId(
       int categorieId) async {
     final result = await database?.query(Tables.produitAppartientCategorie.name,
@@ -223,12 +228,6 @@ class DatabaseService {
       produits.add(Produit.fromMap(map));
     }
     return produits;
-  }
-
-  static Future<List<T>?> findAll<T>(
-      Tables table, T Function(Map<String, dynamic>) fromMap) async {
-    final List<Map<String, Object?>>? maps = await database?.query(table.name);
-    return maps?.map(fromMap).toList();
   }
 
   static Future<List<MenuItem>> getMenuItemsByMenuId(int menuId) async {
