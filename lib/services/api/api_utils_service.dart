@@ -1,4 +1,6 @@
 import '../stores/secured_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class ApiUtilsService {
 
@@ -22,21 +24,11 @@ class ApiUtilsService {
   }
 
   static Future<String?> getUrl({String endpoint = ""}) async {
-    return await SecuredStorage().readSecret('adresseServeur');
+    return dotenv.env['API_URL'];
   }
 
   static Future<String> getComputedUrl({String endpoint = ""}) async {
-    final String? adresseServeur = await SecuredStorage().readSecret('adresseServeur');
-    return 'http://$adresseServeur/api/v1$endpoint';
-  }
-
-  static Future<bool> setUrl({required String adresse}) async {
-    try {
-      await SecuredStorage().writeSecrets("adresseServeur", adresse);
-      return true;
-    } catch (e) {
-      throw Exception('Erreur : Impossible de sauvegarder l\'adresse du serveur');
-    }
+    return 'http://${dotenv.env['API_URL']}/api/v1$endpoint';
   }
 
     static Future<Map<String, String>> setHeaders(bool token) async {

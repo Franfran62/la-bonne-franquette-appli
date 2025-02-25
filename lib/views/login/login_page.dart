@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/views/login/viewmodel/loginpage_view_model.dart';
-import 'package:la_bonne_franquette_front/views/login/widget/connection_modal_widget.dart';
 import '../../theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -56,7 +55,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            _buildSettingsButton(context),
           ],
         ),
       ),
@@ -130,33 +128,6 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         child: const Text('Valider'),
-      ),
-    );
-  }
-
-  Widget _buildSettingsButton(BuildContext context) {
-    return Positioned(
-      top: 25,
-      right: 25,
-      child: IconButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return SingleChildScrollView(
-                child: Dialog(
-                  insetPadding: const EdgeInsets.symmetric(
-                    vertical: 175,
-                    horizontal: 250,
-                  ),
-                  child: ConnectionModalWidget(),
-                ),
-              );
-            },
-          );
-        },
-        icon: const Icon(Icons.settings),
-        iconSize: 35.0,
       ),
     );
   }
