@@ -65,40 +65,4 @@ class Categorie implements Identifiable {
       sousCategories: map['sousCategories'] != null ? map['souscategories'] : [],
     );
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'nom': nom,
-      'categorieType': categorieType,
-      'categorieId': categorieId,
-      'produits' : produits,
-      'sousCategories' : sousCategories,
-    };
-  }
-
-  int getId() {
-    return id;
-  }
-
-  String getNom() {
-    return nom;
-  }
-
-
-  String getCategorieType() {
-    return categorieType;
-  }
-
-  int? getCategorieId() {
-    return categorieId;
-  }
-
-  List<Produit> getProduits() {
-    return produits;
-  }
-
-  List<Categorie> getSousCategorie() {
-    return sousCategories;
-  }
 }

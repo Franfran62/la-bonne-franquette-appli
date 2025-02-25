@@ -110,14 +110,6 @@ class DatabaseService {
     );
   }
 
-  static String getDatabaseVersion() {
-    return databaseVersion;
-  }
-
-  static void setDatabaseVersion(String version) {
-    databaseVersion = version;
-  }
-
   static Future<void> insert(Tables table, Map<String, dynamic> data) async {
     await database?.insert(
       table.name,
@@ -145,7 +137,7 @@ class DatabaseService {
         );
         List<Produit> produits = [];
         for (var el in (produitResult ?? [])) {
-          final produit = await Produit.fromId(el['produit_id'] as int);
+          final produit = await DatabaseService.getProduitById(el['produit_id'] as int);
           if (produit != null) {
             produits.add(produit);
           } else {
@@ -228,24 +220,6 @@ class DatabaseService {
       produits.add(Produit.fromMap(map));
     }
     return produits;
-  }
-
-  static Future<List<MenuItem>> getMenuItemsByMenuId(int menuId) async {
-    final result = await database?.query(
-      'menu_item',
-      where: 'menu_id = ?',
-      whereArgs: [menuId],
-    );
-
-    if (result != null) {
-      return result.map((item) => MenuItem.fromMap(item)).toList();
-    }
-    return [];
-  }
-
-  static Future<List<Produit>> findAllProduits() async {
-    final result = await database?.query(Tables.produit.name);
-    return result?.map((e) => Produit.fromMap(e)).toList() ?? [];
   }
 
   static Future<List<Ingredient>> findIngredientsByProduitId(int produitId) async {

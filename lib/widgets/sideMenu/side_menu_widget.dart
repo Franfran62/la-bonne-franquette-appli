@@ -30,7 +30,6 @@ class SideMenuWidget extends StatelessWidget {
               Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
           _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue",
               () => context.push(destination)),
-          _buildMenuItem(Icons.refresh, "Rafraîchir le cache", refreshCache),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion",
               () async => await SessionService.logout(context),
@@ -41,22 +40,6 @@ class SideMenuWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void refreshCache() async {
-    try {
-      await CacheService.refreshCache();
-      await SessionService.logout(context);
-    } on Exception catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Une erreur s'est produite, vous allez être déconnecté")));
-      scaffoldKey.currentState?.closeDrawer();
-      context.go('/');
-      return;
-    }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Cache mis à jour.")));
-    scaffoldKey.currentState?.closeDrawer();
   }
 
   Widget _buildIconButton(IconData icon, VoidCallback onPressed) {

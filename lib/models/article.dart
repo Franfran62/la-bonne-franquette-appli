@@ -57,32 +57,9 @@ class Article {
     };
   }
 
-  Map<String, dynamic> toJsonNoIngredient() {
-    return {
-      'nom': nom,
-      'quantite': quantite,
-      'prixHT': prixHT,
-      'ingredients': [],
-      'extraSet': extraSet.map((e) => e.toJson()).toList(),
-      "isModified": isModified
-    };
-  } 
-
   @override
   String toString() {
     return 'Article(nom: $nom, quantite: $quantite, prixHT: $prixHT, ingredients: $ingredients, extraSet: $extraSet, isModified: $isModified)';
-  }
-
-  double getPriceTTC(){
-    return  (prixHT/100) * 1.1;
-  }
-
-  List<Extra> getExtras() {
-    return extraSet;
-  }
-
-  List<Ingredient> getIngredients() {
-    return ingredients;
   }
 
   @override

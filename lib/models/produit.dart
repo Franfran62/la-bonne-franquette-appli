@@ -66,10 +66,6 @@ class Produit implements Identifiable {
     );
   }
 
-  static Future<Produit?> fromId(int id) async {
-    return await DatabaseService.getProduitById(id);
-  }
-
   Map<String, dynamic> register () {
     return {
       "id": id,
