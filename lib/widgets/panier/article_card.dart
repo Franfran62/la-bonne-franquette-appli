@@ -24,11 +24,7 @@ class ArticleCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: article.isModified
-            ? Color(0xFFE8F4FD)
-            : Color(0xFFF8F9FA),
-      child: Column(
+    return Column(
         children: [
            if (article.isModified)
                 Row(
@@ -57,7 +53,6 @@ class ArticleCard extends HookWidget {
           if (article.ingredients.isNotEmpty || article.extraSet.isNotEmpty)
              ArticleExtrasAndIngredients(article: article),      
         ],
-      ),
-    );
+      );
   }
 }

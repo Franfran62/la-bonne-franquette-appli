@@ -20,25 +20,20 @@ class MenuCard extends HookWidget {
     commandeNotifier.removeMenu(menu);
   }
 
-@override
-Widget build(BuildContext context) {
-
-  return Card(
-        color: menu.isModified
-            ? Color(0xFFE8F4FD)
-            : Color(0xFFF8F9FA),
-        child: Column(
+  @override
+  Widget build(BuildContext context) {
+    return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (menu.isModified)
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                      child: BadgeModifie(),
-                    ),
-                  ],
-                ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                    child: BadgeModifie(),
+                  ),
+                ],
+              ),
             Row(
               children: [
                 IconButton(onPressed: ajout, icon: Icon(Icons.add)),
@@ -54,11 +49,9 @@ Widget build(BuildContext context) {
                 ),
                 IconButton(onPressed: suppression, icon: Icon(Icons.remove)),
               ],
-            ),
+            ), 
             ...menu.articles.map((a) => ArticleInfos(article: a)),
           ],
-        ),
-      );
-}
-
+        );
+  }
 }

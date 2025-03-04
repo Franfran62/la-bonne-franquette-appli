@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/router/routes.dart';
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
+import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CommandeNotifier()),
+        ChangeNotifierProvider(create: (_) => PaiementNotifier()),
       ],
       child: MaterialApp.router(
         routerConfig: createRouter(initialRoute),

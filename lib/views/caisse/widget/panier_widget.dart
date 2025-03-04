@@ -2,8 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
+import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
+import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/article_card.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/menu_card.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +21,8 @@ class PanierWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final CommandeViewModel viewModel = CommandeViewModel();
     return Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 0),
         child: Consumer<CommandeNotifier>(
@@ -25,6 +30,24 @@ class PanierWidget extends HookWidget {
             final menus = commandeNotifier.currentCommande.menus;
             final articles = commandeNotifier.currentCommande.articles;
             final items = [...menus, ...articles];
+
+            void sendCommand() async {
+              if (commandeNotifier.currentCommande.commandeId != null) {
+                await ApiService.patch(
+                    endpoint: '/commandes/${commandeNotifier.currentCommande.commandeId}',
+                    body: commandeNotifier.currentCommande.toJson(),
+                    token: true);
+              } else {
+                  Map<String, dynamic> commande = await ApiService.post(
+                    endpoint: '/commandes',
+                    body: commandeNotifier.currentCommande.toCreateCommandeJson(),
+                    token: true);
+                  commandeNotifier.currentCommande.commandeId = commande['commandeId'];
+                  commandeNotifier.currentCommande.numero = commande['numero'];
+              }
+            viewModel.init(context);
+            context.push('/commande');
+            }
 
             return Column(
               children: [
@@ -34,9 +57,13 @@ class PanierWidget extends HookWidget {
                         child: ListView(
                           children: items.map<Widget>((item) {
                             if (item is Selection) {
-                              return MenuCard(menu: item);
+                              return Card(
+                                color: item.isModified ? Color(0xFFE8F4FD) : Color(0xFFF8F9FA),
+                                child: MenuCard(menu: item));
                             } else if (item is Article) {
-                              return ArticleCard(article: item);
+                              return Card(
+                                color: item.isModified ? Color(0xFFE8F4FD) : Color(0xFFF8F9FA),
+                                child: ArticleCard(article: item));
                             } else {
                               return SizedBox.shrink();
                             }
@@ -51,9 +78,7 @@ class PanierWidget extends HookWidget {
                             Container(
                               margin: const EdgeInsets.all(10),
                               child: ElevatedButton(
-                                onPressed: () {
-                                  context.push('/commande');
-                                },
+                                onPressed: sendCommand,
                                 child: Text(
                                   'Valider',
                                   style: Theme.of(context).textTheme.bodyLarge,

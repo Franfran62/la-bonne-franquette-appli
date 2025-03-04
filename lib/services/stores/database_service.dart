@@ -137,7 +137,8 @@ class DatabaseService {
         );
         List<Produit> produits = [];
         for (var el in (produitResult ?? [])) {
-          final produit = await DatabaseService.getProduitById(el['produit_id'] as int);
+          final produit =
+              await DatabaseService.getProduitById(el['produit_id'] as int);
           if (produit != null) {
             produits.add(produit);
           } else {
@@ -159,8 +160,8 @@ class DatabaseService {
         menuItemSet: menuItems,
       ));
     }
-  return menus;
-}
+    return menus;
+  }
 
   static Future<List<Categorie>> findAllCategories() async {
     List<Categorie> categories = [];
@@ -215,14 +216,17 @@ class DatabaseService {
   static Future<List<Produit>> findProduitByIds(List<int> produitIDs) async {
     List<Produit> produits = [];
     for (int e in produitIDs) {
-      final produitResult = await database?.query(Tables.produit.name, where: "id = $e");
-      Map<String, Object?> map = Map<String, Object?>.from(produitResult?.first ?? {});
+      final produitResult =
+          await database?.query(Tables.produit.name, where: "id = $e");
+      Map<String, Object?> map =
+          Map<String, Object?>.from(produitResult?.first ?? {});
       produits.add(Produit.fromMap(map));
     }
     return produits;
   }
 
-  static Future<List<Ingredient>> findIngredientsByProduitId(int produitId) async {
+  static Future<List<Ingredient>> findIngredientsByProduitId(
+      int produitId) async {
     final result = await database?.rawQuery('''
       SELECT ingredient.*
       FROM ingredient
@@ -244,5 +248,11 @@ class DatabaseService {
     ''', [produitId]);
 
     return result?.map((e) => Extra.fromMap(e)).toList() ?? [];
+  }
+
+  static Future<List<String>> getPaymentTypes() async {
+    final result =
+        await database?.query('paiement_type_commande', where: 'isEnable = 1');
+    return result?.map((e) => e['name'] as String).toList() ?? [];
   }
 }

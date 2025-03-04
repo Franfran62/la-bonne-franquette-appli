@@ -1,9 +1,14 @@
+import 'package:la_bonne_franquette_front/models/article.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
+import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
+import 'package:la_bonne_franquette_front/models/selection.dart';
 
 class Paiement {
   final int id;
   final DateTime date;
-  final String type;
+  final PaiementTypeCommande type;
+  final List<Article> articles;
+  final List<Selection> selections;
   final bool ticketEnvoye;
   final int prixHT;
   final int prixTTC;
@@ -17,13 +22,16 @@ class Paiement {
     required this.prixHT,
     required this.prixTTC,
     required this.commande,
+    this.articles = const [],
+    this.selections = const [],
   });
 
   factory Paiement.fromJson(Map<String, dynamic> json) {
     return Paiement(
       id: json['id'],
       date: DateTime.parse(json['date']),
-      type: json['type'],
+      type: PaiementTypeCommande.fromJson(json['type']),
+      articles: json['articles'].map<Article>((article) => Article.fromJson(article)).toList(),
       ticketEnvoye: json['ticketEnvoye'],
       prixHT: json['prixHT'],
       prixTTC: json['prixTTC'],

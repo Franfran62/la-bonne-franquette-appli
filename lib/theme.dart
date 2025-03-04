@@ -103,6 +103,30 @@ class CustomTheme {
     );
   }
 
+    static ElevatedButtonThemeData getSecondaryElevatedButtonTheme() {
+    return ElevatedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateColor.resolveWith((states) => const Color(0xFFF2F3AE)), 
+        foregroundColor: WidgetStateColor.resolveWith((states) => Colors.black), 
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+            side: BorderSide.none,
+          ),
+        ),
+        textStyle: WidgetStateProperty.all(
+          GoogleFonts.notoSans(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
+        padding: WidgetStateProperty.all(
+          const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+        ),
+      ),
+    );
+  }
+
   static InputDecoration getInputDecoration({required String label, required String placeholder, required BuildContext context, suffixIcon}) {
     ThemeData theme = Theme.of(context);
     return InputDecoration(

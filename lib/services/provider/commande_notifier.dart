@@ -24,6 +24,20 @@ class CommandeNotifier extends ChangeNotifier {
       );
   }
 
+    void reset() {
+    _currentCommande = Commande(
+      commandeId: null,
+      numero: null,
+      surPlace: true, 
+      articles: [], 
+      menus: [], 
+      paiementSet: [],
+      status: StatusCommande.EN_COURS,
+      prixHT: 0
+      );
+    calculerLePrixTotal();
+  }
+
   Commande get currentCommande {
     return _currentCommande;
   }
@@ -70,14 +84,6 @@ class CommandeNotifier extends ChangeNotifier {
     } else {
       _currentCommande.menus.remove(menu);
     }
-    calculerLePrixTotal();
-  }
-
-  void clearPanier() {
-    _currentCommande.articles = [];
-    _currentCommande.menus = [];
-    _currentCommande.prixHT = 0;
-    _currentCommande.paiementSet = [];
     calculerLePrixTotal();
   }
 

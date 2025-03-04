@@ -41,6 +41,15 @@ class ApiService{
     }, token);
   }
 
+  static Future<Map<String, dynamic>> patch({required String endpoint, required Map<String, dynamic> body, bool token = false}) async {
+    return _retryRequest(() async {
+      Map<String, String> headers = await ApiUtilsService.setHeaders(token);
+      String url = await ApiUtilsService.getComputedUrl(endpoint: endpoint);
+      final response = await http.patch(Uri.parse(url), headers: headers, body: jsonEncode(body));
+      return response;
+    }, token);
+  }
+
   static Future<bool> delete({required String endpoint, bool token = true}) async {
     return _retryRequest(() async {
       Map<String, String> headers = await ApiUtilsService.setHeaders(token);

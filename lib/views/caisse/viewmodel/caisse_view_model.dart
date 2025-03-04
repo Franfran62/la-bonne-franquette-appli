@@ -26,8 +26,8 @@ class CaisseViewModel {
   CaisseViewModel._internal();
 
   void init(bool surPlace) {
+    commandeNotifier.reset();
     commandeNotifier.currentCommande.surPlace = surPlace;
-    commandeNotifier.clearPanier();
     showModification = false;
     menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0, isModified: false);
   }
