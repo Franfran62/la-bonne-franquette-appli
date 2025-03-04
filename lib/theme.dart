@@ -132,7 +132,7 @@ class CustomTheme {
     return InputDecoration(
       labelText: label,
       labelStyle: theme.textTheme.bodyMedium,
-      hintText: 'Entrez votre $placeholder',
+      hintText: placeholder,
       hintStyle: theme.textTheme.bodyMedium,
       floatingLabelBehavior: FloatingLabelBehavior.always,
       suffixIcon: suffixIcon,
