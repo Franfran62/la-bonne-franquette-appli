@@ -1,29 +1,21 @@
 import 'package:la_bonne_franquette_front/models/article.dart';
-import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
-import 'package:la_bonne_franquette_front/models/selection.dart';
 
 class Paiement {
-  final int id;
+  int? id;
   final DateTime date;
   final PaiementTypeCommande type;
   final List<Article> articles;
-  final List<Selection> selections;
-  final bool ticketEnvoye;
-  final int prixHT;
-  final int prixTTC;
-  final Commande commande;
+  final int prixPaid;
+  final int commandeId;
 
   Paiement({
-    required this.id,
     required this.date,
     required this.type,
-    required this.ticketEnvoye,
-    required this.prixHT,
-    required this.prixTTC,
-    required this.commande,
+    required this.prixPaid,
+    required this.commandeId,
+    this.id,
     this.articles = const [],
-    this.selections = const [],
   });
 
   factory Paiement.fromJson(Map<String, dynamic> json) {
@@ -32,10 +24,8 @@ class Paiement {
       date: DateTime.parse(json['date']),
       type: PaiementTypeCommande.fromJson(json['type']),
       articles: json['articles'].map<Article>((article) => Article.fromJson(article)).toList(),
-      ticketEnvoye: json['ticketEnvoye'],
-      prixHT: json['prixHT'],
-      prixTTC: json['prixTTC'],
-      commande: Commande.fromJson(json['commande']),
+      prixPaid: json['prixPaid'],
+      commandeId: json['commandeId'],
     );
   }
 
@@ -44,10 +34,8 @@ class Paiement {
       'id': id,
       'date': date.toIso8601String(),
       'type': type,
-      'ticketEnvoye': ticketEnvoye,
-      'prixHT': prixHT,
-      'prixTTC': prixTTC,
-      'commande': commande.toJson(),
+      'prixPaid': prixPaid,
+      'commande': commandeId,
     };
   }
 
@@ -56,9 +44,7 @@ class Paiement {
       'id': id,
       'date': date.toIso8601String(),
       'type': type,
-      'ticketEnvoye': ticketEnvoye,
-      'prixHT': prixHT,
-      'prixTTC': prixTTC,
+      'prixPaid': prixPaid,
     };
   }
 }

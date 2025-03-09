@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
+import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article_paiement.dart';
+import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 
 class PaiementNotifier extends ChangeNotifier {
   static final PaiementNotifier _singleton = PaiementNotifier._internal();
@@ -16,9 +18,9 @@ class PaiementNotifier extends ChangeNotifier {
   static int _total = 0;
 
   int _currentMontant = 0;
-  PaymentChoice _selectedPayment = PaymentChoice.montant;
+  PaymentChoice _selectedPayment = PaymentChoice.toutPayer;
 
-  String _selectedPaymentType = '';
+  PaiementTypeCommande? _selectedPaymentType;
 
   factory PaiementNotifier() {
     return _singleton;
@@ -68,7 +70,7 @@ class PaiementNotifier extends ChangeNotifier {
 
   PaymentChoice get selectedPayment => _selectedPayment;
 
-  String get selectedPaymentType => _selectedPaymentType;
+  PaiementTypeCommande? get selectedPaymentType => _selectedPaymentType;
 
   set total(int total) {
     _total = total;
@@ -107,7 +109,7 @@ class PaiementNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  set selectedPaymentType(String type) {
+  set selectedPaymentType(PaiementTypeCommande? type) {
     _selectedPaymentType = type;
     notifyListeners();
   }
@@ -115,7 +117,7 @@ class PaiementNotifier extends ChangeNotifier {
   void updateResteAPayer() {
     _resteAPayer = total;
     for (var paiement in _paiements) {
-      _resteAPayer -= paiement.prixHT;
+      _resteAPayer -= paiement.prixPaid;
     }
     notifyListeners();
   }

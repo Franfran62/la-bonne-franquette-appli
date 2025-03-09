@@ -33,33 +33,38 @@ class CommandeViewModel extends ChangeNotifier {
     (context as Element).markNeedsBuild();
   }
 
+  setPaymentInfo() {
+    var body = {};
+    switch (paiementNotifier.selectedPayment) {
+      case PaymentChoice.montant:
+        body["montant"] = paiementNotifier.currentMontant;
+        body["type"] = paiementNotifier.selectedPaymentType!.name;
+        break;
+      case PaymentChoice.selection:
+        body["montant"] = paiementNotifier.displayTotalSelection();
+        body["type"] = paiementNotifier.selectedPaymentType!.name;
+        body["articles"] = paiementNotifier.currentSelection.map((e) => e.toJson()).toList();
+        break;
+      case PaymentChoice.toutPayer:
+        body["montant"] = paiementNotifier.resteAPayer;
+        body["type"] = paiementNotifier.selectedPaymentType!.name;
+        body["articles"] = paiementNotifier.currentSelection.map((e) => e.toJson()).toList();
+        break;
+      }   
+      return body;
+  }
+
   Future<bool> sendEmail(String email, bool seeDetails) async {
     var body = {
       "email": email,
       "seeDetails": seeDetails,
+      "commandeId": commandeNotifier.currentCommande.commandeId,
+      "date": DateTime.now().toIso8601String(),
     };
-
-    switch (paiementNotifier.selectedPayment) {
-      case PaymentChoice.montant:
-        body["montant"] = paiementNotifier.currentMontant;
-        body["type"] = paiementNotifier.selectedPaymentType;
-        break;
-      case PaymentChoice.selection:
-        body["montant"] = paiementNotifier.displayTotalSelection();
-        body["type"] = paiementNotifier.selectedPaymentType;
-        body["articles"] =
-            paiementNotifier.currentSelection.map((e) => e.toJson()).toList();
-        break;
-      case PaymentChoice.toutPayer:
-        body["montant"] = paiementNotifier.resteAPayer;
-        body["type"] = paiementNotifier.selectedPaymentType;
-        body["articles"] =
-            paiementNotifier.currentSelection.map((e) => e.toJson()).toList();
-        break;
-    }
+    body.addAll(setPaymentInfo());
 
     var response = await ApiService.post(
-        endpoint: "/api/V1/paiement/sendReceipt", body: body, token: true);
+        endpoint: "/api/v1/paiement/sendReceipt", body: body, token: true);
 
     return response.code == 200;
   }
@@ -71,10 +76,22 @@ class CommandeViewModel extends ChangeNotifier {
     GoRouter.of(context).go("/destinationCommande");
   }
 
-  void pay() {
+  void pay() async {
+    var body = setPaymentInfo();
+    Paiement paiement = Paiement(
+      date: DateTime.now(),
+      type: paiementNotifier.selectedPaymentType!, 
+      commandeId: commandeNotifier.currentCommande.commandeId!,
+      prixPaid: body["montant"],
+      articles: body["articles"],
+    );
+
+    var response = await ApiService.post(
+        endpoint: "/api/v1/paiement/${commandeNotifier.currentCommande.commandeId}", body: paiement.toJson(), token: true);
   }
 
   void cancel(BuildContext context) {
+    //TODO avec le bouton annuler
   }
 
   void reset() {

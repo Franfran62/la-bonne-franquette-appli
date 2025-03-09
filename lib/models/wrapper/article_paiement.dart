@@ -31,16 +31,11 @@ class ArticlePaiement {
       for (var article in paiement.articles) {
         list.add(ArticlePaiement(article: article));
       }
-      for (var selection in paiement.selections) {
-        list.add(ArticlePaiement(article: selection));
-      }
     }
     return list;
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'article': article is Article ? (article as Article).toJson() : (article as Selection).toJson(),
-    };
+    return article is Article ? (article as Article).toJson() : (article as Selection).toJson();
   }
 }

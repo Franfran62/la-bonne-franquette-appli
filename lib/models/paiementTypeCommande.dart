@@ -18,4 +18,12 @@ class PaiementTypeCommande {
       isEnable: enable,
     );
   }
+
+  static PaiementTypeCommande fromMap(Map<String, dynamic> map) {
+    return PaiementTypeCommande(
+      id: map['id'],
+      name: map['name'],
+      isEnable: map['isEnable'],
+    );
+  }
 }

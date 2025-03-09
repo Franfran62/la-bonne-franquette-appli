@@ -3,6 +3,7 @@ import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/menuItem.dart';
+import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -250,9 +251,9 @@ class DatabaseService {
     return result?.map((e) => Extra.fromMap(e)).toList() ?? [];
   }
 
-  static Future<List<String>> getPaymentTypes() async {
+  static Future<List<PaiementTypeCommande>> getPaymentTypes() async {
     final result =
         await database?.query('paiement_type_commande', where: 'isEnable = 1');
-    return result?.map((e) => e['name'] as String).toList() ?? [];
+    return result?.map((e) => PaiementTypeCommande.fromMap(e)).toList() ?? [];
   }
 }

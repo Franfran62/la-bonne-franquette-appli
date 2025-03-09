@@ -10,6 +10,7 @@ class TicketDeCaisseModal extends StatefulWidget {
 class _TicketDeCaisseModalState extends State<TicketDeCaisseModal> {
 
   String email = '';
+  bool seeDetails = true;
   final _formKey = GlobalKey<FormState>();
   final CommandeViewModel viewModel = CommandeViewModel();
 
@@ -20,7 +21,7 @@ class _TicketDeCaisseModalState extends State<TicketDeCaisseModal> {
 
   void sendEmail() async {
     if (_formKey.currentState!.validate()) {
-      bool emailSend = await viewModel.sendEmail(email, true);
+      bool emailSend = await viewModel.sendEmail(email, seeDetails);
       if (emailSend) {
         Navigator.of(context).pop();
       }  
@@ -77,6 +78,23 @@ class _TicketDeCaisseModalState extends State<TicketDeCaisseModal> {
                   }
                   return null;
                 },
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 20, top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Voir les détails'),
+                    Switch(
+                      value: seeDetails,
+                      onChanged: (value) {
+                        setState(() {
+                          seeDetails = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
               ElevatedButton(
                 onPressed: sendEmail,
