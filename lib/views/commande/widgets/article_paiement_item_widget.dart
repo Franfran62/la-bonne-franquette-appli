@@ -79,7 +79,7 @@ class ItemLineWidget extends HookWidget {
                          style: Theme.of(context).textTheme.bodyMedium,
                           maxLines: 1,
                           overflow: TextOverflow.clip,
-                         "${item.article.prixHT / 100} €"
+                         "${item.article.prixTTC / 100} €"
                     )),
                   ],
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
 import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article_paiement.dart';
 
 class PaiementNotifier extends ChangeNotifier {

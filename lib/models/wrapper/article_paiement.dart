@@ -35,7 +35,27 @@ class ArticlePaiement {
     return list;
   }
 
-  Map<String, dynamic> toJson() {
-    return article is Article ? (article as Article).toJson() : (article as Selection).toJson();
+  Article? getArticle() {
+    return article is Article ? article as Article : null;
+  }
+
+  Selection? getSelection() {
+    return article is Selection ? article as Selection : null;
+  }
+
+  static List<Article> getArticles(List<ArticlePaiement> articlesPaiement) {
+    return articlesPaiement
+        .map<Article?>((e) => e.getArticle())
+        .where((e) => e != null)
+        .cast<Article>()
+        .toList();
+  }
+
+  static List<Selection> getSelections(List<ArticlePaiement> articlesPaiement) {
+    return articlesPaiement
+        .map<Selection?>((e) => e.getSelection())
+        .where((e) => e != null)
+        .cast<Selection>()
+        .toList();
   }
 }

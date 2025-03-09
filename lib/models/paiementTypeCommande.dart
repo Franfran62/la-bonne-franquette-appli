@@ -20,10 +20,16 @@ class PaiementTypeCommande {
   }
 
   static PaiementTypeCommande fromMap(Map<String, dynamic> map) {
+    bool isEnable = map['isEnable'] == 1;
     return PaiementTypeCommande(
       id: map['id'],
       name: map['name'],
-      isEnable: map['isEnable'],
+      isEnable: isEnable,
     );
+  }
+
+  @override
+  String toString() {
+    return 'PaiementTypeCommande{id: $id, name: $name, isEnable: $isEnable}';
   }
 }
