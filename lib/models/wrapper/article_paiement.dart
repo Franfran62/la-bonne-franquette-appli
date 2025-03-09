@@ -1,4 +1,4 @@
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 

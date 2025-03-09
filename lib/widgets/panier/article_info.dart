@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/article_extras_and_ingredients.dart';
 
 class ArticleInfos extends StatelessWidget {

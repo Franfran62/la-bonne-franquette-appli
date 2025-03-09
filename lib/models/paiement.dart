@@ -1,20 +1,20 @@
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
 
 class Paiement {
   int? id;
-  final DateTime date;
+  final DateTime? date;
   final PaiementTypeCommande type;
   final List<Article> articles;
-  final int prixPaid;
+  final int prix;
   final int commandeId;
 
   Paiement({
-    required this.date,
     required this.type,
-    required this.prixPaid,
+    required this.prix,
     required this.commandeId,
     this.id,
+    this.date,
     this.articles = const [],
   });
 
@@ -24,27 +24,25 @@ class Paiement {
       date: DateTime.parse(json['date']),
       type: PaiementTypeCommande.fromJson(json['type']),
       articles: json['articles'].map<Article>((article) => Article.fromJson(article)).toList(),
-      prixPaid: json['prixPaid'],
+      prix: json['prix'],
       commandeId: json['commandeId'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+    Map<String, dynamic> toSend() {
     return {
       'id': id,
-      'date': date.toIso8601String(),
       'type': type,
-      'prixPaid': prixPaid,
-      'commande': commandeId,
+      'prix': prix,
     };
   }
 
     Map<String, dynamic> toJsonForCommande() {
     return {
       'id': id,
-      'date': date.toIso8601String(),
+      'date': date?.toIso8601String(),
       'type': type,
-      'prixPaid': prixPaid,
+      'prix': prix,
     };
   }
 }

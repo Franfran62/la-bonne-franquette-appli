@@ -30,13 +30,11 @@ class InitialisationService {
       switch (endpoint) {
         case "ingredient":
           for (var i in response){
-            i['acuire'] = i['acuire'] ? 1 : 0; 
             await DatabaseService.insert(Tables.ingredient, i as Map<String, dynamic>);
           }
           break;
         case "extra":
           for (var i in response){
-            i['acuire'] = i['acuire'] ? 1 : 0; 
             await DatabaseService.insert(Tables.extra, i as Map<String, dynamic>);
           }
           break;
@@ -70,13 +68,13 @@ class InitialisationService {
             await DatabaseService.insert(Tables.menu, {
               "id": menu.id,
               "nom": menu.nom,
-              "prixHT": menu.prixHT,
+              "prixTTC": menu.prixTTC,
             });
             for (var menuItem in menu.menuItemSet) {
               await DatabaseService.insert(Tables.menuItem, {
                 "id": menuItem.id,
                 "optional": menuItem.optional ? 1 : 0,
-                "extraPriceHT": menuItem.extraPriceHT,
+                "prixTTC": menuItem.prixTTC,
                 "menu_id": menu.id,
               });
               for (var produit in menuItem.produitSet) {

@@ -1,14 +1,19 @@
+import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
+
 import 'ingredient.dart';
 
-class Extra extends Ingredient {
+class Extra implements Identifiable {
 
-  final int prixHT;
+  @override
+  final int id;
+  @override
+  final String nom;
+  final int prixTTC;
 
   const Extra({
-    required super.id,
-    required super.nom,
-    required super.aCuire,
-    required this.prixHT,
+    required this.id,
+    required this.nom,
+    required this.prixTTC,
   });
 
   factory Extra.fromJson(Map<String, dynamic> json){
@@ -16,20 +21,17 @@ class Extra extends Ingredient {
       {
         "id": int id,
         "nom": String nom,
-        "acuire": bool aCuire,
-        "prixHT": int prixHT,
-      } =>Extra(id: id, nom: nom, aCuire: aCuire, prixHT: prixHT),
+        "prixTTC": int prixTTC,
+      } =>Extra(id: id, nom: nom, prixTTC: prixTTC),
       _ => throw Exception("Impossible de créer un Extra à partir de $json"),
     };
   }
 
   static Extra fromMap(Map<String, dynamic> map) {
-    bool acuire = map["acuire"] == 1;
     return Extra(
       id: map['id'],
       nom: map['nom'],
-      prixHT: map['prixht'],
-      aCuire: acuire
+      prixTTC: map['prixTTC'],
     );
   }
    @override
@@ -37,13 +39,12 @@ class Extra extends Ingredient {
     return {
       "id": id,
       "nom": nom,
-      "aCuire": aCuire,
-      "prixHT": prixHT,
+      "prixTTC": prixTTC,
     };
   }
 
-  int getPrixHT() {
-    return prixHT;
+  int getprixTTC() {
+    return prixTTC;
   }
   
 }

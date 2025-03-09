@@ -1,18 +1,18 @@
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:collection/collection.dart';
 
 class Selection {
   String nom;
   List<Article> articles;
   int quantite;
-  int prixHT;
+  int prixTTC;
   bool isModified;
 
   Selection({
     required this.nom,
     required this.articles,
     required this.quantite,
-    required this.prixHT,
+    required this.prixTTC,
     required this.isModified
   });
 
@@ -27,7 +27,7 @@ class Selection {
       nom: json['nom'],
       articles: articles,
       quantite: json['quantite'],
-      prixHT: json['prixHT'],
+      prixTTC: json['prixTTC'],
       isModified: json['modified'],
     );
   }
@@ -38,7 +38,7 @@ class Selection {
       'nom': nom,
       'articles': articlesJson,
       'quantite': quantite,
-      'prixHT': prixHT,
+      'prixTTC': prixTTC,
       'isModified': isModified,
     };
   }
@@ -67,7 +67,7 @@ class Selection {
   }
 
   calculatePrice() {
-    prixHT = articles.fold(0, (sum, article) => sum + article.prixHT * article.quantite);
+    prixTTC = articles.fold(0, (sum, article) => sum + article.prixTTC * article.quantite);
   } 
 
   @override
@@ -78,7 +78,7 @@ class Selection {
     return nom == otherSelection.nom &&
         ListEquality().equals(articles, otherSelection.articles) &&
         quantite == otherSelection.quantite &&
-        prixHT == otherSelection.prixHT &&
+        prixTTC == otherSelection.prixTTC &&
         isModified == otherSelection.isModified;
   }
 
@@ -87,7 +87,7 @@ class Selection {
         nom,
         ListEquality().hash(articles),
         quantite,
-        prixHT,
+        prixTTC,
         isModified,
       );
 }

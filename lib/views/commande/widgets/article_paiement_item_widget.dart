@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article_paiement.dart';

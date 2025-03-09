@@ -5,7 +5,7 @@ import 'package:la_bonne_franquette_front/models/ingredient.dart';
 class Article {
   final String nom;
   int quantite;
-  final int prixHT;
+  final int prixTTC;
   List<Ingredient> ingredients;
   List<Extra> extraSet;
   bool isModified = false;
@@ -13,7 +13,7 @@ class Article {
   Article({
     required this.nom,
     required this.quantite,
-    required this.prixHT,
+    required this.prixTTC,
     required this.ingredients,
     required this.extraSet,
     isModified,
@@ -37,7 +37,7 @@ class Article {
     return Article(
       nom: json['nom'],
       quantite: json['quantite'],
-      prixHT: json['prixHT'],
+      prixTTC: json['prixTTC'],
       ingredients: ingredients,
       extraSet: extraSet,
       isModified: json['isModified']
@@ -50,7 +50,7 @@ class Article {
     return {
       'nom': nom,
       'quantite': quantite,
-      'prixHT': prixHT,
+      'prixTTC': prixTTC,
       'ingredients': ingredientsJson,
       'extraSet': extraSetJson,
       "isModified": isModified
@@ -59,7 +59,7 @@ class Article {
 
   @override
   String toString() {
-    return 'Article(nom: $nom, quantite: $quantite, prixHT: $prixHT, ingredients: $ingredients, extraSet: $extraSet, isModified: $isModified)';
+    return 'Article(nom: $nom, quantite: $quantite, prixTTC: $prixTTC, ingredients: $ingredients, extraSet: $extraSet, isModified: $isModified)';
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 
 class ArticleExtrasAndIngredients extends StatelessWidget {
   const ArticleExtrasAndIngredients({

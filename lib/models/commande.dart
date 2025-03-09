@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
@@ -12,15 +12,13 @@ class Commande {
   StatusCommande status;
   bool surPlace;
   int? nbArticle;
-  int? prixHT;
-  final int? tauxTVA;
+  int? prixTTC;
   List<Article> articles;
   List<Selection> menus;
   List<Paiement> paiementSet;
   String? paiementTypeCommande;
 
   Commande({
-    this.tauxTVA = 10,
     this.commandeId,
     this.numero,
     this.dateSaisie,
@@ -28,7 +26,7 @@ class Commande {
     required this.status,
     required this.surPlace,
     this.nbArticle,
-    this.prixHT,
+    this.prixTTC,
     required List<Article>? articles,
     required List<Selection>? menus,
     required this.paiementSet,
@@ -69,8 +67,7 @@ class Commande {
           (status) => status.toString().split('.').last == json['status']),
       surPlace: json['surPlace'] ?? false,
       nbArticle: json['nbArticle'],
-      prixHT: json['prixHT'],
-      tauxTVA: json['tauxTVA'],
+      prixTTC: json['prixTTC'],
       articles: articles,
       menus: menus,
       paiementSet: paiementSet,
@@ -94,8 +91,8 @@ class Commande {
       'status': status.toString(),
       'surPlace': surPlace,
       'nbArticle': nbArticle,
-      'prixHT': prixHT,
-      'tauxTVA': tauxTVA,
+      'prixTTC': prixTTC,
+
       'articles': articlesJson,
       'menus': menusJson,
       'paiementSet': paiementSetJson,
@@ -115,7 +112,7 @@ class Commande {
     return {
       'status': StatusCommande.EN_COURS.name,
       'surPlace': surPlace,
-      'prixHT': prixHT,
+      'prixTTC': prixTTC,
       'articles': articlesJson,
       'menus': menusJson,
       'paiementSet': paiementSetJson,
@@ -164,6 +161,6 @@ class Commande {
 
   @override
   String toString() {
-    return 'Commande{commandeId: $commandeId, numero: $numero, dateSaisie: $dateSaisie, dateLivraison: $dateLivraison, status: $status, surPlace: $surPlace, nbArticle: $nbArticle, prixHT: $prixHT, tauxTVA: $tauxTVA, articles: $articles, menus: $menus, paiementSet: $paiementSet, paiementTypeCommande: $paiementTypeCommande}';
+    return 'Commande{commandeId: $commandeId, numero: $numero, dateSaisie: $dateSaisie, dateLivraison: $dateLivraison, status: $status, surPlace: $surPlace, nbArticle: $nbArticle, prixTTC: $prixTTC, articles: $articles, menus: $menus, paiementSet: $paiementSet, paiementTypeCommande: $paiementTypeCommande}';
   }
 }

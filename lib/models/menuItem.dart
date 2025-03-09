@@ -6,13 +6,13 @@ class MenuItem {
   
   final int id;
   final bool optional;
-  final int? extraPriceHT;
+  final int? prixTTC;
   final List<Produit> produitSet;
 
   MenuItem({
     required this.id,
     required this.optional,
-    this.extraPriceHT,
+    this.prixTTC,
     required this.produitSet,
   });
 
@@ -22,7 +22,7 @@ class MenuItem {
     return MenuItem(
       id: json['id'] as int,
       optional: json['optional'] as bool,
-      extraPriceHT: json['extraPriceHT'] as int?,
+      prixTTC: json['prixTTC'] as int?,
       produitSet: produitSet,
     );
   }
@@ -31,7 +31,7 @@ class MenuItem {
     return MenuItem(
       id: map['id'],
       optional: map['optional'] == 1,
-      extraPriceHT: map['extraPriceHT'],
+      prixTTC: map['prixTTC'],
       produitSet: [],
     );
   }

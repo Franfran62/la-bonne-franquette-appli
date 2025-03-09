@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
@@ -33,7 +33,7 @@ class CommandeNotifier extends ChangeNotifier {
       menus: [], 
       paiementSet: [],
       status: StatusCommande.EN_COURS,
-      prixHT: 0
+      prixTTC: 0
       );
     calculerLePrixTotal();
   }
@@ -88,14 +88,14 @@ class CommandeNotifier extends ChangeNotifier {
   }
 
   void calculerLePrixTotal() {
-    _currentCommande.prixHT = _currentCommande.articles.fold(
+    _currentCommande.prixTTC = _currentCommande.articles.fold(
         0,
         (previousValue, element) =>
-            (previousValue ?? 0) + element.prixHT * element.quantite);
-    _currentCommande.prixHT = (_currentCommande.prixHT ?? 0) + _currentCommande.menus.fold(
+            (previousValue ?? 0) + element.prixTTC * element.quantite);
+    _currentCommande.prixTTC = (_currentCommande.prixTTC ?? 0) + _currentCommande.menus.fold(
         0,
         (previousValue, element) =>
-            previousValue + element.prixHT * element.quantite);
+            previousValue + element.prixTTC * element.quantite);
     notifyListeners();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
 import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/article_extras_and_ingredients.dart';

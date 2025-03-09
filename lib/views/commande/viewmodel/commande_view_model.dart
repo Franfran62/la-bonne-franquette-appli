@@ -27,7 +27,7 @@ class CommandeViewModel extends ChangeNotifier {
         commandeNotifier.currentCommande);
     paiementNotifier.currentPaid = ArticlePaiement.buildArticlePaiementPaid(
         commandeNotifier.currentCommande);
-    paiementNotifier.total = commandeNotifier.currentCommande.prixHT ?? 0;
+    paiementNotifier.total = commandeNotifier.currentCommande.prixTTC ?? 0;
     paiementNotifier.paiements = commandeNotifier.currentCommande.paiementSet;
     title = "Commande numéro ${commandeNotifier.currentCommande.numero}";
     (context as Element).markNeedsBuild();
@@ -37,16 +37,16 @@ class CommandeViewModel extends ChangeNotifier {
     var body = {};
     switch (paiementNotifier.selectedPayment) {
       case PaymentChoice.montant:
-        body["montant"] = paiementNotifier.currentMontant;
+        body["prix"] = paiementNotifier.currentMontant;
         body["type"] = paiementNotifier.selectedPaymentType!.name;
         break;
       case PaymentChoice.selection:
-        body["montant"] = paiementNotifier.displayTotalSelection();
+        body["prix"] = paiementNotifier.displayTotalSelection();
         body["type"] = paiementNotifier.selectedPaymentType!.name;
         body["articles"] = paiementNotifier.currentSelection.map((e) => e.toJson()).toList();
         break;
       case PaymentChoice.toutPayer:
-        body["montant"] = paiementNotifier.resteAPayer;
+        body["prix"] = paiementNotifier.resteAPayer;
         body["type"] = paiementNotifier.selectedPaymentType!.name;
         body["articles"] = paiementNotifier.currentSelection.map((e) => e.toJson()).toList();
         break;
@@ -79,15 +79,14 @@ class CommandeViewModel extends ChangeNotifier {
   void pay() async {
     var body = setPaymentInfo();
     Paiement paiement = Paiement(
-      date: DateTime.now(),
       type: paiementNotifier.selectedPaymentType!, 
       commandeId: commandeNotifier.currentCommande.commandeId!,
-      prixPaid: body["montant"],
+      prix: body["prix"],
       articles: body["articles"],
     );
 
     var response = await ApiService.post(
-        endpoint: "/api/v1/paiement/${commandeNotifier.currentCommande.commandeId}", body: paiement.toJson(), token: true);
+        endpoint: "/api/v1/paiement/${commandeNotifier.currentCommande.commandeId}", body: paiement.toSend(), token: true);
   }
 
   void cancel(BuildContext context) {

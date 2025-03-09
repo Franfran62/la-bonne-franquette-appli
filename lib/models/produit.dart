@@ -10,7 +10,7 @@ class Produit implements Identifiable {
   final int id;
   @override
   final String nom;
-  final int prixHt;
+  final int prixTTC;
   final List<Ingredient> ingredients;
   final List<Categorie> categories;
   final List<Extra> extras; 
@@ -18,7 +18,7 @@ class Produit implements Identifiable {
   Produit ({
     required this.id,
     required this.nom,
-    required this.prixHt,
+    required this.prixTTC,
     required this.ingredients,
     required this.categories,
     required this.extras, 
@@ -45,7 +45,7 @@ class Produit implements Identifiable {
       return Produit(
             id: json['id'] as int,
             nom: json['nom'] as String,
-            prixHt: json['prixHT'] as int,
+            prixTTC: json['prixTTC'] as int,
             ingredients: ingredients,
             categories: categories,
             extras: extras, 
@@ -59,7 +59,7 @@ class Produit implements Identifiable {
     return Produit(
       id: map['id'],
       nom: map['nom'],
-      prixHt: map['prixht'],
+      prixTTC: map['prixTTC'],
       ingredients: map['ingredients'] ?? [],
       categories: map['categories'] ?? [],
       extras: map['extras'] ?? [],
@@ -70,7 +70,7 @@ class Produit implements Identifiable {
     return {
       "id": id,
       "nom": nom,
-      "prixHT": prixHt,
+      "prixTTC": prixTTC,
     };
   }
 
@@ -82,8 +82,8 @@ class Produit implements Identifiable {
     return nom;
   }
 
-  int getPrixHt() {
-    return prixHt;
+  int getprixTTC() {
+    return prixTTC;
   }
 
   List<Ingredient> getIngredients() {

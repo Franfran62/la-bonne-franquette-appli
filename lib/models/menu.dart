@@ -9,13 +9,13 @@ class Menu implements Identifiable {
   final int id;
   @override
   final String nom;
-  final int prixHT;
+  final int prixTTC;
   final List<MenuItem> menuItemSet;
 
   Menu({
     required this.id,
     required this.nom,
-    required this.prixHT,
+    required this.prixTTC,
     required this.menuItemSet,
   });
 
@@ -24,7 +24,7 @@ class Menu implements Identifiable {
     return Menu(
       id: json['id'] as int,
       nom: json['nom'] as String,
-      prixHT: json['prixHT'] as int,
+      prixTTC: json['prixTTC'] as int,
       menuItemSet: await Future.wait(items.map((item) => MenuItem.fromMenuJson(item))),
     );
   }

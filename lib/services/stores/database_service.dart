@@ -25,16 +25,14 @@ class DatabaseService {
         db.execute('''
           CREATE TABLE ingredient (
             id INTEGER PRIMARY KEY,
-            nom VARCHAR(50) NOT NULL,
-            acuire INTEGER NOT NULL
+            nom VARCHAR(50) NOT NULL
             );
         ''');
         db.execute('''
           CREATE TABLE extra (
             id INTEGER PRIMARY KEY,
             nom VARCHAR(50) NOT NULL,
-            acuire INTEGER NOT NULL, 
-            prixht INTEGER(11) NOT NULL
+            prixTTC INTEGER(11) NOT NULL
             );
         ''');
         db.execute('''
@@ -49,21 +47,21 @@ class DatabaseService {
           CREATE TABLE produit (
             id INTEGER PRIMARY KEY,
             nom varchar(50) NOT NULL,
-            prixht INTEGER(11) NOT NULL
+            prixTTC INTEGER(11) NOT NULL
           );
         ''');
         db.execute('''
           CREATE TABLE menu (
             id INTEGER PRIMARY KEY,
             nom varchar(50) NOT NULL,
-            prixht INTEGER(11) NOT NULL
+            prixTTC INTEGER(11) NOT NULL
           );
         ''');
         db.execute('''
           CREATE TABLE menu_item (
             id INTEGER PRIMARY KEY,
             optional INTEGER NOT NULL,
-            extraPriceHT INTEGER,
+            prixTTC INTEGER,
             menu_id INTEGER NOT NULL,
             FOREIGN KEY (menu_id) REFERENCES menu(id)
           );
@@ -112,11 +110,19 @@ class DatabaseService {
   }
 
   static Future<void> insert(Tables table, Map<String, dynamic> data) async {
+    final columns = await getTableColumns(table.name);
+    final filteredData = Map<String, dynamic>.from(data)
+      ..removeWhere((key, value) => !columns.contains(key));
     await database?.insert(
       table.name,
-      data,
+      filteredData,
       conflictAlgorithm: ConflictAlgorithm.rollback,
     );
+  }
+
+  static Future<List<String>> getTableColumns(String tableName) async {
+    final result = await database?.rawQuery('PRAGMA table_info($tableName)');
+    return result?.map((row) => row['name'] as String).toList() ?? [];
   }
 
   static Future<List<Menu>> findAllMenus() async {
@@ -149,7 +155,7 @@ class DatabaseService {
         menuItems.add(MenuItem(
           id: itemMap['id'],
           optional: itemMap['optional'] == 1,
-          extraPriceHT: itemMap['extraPriceHT'],
+          prixTTC: itemMap['prixTTC'],
           produitSet: produits,
         ));
       }
@@ -157,7 +163,7 @@ class DatabaseService {
       menus.add(Menu(
         id: menuMap['id'],
         nom: menuMap['nom'],
-        prixHT: menuMap['prixHT'] ?? menuMap['prixht'],
+        prixTTC: menuMap['prixTTC'] ?? menuMap['prixTTC'],
         menuItemSet: menuItems,
       ));
     }

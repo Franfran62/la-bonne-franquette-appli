@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/models/article.dart';
+import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
@@ -16,7 +16,7 @@ class CaisseViewModel {
   static final CaisseViewModel _singleton = CaisseViewModel._internal();
   BuildContext? context;
   bool showModification = false;
-  Selection menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0, isModified: false);
+  Selection menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixTTC: 0, isModified: false);
   CommandeNotifier commandeNotifier = CommandeNotifier();
 
   factory CaisseViewModel() {
@@ -29,7 +29,7 @@ class CaisseViewModel {
     commandeNotifier.reset();
     commandeNotifier.currentCommande.surPlace = surPlace;
     showModification = false;
-    menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixHT: 0, isModified: false);
+    menuEnConstruction = Selection(nom: "", articles: [], quantite: 1, prixTTC: 0, isModified: false);
   }
 
     bool getSurPlace() {
@@ -65,7 +65,7 @@ class CaisseViewModel {
       Article article = Article(
         nom: produit.nom,
         quantite: 1,
-        prixHT: produit.prixHt,
+        prixTTC: produit.prixTTC,
         ingredients: modifications["ingredients"] as List<Ingredient>,
         extraSet: modifications["extras"] as List<Extra>,
       );
@@ -82,7 +82,7 @@ class CaisseViewModel {
       menuEnConstruction.articles = [];
       menuEnConstruction.nom = nom;
       menuEnConstruction.quantite = 1;  
-      menuEnConstruction.prixHT = 0;
+      menuEnConstruction.prixTTC = 0;
       menuEnConstruction.isModified = false;
     }
 
@@ -97,7 +97,7 @@ class CaisseViewModel {
       Article article = Article(
         nom: produit.nom, 
         quantite: 1,
-        prixHT: produit.prixHt, 
+        prixTTC: produit.prixTTC, 
         ingredients:  modifications["ingredients"] as List<Ingredient>, 
         extraSet: modifications["extras"] as List<Extra>
       );
@@ -119,7 +119,7 @@ class CaisseViewModel {
         nom: menuEnConstruction.nom,
         articles:List.from(menuEnConstruction.articles),
         quantite: menuEnConstruction.quantite,
-        prixHT: menuEnConstruction.prixHT,
+        prixTTC: menuEnConstruction.prixTTC,
         isModified: menuEnConstruction.isModified
       );
       commandeNotifier.addMenu(nouveauMenu);

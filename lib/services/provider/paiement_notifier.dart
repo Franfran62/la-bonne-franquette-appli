@@ -3,7 +3,6 @@ import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
 import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article_paiement.dart';
-import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 
 class PaiementNotifier extends ChangeNotifier {
   static final PaiementNotifier _singleton = PaiementNotifier._internal();
@@ -117,7 +116,7 @@ class PaiementNotifier extends ChangeNotifier {
   void updateResteAPayer() {
     _resteAPayer = total;
     for (var paiement in _paiements) {
-      _resteAPayer -= paiement.prixPaid;
+      _resteAPayer -= paiement.prix;
     }
     notifyListeners();
   }
@@ -125,7 +124,7 @@ class PaiementNotifier extends ChangeNotifier {
   int displayTotalSelection() {
     int totalSelection = 0;
     for (var article in _currentSelection) {
-      totalSelection += article.article.prixHT as int;
+      totalSelection += article.article.prixTTC as int;
     }
     return totalSelection;
   }

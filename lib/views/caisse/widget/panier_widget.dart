@@ -11,7 +11,7 @@ import 'package:la_bonne_franquette_front/widgets/panier/article_card.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/menu_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/article.dart';
+import '../../../models/wrapper/article.dart';
 
 class PanierWidget extends HookWidget {
 
@@ -38,6 +38,8 @@ class PanierWidget extends HookWidget {
                     body: commandeNotifier.currentCommande.toJson(),
                     token: true);
               } else {
+                var body = commandeNotifier.currentCommande.toCreateCommandeJson();
+                print(body);
                   Map<String, dynamic> commande = await ApiService.post(
                     endpoint: '/commandes',
                     body: commandeNotifier.currentCommande.toCreateCommandeJson(),
@@ -86,7 +88,7 @@ class PanierWidget extends HookWidget {
                               ),
                             ),
                             Text(
-                              'Total en cours : ${(commandeNotifier.currentCommande.prixHT! / 100).toStringAsFixed(2) ?? '0'} €',
+                              'Total en cours : ${(commandeNotifier.currentCommande.prixTTC! / 100).toStringAsFixed(2) ?? '0'} €',
                               style: Theme.of(context).textTheme.bodyMedium,
                             )
                           ],
