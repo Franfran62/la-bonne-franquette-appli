@@ -33,19 +33,22 @@ class PanierWidget extends HookWidget {
 
             void sendCommand() async {
               if (commandeNotifier.currentCommande.commandeId != null) {
-                await ApiService.patch(
-                    endpoint: '/commandes/${commandeNotifier.currentCommande.commandeId}',
-                    body: commandeNotifier.currentCommande.toJson(),
-                    token: true);
-              } else {
                 var body = commandeNotifier.currentCommande.toCreateCommandeJson();
                 print(body);
+                await ApiService.patch(
+                    endpoint: '/commandes/${commandeNotifier.currentCommande.commandeId}',
+                    body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: true),
+                    token: true);
+              } else {
+                var body = commandeNotifier.currentCommande.toCreateCommandeJson(patch: false);
                   Map<String, dynamic> commande = await ApiService.post(
                     endpoint: '/commandes',
                     body: commandeNotifier.currentCommande.toCreateCommandeJson(),
                     token: true);
                   commandeNotifier.currentCommande.commandeId = commande['commandeId'];
                   commandeNotifier.currentCommande.numero = commande['numero'];
+                  commandeNotifier.currentCommande.dateSaisie = DateTime.parse(commande['dateSaisie']);
+                  print (commande);
               }
             viewModel.init(context);
             context.push('/commande');
