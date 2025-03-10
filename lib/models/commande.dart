@@ -96,7 +96,7 @@ class Commande {
     };
   }
 
-  Map<String, dynamic> toCreateCommandeJson() {
+  Map<String, dynamic> toCreateCommandeJson({bool patch = false}) {
 
     List<Map<String, dynamic>> articlesJson =
       articles.map((article) => article.toJson()).toList();
@@ -105,8 +105,14 @@ class Commande {
     List<Map<String, dynamic>> paiementSetJson =
       paiementSet.map((paiement) => paiement.toJsonForCommande()).toList();
 
-    return {
-      'status': StatusCommande.EN_COURS.name,
+    return patch 
+      ? {
+      'surPlace': surPlace,
+      'prixTTC': prixTTC,
+      'articles': articlesJson,
+      'menus': menusJson,
+    } : {
+      'status': status.name,
       'surPlace': surPlace,
       'prixTTC': prixTTC,
       'articles': articlesJson,
