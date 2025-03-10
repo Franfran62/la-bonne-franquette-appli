@@ -17,6 +17,7 @@ class Commande {
   List<Selection> menus;
   List<Paiement> paiementSet;
   String? paiementTypeCommande;
+  bool? paye;
 
   Commande({
     this.commandeId,
@@ -31,6 +32,7 @@ class Commande {
     required List<Selection>? menus,
     required this.paiementSet,
     this.paiementTypeCommande,
+    this.paye
   })  : articles = articles ?? [],
         menus = menus ?? [];
 
@@ -49,13 +51,6 @@ class Commande {
       });
     }
 
-    List<Paiement> paiementSet = [];
-    if (json['paiementSet'] != null) {
-      json['paiementSet'].forEach((paiementJson) {
-        paiementSet.add(Paiement.fromJson(paiementJson));
-      });
-    }
-
     return Commande(
       commandeId: json['commandeId'],
       numero: json['numero'],
@@ -70,7 +65,8 @@ class Commande {
       prixTTC: json['prixTTC'],
       articles: articles,
       menus: menus,
-      paiementSet: paiementSet,
+      paiementSet: [],
+      paye: json['paye'],
       paiementTypeCommande: json['paiementTypeCommande'] as String?,
     );
   }

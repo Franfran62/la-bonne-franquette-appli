@@ -13,10 +13,10 @@ class CuisineHomepageViewModel {
   Future<List<Commande>> getCommandeEnCours() async {
     try {
       final response = await ApiService.fetchAll(endpoint: '/commandes/status/en-cours', token: true);
+      print(response);
       List<Commande> commandes = List<Commande>.from(response.map((commande) => Commande.fromJson(commande)));
       return commandes;
     } catch (e) {
-      print(e);
       throw Exception("Impossible de récupérer les commandes en cours");
     }
   }
