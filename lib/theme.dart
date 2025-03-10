@@ -33,17 +33,17 @@ class CustomTheme {
           color: Colors.black, 
           fontSize: 12
         ),
-        headlineLarge: GoogleFonts.lora( 
+        headlineLarge: GoogleFonts.notoSans( 
           fontWeight: FontWeight.bold, 
           color: Colors.black, 
           fontSize: 28,
         ), 
-        headlineMedium: GoogleFonts.lora( 
+        headlineMedium: GoogleFonts.notoSans( 
           fontWeight: FontWeight.bold, 
           color: Colors.black, 
           fontSize: 24,
         ), 
-        headlineSmall: GoogleFonts.lora( 
+        headlineSmall: GoogleFonts.notoSans( 
           fontWeight: FontWeight.bold, 
           color: Colors.black, 
           fontSize: 22,
