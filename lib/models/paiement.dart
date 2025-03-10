@@ -4,7 +4,7 @@ import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
 
 class Paiement {
   int? id;
-  final DateTime? date;
+  DateTime? date;
   final PaiementTypeCommande type;
   final List<Article> articles;
   final List<Selection> selections;
@@ -49,5 +49,10 @@ class Paiement {
       'type': type,
       'prix': prix,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Paiement{id: $id, date: $date, type: $type, articles: $articles, selections: $selections, prix: $prix, commandeId: $commandeId}';
   }
 }

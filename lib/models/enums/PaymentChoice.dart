@@ -1,1 +1,1 @@
-enum PaymentChoice { montant, selection, toutPayer }
+enum PaymentChoice { montant, selection, toutPayer, rembourser }

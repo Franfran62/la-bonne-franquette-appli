@@ -11,7 +11,9 @@ import 'package:flutter/widgets.dart';
 
 class CommandeViewModel extends ChangeNotifier {
   static final CommandeViewModel _singleton = CommandeViewModel._internal();
+  
   String title = "";
+  double number = 0;
   CommandeNotifier commandeNotifier = CommandeNotifier();
   PaiementNotifier paiementNotifier = PaiementNotifier();
 
@@ -21,6 +23,7 @@ class CommandeViewModel extends ChangeNotifier {
   CommandeViewModel._internal();
 
   void init(BuildContext context) {
+    number = 0;
     paiementNotifier.currentArticles = ArticlePaiement.buildArticlePaiementList(
         commandeNotifier.currentCommande);
     paiementNotifier.currentPaid = ArticlePaiement.buildArticlePaiementPaid(
@@ -52,7 +55,13 @@ class CommandeViewModel extends ChangeNotifier {
         body["articles"] = ArticlePaiement.getArticles(paiementNotifier.currentArticles);
         body["selections"] = ArticlePaiement.getSelections(paiementNotifier.currentArticles);
       break;
-      }   
+      case PaymentChoice.rembourser: 
+        body["prix"] = paiementNotifier.currentMontant;
+        body["type"] = paiementNotifier.selectedPaymentType;
+        body["articles"] = <Article>[];
+        body["selections"] = <Selection>[];
+      break;  
+    }
       return body;
   }
 
@@ -75,6 +84,7 @@ class CommandeViewModel extends ChangeNotifier {
     if (paiementNotifier.selectedPayment == PaymentChoice.toutPayer) {
       pay();
     }
+    reset();
     GoRouter.of(context).go("/destinationCommande");
   }
 
@@ -87,10 +97,16 @@ class CommandeViewModel extends ChangeNotifier {
       articles: body["articles"],
       selections: body["selections"],
     );
-
-    print(paiement.toSend());
     var response = await ApiService.post(
         endpoint: "/paiement/${commandeNotifier.currentCommande.commandeId}", body: paiement.toSend(), token: true);
+    paiement.id = response["id"];
+    paiement.date = DateTime.parse(response["date"]);
+    paiementNotifier.addPaiement(paiement);
+    number = 0;
+  }
+
+  void rembourser() {
+    paiementNotifier.currentMontant = paiementNotifier.resteAPayer;
   }
 
   void cancel(BuildContext context) {
@@ -98,6 +114,7 @@ class CommandeViewModel extends ChangeNotifier {
   }
 
   void reset() {
+    number = 0;
     paiementNotifier.reset();
     commandeNotifier.reset();
   }

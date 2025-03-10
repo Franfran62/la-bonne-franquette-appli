@@ -65,18 +65,22 @@ class PaiementSideWidget extends HookWidget {
                     ],
                   ),
                 ),
+                if (paiementNotifier.resteAPayer != 0)
                 Padding(
                   padding: EdgeInsets.only(left: 20, top: 20),
                   child: TypePaiementWidget(),
                 ),
+                if (paiementNotifier.resteAPayer != 0)
                 Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: TypePaiementDropDownWidget(),
                 ),
+                if (paiementNotifier.resteAPayer != 0)
                 Padding(
                   padding: EdgeInsets.only(left: 20, top: 12),
                   child: ValidPaimentWidget(
-                    showPayer: paiementNotifier.selectedPayment != PaymentChoice.toutPayer
+                    paymentChoiceState: paiementNotifier.selectedPayment,
+                    resteAPayer: paiementNotifier.resteAPayer,
                   ),
                 ),
                 Padding(
@@ -86,9 +90,7 @@ class PaiementSideWidget extends HookWidget {
                       ElevatedButton(
                         onPressed: () => viewModel.valid(context),
                         child: Text( 
-                          paiementNotifier.selectedPayment == PaymentChoice.toutPayer
-                          ? 'Payer et Valider'
-                          : 'Valider'
+                          'Valider'
                           )
                       ),
                       // TODO: Le bouton annuler

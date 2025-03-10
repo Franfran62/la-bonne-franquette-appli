@@ -28,6 +28,7 @@ class PaiementNotifier extends ChangeNotifier {
 
   PaiementNotifier._internal() {
     _currentPaid = [];
+    _paiements = [];
     _currentSelection = [];
     _currentArticles = [];
     _resteAPayer = 0;
@@ -36,6 +37,7 @@ class PaiementNotifier extends ChangeNotifier {
 
   void reset() {
     _currentPaid = [];
+    _paiements = [];
     _currentSelection = [];
     _currentArticles = [];
     _resteAPayer = 0;
@@ -115,9 +117,12 @@ class PaiementNotifier extends ChangeNotifier {
   }
 
   void updateResteAPayer() {
-    _resteAPayer = total;
+    _resteAPayer = _total;
     for (var paiement in _paiements) {
-      _resteAPayer -= paiement.prix;
+       _resteAPayer -= paiement.prix;
+    }
+    if (_resteAPayer < 0) {
+      _selectedPayment = PaymentChoice.rembourser;
     }
     notifyListeners();
   }
@@ -138,5 +143,27 @@ class PaiementNotifier extends ChangeNotifier {
   removeSelection(ArticlePaiement article) {
     _currentSelection.remove(article);
     notifyListeners();
+  }
+
+  void addPaiement(Paiement paiement) {
+    _paiements.add(paiement);
+    switch (selectedPayment) {
+      case PaymentChoice.montant:
+        break;
+      case PaymentChoice.selection:
+        _currentPaid.addAll(currentSelection);
+        currentSelection = [];
+        break;
+      case PaymentChoice.toutPayer:
+        for (var article in currentArticles) {
+          if (!_currentPaid.contains(article)) {
+            _currentPaid.add(article);
+          }
+        }
+        break;
+      case PaymentChoice.rembourser:
+        break;
+    }
+    updateResteAPayer();
   }
 }

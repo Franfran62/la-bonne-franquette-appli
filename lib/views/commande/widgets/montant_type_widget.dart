@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
+import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
 
 class MontantTypeWidget extends StatefulWidget {
   @override
@@ -8,33 +9,35 @@ class MontantTypeWidget extends StatefulWidget {
 
 class _MontantTypeWidgetState extends State<MontantTypeWidget> {
   final PaiementNotifier paiementNotifier = PaiementNotifier();
+  final CommandeViewModel viewModel = CommandeViewModel();
+
   int decimalMarker = 0;
-  double number = 0;
+  
 
   void onNumberPressed(int digit) {
     setState(() {
       switch (decimalMarker) {
         case 0:
-          number = number * 10 + digit;
+          viewModel.number = viewModel.number * 10 + digit;
           break;
         case 1:
-          number = number + (digit / 10);
+          viewModel.number = viewModel.number + (digit / 10);
           decimalMarker++;
           break;
         case 2:
-          number = number + (digit / 100);
+          viewModel.number = viewModel.number + (digit / 100);
           decimalMarker++;
           break;
         default:
           break;
       }
-      paiementNotifier.currentMontant = (number * 100).toInt();
+      paiementNotifier.currentMontant = (viewModel.number * 100).toInt();
     });
   }
 
   void onReturnPressed() {
     setState(() {
-      number = 0;
+      viewModel.number = 0;
       paiementNotifier.currentMontant = 0;
       decimalMarker = 0;
     });
