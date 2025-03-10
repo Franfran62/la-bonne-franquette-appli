@@ -109,8 +109,10 @@ class CommandeViewModel extends ChangeNotifier {
     paiementNotifier.currentMontant = paiementNotifier.resteAPayer;
   }
 
-  void cancel(BuildContext context) {
-    //TODO avec le bouton annuler
+  Future<void> cancel(BuildContext context) async {
+    await ApiService.delete(endpoint: '/commandes/${commandeNotifier.currentCommande.commandeId.toString()}');
+    reset();
+    GoRouter.of(context).go("/destinationCommande");
   }
 
   void reset() {

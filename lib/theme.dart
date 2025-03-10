@@ -127,6 +127,36 @@ class CustomTheme {
     );
   }
 
+  static ElevatedButtonThemeData getCancelElevatedButtonTheme() {
+  return ElevatedButtonThemeData(
+    style: ButtonStyle(
+      shadowColor: WidgetStateProperty.all(Colors.transparent),
+      backgroundColor: WidgetStateColor.resolveWith((states) => Colors.white), 
+      foregroundColor: WidgetStateColor.resolveWith((states) => Colors.red), 
+      side: WidgetStateProperty.all(
+        BorderSide(
+          style: BorderStyle.none
+        ),
+      ),
+      shape: WidgetStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+          side: BorderSide.none,
+        ),
+      ),
+      textStyle: WidgetStateProperty.all(
+        GoogleFonts.notoSans(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
+      ),
+      padding: WidgetStateProperty.all(
+        const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+      ),
+    ),
+  );
+}
+
   static InputDecoration getInputDecoration({required String label, required String placeholder, required BuildContext context, suffixIcon}) {
     ThemeData theme = Theme.of(context);
     return InputDecoration(

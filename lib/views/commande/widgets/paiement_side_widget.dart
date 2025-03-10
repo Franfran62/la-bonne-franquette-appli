@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
+import 'package:la_bonne_franquette_front/theme.dart';
 import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
 import 'package:la_bonne_franquette_front/views/commande/widgets/valid_paiement_widget.dart';
 import 'package:la_bonne_franquette_front/views/commande/widgets/type_paiement_dropdown_widget.dart';
@@ -87,13 +88,22 @@ class PaiementSideWidget extends HookWidget {
                   padding: const EdgeInsets.only(left: 20, top: 40.0),
                   child: Row(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: ElevatedButton(
+                          onPressed: () => viewModel.valid(context),
+                          child: Text( 
+                            'Valider'
+                            )
+                        ),
+                      ),
                       ElevatedButton(
-                        onPressed: () => viewModel.valid(context),
+                        onPressed: () async => await viewModel.cancel(context),
+                        style: CustomTheme.getCancelElevatedButtonTheme().style,
                         child: Text( 
-                          'Valider'
+                          'Annuler', 
                           )
                       ),
-                      // TODO: Le bouton annuler
                     ],
                   ),
                 ),
