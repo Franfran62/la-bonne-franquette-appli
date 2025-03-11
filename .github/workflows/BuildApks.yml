@@ -15,7 +15,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Create .env file
-        run: echo "API_URL=${{ vars.API_URL }}" > .env
+        run: echo "API_URL=${{ secrets.API_URL }}" > .env
       - name: Set up Java env
         uses: actions/setup-java@v3
         with:
