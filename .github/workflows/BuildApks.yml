@@ -16,6 +16,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Create .env file
         run: echo "API_URL=${{ secrets.API_URL }}" > .env
+      - name: Check env
+        run: cat .env
       - name: Set up Java env
         uses: actions/setup-java@v3
         with:
