@@ -6,9 +6,10 @@ on:
       - "**"
   workflow_dispatch:
 jobs:
-  setup-env:
-    name: Set up
+  build:
+    name: Build apk
     runs-on: macos-latest
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -39,13 +40,6 @@ jobs:
         run: flutter pub get
       - name: Check flutter installation
         run: flutter --version
-
-  build:
-    name: Build apk
-    runs-on: macos-latest
-    needs: setup-env
-
-    steps:
       - name: Build apk
         run: flutter build apk --release
 
