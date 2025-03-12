@@ -38,6 +38,10 @@ jobs:
           architecture: x64
       - name: Add Flutter to PATH
         run: echo "${{ runner.tool_cache }}/flutter/bin" >> $GITHUB_PATH
+      - name: Verify Flutter installation
+        run: |
+          echo "Flutter path: ${{ runner.tool_cache }}/flutter/bin"
+          ls ${{ runner.tool_cache }}/flutter/bin
       - name: Set up project dependencies
         run: flutter pub get
       - name: Check flutter installation
