@@ -5,10 +5,9 @@ on:
     tags:
       - "**"
   workflow_dispatch:
-
 jobs:
-  build:
-    name: Build
+  setup-env:
+    name: Set up environment
     runs-on: macos-latest
 
     steps:
@@ -41,8 +40,22 @@ jobs:
         run: flutter pub get
       - name: Check flutter installation
         run: flutter --version
+
+  build:
+    name: Build apk
+    runs-on: macos-latest
+    needs: setup-env
+
+    steps:
       - name: Build apk
         run: flutter build apk --release
+
+  release:
+    name: Release apk
+    runs-on: macos-latest
+    needs: build
+
+    steps:
       - name: Set up release files
         run: mkdir staging
       - name: Copy files to staging directory
