@@ -7,20 +7,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkout:
-    name: Check out repository
-    runs-on: macos-latest
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
   setup-env:
     name: Set up environment
     runs-on: macos-latest
-    needs: checkout
-
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
       - name: Create .env file
         run: echo "API_URL=${{ secrets.API_URL }}" > .env
       - name: Set up Java env
