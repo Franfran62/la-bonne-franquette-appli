@@ -49,6 +49,8 @@ jobs:
     needs: setup-env
 
     steps:
+      - name: Add Flutter to PATH
+        run: echo "${{ runner.tool_cache }}/flutter/3.22.2-stable/x64/bin" >> $GITHUB_PATH
       - name: Run Flutter tests
         run: flutter test
 
@@ -58,6 +60,8 @@ jobs:
     needs: test
 
     steps:
+      - name: Add Flutter to PATH
+        run: echo "${{ runner.tool_cache }}/flutter/3.22.2-stable/x64/bin" >> $GITHUB_PATH
       - name: Build apk
         run: flutter build apk --release
 
@@ -69,3 +73,10 @@ jobs:
     steps:
       - name: Set up release files
         run: mkdir staging
+      - name: Copy files to staging directory
+        run: mv build/app/outputs/flutter-apk/app-release.apk staging/La_bonne_Franquette.apk
+      - name: Create and upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: La_bonne_Franquette
+          path: staging/La_bonne_Franquette.apk
