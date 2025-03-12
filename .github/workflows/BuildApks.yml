@@ -7,9 +7,8 @@ on:
   workflow_dispatch:
 jobs:
   setup-env:
-    name: Set up environment
+    name: Set up
     runs-on: macos-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
