@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup-env:
-    name: Set up environment
+  test:
+    name: Run tests
     runs-on: macos-latest
     steps:
       - name: Check out repository
@@ -42,15 +42,6 @@ jobs:
         run: flutter pub get
       - name: Check flutter installation
         run: flutter --version
-
-  test:
-    name: Run tests
-    runs-on: macos-latest
-    needs: setup-env
-
-    steps:
-      - name: Add Flutter to PATH
-        run: echo "${{ runner.tool_cache }}/flutter/3.22.2-stable/x64/bin" >> $GITHUB_PATH
       - name: Run Flutter tests
         run: flutter test
 
