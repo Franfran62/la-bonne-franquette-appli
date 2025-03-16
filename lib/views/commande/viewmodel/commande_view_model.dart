@@ -120,4 +120,15 @@ class CommandeViewModel extends ChangeNotifier {
     paiementNotifier.reset();
     commandeNotifier.reset();
   }
+
+  updateDateLivraison() {
+    try {
+      ApiService.patch(
+        endpoint: "/commandes/${commandeNotifier.currentCommande.commandeId.toString()}", 
+        body: {'dateLivraison': commandeNotifier.currentCommande.dateLivraison?.toIso8601String()}, 
+        token: true);
+    } catch (e) {
+      print(e);
+    }
+  }
 }

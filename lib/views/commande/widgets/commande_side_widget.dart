@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_bonne_franquette_front/views/commande/widgets/date_livraison_choice_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article_paiement.dart';
 import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
@@ -23,7 +24,8 @@ class CommandeSideWidget extends HookWidget {
             children: [
               Text(viewModel.title,
                   style: Theme.of(context).textTheme.headlineMedium),
-              Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+              DateLivraisonChoiceWidget(),
+              Padding(padding: EdgeInsets.symmetric(vertical: 12)),
               Expanded(
                 child: paiementNotifier.currentArticles.isNotEmpty
                     ? ListView(
