@@ -8,7 +8,7 @@ class CommandeNotifier extends ChangeNotifier {
   
   static final CommandeNotifier _singleton = CommandeNotifier._internal();
 
-  static Commande _currentCommande = Commande(surPlace: true, articles: [], menus: [], paiementSet: [], status: StatusCommande.EN_COURS);
+  static Commande _currentCommande = Commande(surPlace: true, articles: [], menus: [], paiementSet: [], status: StatusCommande.EN_COURS, dateLivraison: DateTime.now());
 
   factory CommandeNotifier() {
     return _singleton;
@@ -16,6 +16,7 @@ class CommandeNotifier extends ChangeNotifier {
 
   CommandeNotifier._internal() {
     _currentCommande = Commande(
+      dateLivraison: DateTime.now(),
       surPlace: true, 
       articles: [], 
       menus: [], 
@@ -26,6 +27,7 @@ class CommandeNotifier extends ChangeNotifier {
 
     void reset() {
     _currentCommande = Commande(
+      dateLivraison: DateTime.now(),
       commandeId: null,
       numero: null,
       surPlace: true, 
@@ -96,6 +98,11 @@ class CommandeNotifier extends ChangeNotifier {
         0,
         (previousValue, element) =>
             previousValue + element.prixTTC * element.quantite);
+    notifyListeners();
+  }
+
+  void setDateLivraison(DateTime date) {
+    _currentCommande.dateLivraison = date;
     notifyListeners();
   }
 }
