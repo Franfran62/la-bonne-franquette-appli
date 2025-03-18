@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 
-import '../../../models/categorie.dart';
-import '../viewmodel/caisse_view_model.dart';
+import '../../../../models/categorie.dart';
+import '../viewmodel/prisedecommande_view_model.dart';
 import 'caisse_produit_list_view.dart';
 import 'element_button.dart';
 

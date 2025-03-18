@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
-import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 
 class MontantTypeWidget extends StatefulWidget {
   @override
@@ -9,10 +9,9 @@ class MontantTypeWidget extends StatefulWidget {
 
 class _MontantTypeWidgetState extends State<MontantTypeWidget> {
   final PaiementNotifier paiementNotifier = PaiementNotifier();
-  final CommandeViewModel viewModel = CommandeViewModel();
+  final PaiementViewModel viewModel = PaiementViewModel();
 
   int decimalMarker = 0;
-  
 
   void onNumberPressed(int digit) {
     setState(() {
@@ -69,25 +68,25 @@ class _MontantTypeWidgetState extends State<MontantTypeWidget> {
             ],
           ),
         ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: List.generate(6, (index) => _buildButton(index)),
-            ),
-            const SizedBox(height: 6),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ...List.generate(4, (index) => _buildButton(index + 6)),
-                  _buildButton(-2), // Virgule
-                  _buildButton(-1), // Backspace
-                ],
-              ),
-            ),
-          ],
-        );
-      }
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: List.generate(6, (index) => _buildButton(index)),
+        ),
+        const SizedBox(height: 6),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ...List.generate(4, (index) => _buildButton(index + 6)),
+              _buildButton(-2), // Virgule
+              _buildButton(-1), // Backspace
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildButton(int value) {
     return Padding(

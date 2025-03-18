@@ -29,7 +29,7 @@ class SideMenuWidget extends StatelessWidget {
           _buildIconButton(
               Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
           _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue",
-              () => context.push(destination)),
+              () => context.pushNamed(destination)),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion",
               () async => await SessionService.logout(context),

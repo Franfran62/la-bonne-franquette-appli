@@ -117,8 +117,8 @@ class _LoginPageState extends State<LoginPage> {
               );
               if (connected) {
                 switchView
-                  ? context.push('/cuisine')
-                  : context.push('/destinationCommande');
+                  ? context.pushNamed('cuisine')
+                  : context.pushNamed('caisse');
               }
             } catch (e) {
               ScaffoldMessenger.of(context).showSnackBar(

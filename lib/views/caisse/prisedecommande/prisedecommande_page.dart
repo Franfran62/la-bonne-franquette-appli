@@ -3,22 +3,22 @@ import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_categorie_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_menu_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/viewmodel/prisedecommande_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/caisse_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/caisse_menu_list_view.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
 import 'widget/panier_widget.dart';
 
-class CaisseHomePage extends StatefulWidget {
-  const CaisseHomePage({super.key});
+class PriseDeCommandePage extends StatefulWidget {
+  const PriseDeCommandePage({super.key});
 
   @override
-  _CaisseHomePageState createState() => _CaisseHomePageState();
+  _PriseDeCommandePageState createState() => _PriseDeCommandePageState();
 }
 
-class _CaisseHomePageState extends State<CaisseHomePage> {
-  CaisseViewModel caisseViewModel = CaisseViewModel();
+class _PriseDeCommandePageState extends State<PriseDeCommandePage> {
+  PriseDeCommandeViewModel caisseViewModel = PriseDeCommandeViewModel();
   bool showMenu = false;
   List<Menu>? menus;
   List<Categorie>? categories;
@@ -61,7 +61,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
     caisseViewModel.context = context;
 
     return MainScaffold(
-      destination: "/cuisine",
+      destination: "cuisine",
       scaffoldKey: _scaffoldKey,
       body: Row(
         children: [
@@ -95,14 +95,16 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                 Row(
                   children: [
                     ChoiceChip(
-                      label: Text("A l'unité", style: Theme.of(context).textTheme.bodyMedium),
+                      label: Text("A l'unité",
+                          style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: !showMenu,
                       onSelected: (selected) => setState(updateMenuChoice),
                     ),
                     SizedBox(width: 8.0),
                     ChoiceChip(
-                      label: Text("Menu", style: Theme.of(context).textTheme.bodyMedium),
+                      label: Text("Menu",
+                          style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
                       selected: showMenu,
                       onSelected: (selected) => setState(updateMenuChoice),
@@ -121,12 +123,10 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                     ),
                     SizedBox(width: 8.0),
                     ChoiceChip(
-                      label:
-                          Text(
-                            "Modifications", 
-                            style: Theme.of(context).textTheme.bodyMedium),
+                      label: Text("Modifications",
+                          style: Theme.of(context).textTheme.bodyMedium),
                       labelPadding: EdgeInsets.all(choiceLabelPadding),
-                      selected: CaisseViewModel().showModification,
+                      selected: PriseDeCommandeViewModel().showModification,
                       onSelected: (selected) =>
                           setState(updateModificationChoice),
                     ),
@@ -135,8 +135,7 @@ class _CaisseHomePageState extends State<CaisseHomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 10.0),
-                  child: 
-                    showMenu
+                  child: showMenu
                       ? CaisseMenuListView(
                           menus: menus,
                           taille: (defaultHeight - 100) / 3,

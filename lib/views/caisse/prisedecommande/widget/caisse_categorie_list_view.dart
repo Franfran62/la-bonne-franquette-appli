@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/categorie.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_produit_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/caisse_sous_categorie_list_view.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/caisse_produit_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/caisse_sous_categorie_list_view.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/element_button.dart';
 
 
 class CaisseCategorieListView extends HookWidget {
