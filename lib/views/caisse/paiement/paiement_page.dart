@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/views/commande/widgets/commande_side_widget.dart';
-import 'package:la_bonne_franquette_front/views/commande/widgets/paiement_side_widget.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/widgets/commande_side_widget.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/widgets/paiement_side_widget.dart';
 import 'package:la_bonne_franquette_front/widgets/mainScaffold/main_scaffold.dart';
 
-class CommandePage extends StatefulWidget {
-  const CommandePage({super.key});
+class PaiementPage extends StatefulWidget {
+  const PaiementPage({super.key});
 
   @override
-  _CommandePageState createState() => _CommandePageState();
+  _PaiementPageState createState() => _PaiementPageState();
 }
 
-class _CommandePageState extends State<CommandePage> {
+class _PaiementPageState extends State<PaiementPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      destination: "/cuisine",
+      destination: "cuisine",
       scaffoldKey: _scaffoldKey,
       body: Row(
         children: [

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/element_button.dart';
-import '../viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/element_button.dart';
+import '../viewmodel/prisedecommande_view_model.dart';
 
 class CaisseProduitListView extends StatelessWidget {
   CaisseProduitListView({
@@ -15,7 +15,7 @@ class CaisseProduitListView extends StatelessWidget {
 
   final List<Produit>? produits;
   final TextScaler tailleText;
-  final CaisseViewModel viewModel = CaisseViewModel();
+  final PriseDeCommandeViewModel viewModel = PriseDeCommandeViewModel();
   final VoidCallback onAjout;
 
   Future<void> handlePress(Produit produit) async {

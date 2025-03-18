@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
-import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/viewmodel/prisedecommande_view_model.dart';
 
 class ModificationExtraModal extends StatelessWidget {
   final int produitId;
   final ValueNotifier<List<Extra>> extrasPourProduit;
-  final CaisseViewModel caisseViewModel = CaisseViewModel();
+  final PriseDeCommandeViewModel caisseViewModel = PriseDeCommandeViewModel();
 
   ModificationExtraModal({
     required this.produitId,
@@ -47,10 +47,8 @@ class ModificationExtraModal extends StatelessWidget {
                       return InkWell(
                         child: Row(
                           children: [
-                            Text(
-                              extra.nom,
-                              style: Theme.of(context).textTheme.bodyMedium
-                              ),
+                            Text(extra.nom,
+                                style: Theme.of(context).textTheme.bodyMedium),
                             if (extrasPourProduit.value.contains(extra))
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),

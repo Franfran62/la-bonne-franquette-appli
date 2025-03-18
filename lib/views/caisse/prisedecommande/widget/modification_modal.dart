@@ -4,14 +4,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
 import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
-import 'package:la_bonne_franquette_front/views/caisse/viewmodel/caisse_view_model.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/modification_ingredient_modal.dart';
-import 'package:la_bonne_franquette_front/views/caisse/widget/modification_extra_modal.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/viewmodel/prisedecommande_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/modification_ingredient_modal.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/modification_extra_modal.dart';
 
 class ModificationModal extends HookWidget {
   final Produit produitAModifier;
   final Function(Map<String, List>) onModificationsSelected;
-  final CaisseViewModel caisseViewModel = CaisseViewModel();
+  final PriseDeCommandeViewModel caisseViewModel = PriseDeCommandeViewModel();
 
   ModificationModal({
     required this.produitAModifier,
@@ -69,14 +69,14 @@ class ModificationModal extends HookWidget {
           width: 150,
           child: ElevatedButton(
             style: Theme.of(context).elevatedButtonTheme.style,
-              onPressed: () {
-                Map<String, List> modifications = {
-                  "ingredients": ingredientsARetirer.value,
-                  "extras": extrasPourProduit.value,
-                };
-                onModificationsSelected(modifications);
-              },
-              child: Text("Valider"),
+            onPressed: () {
+              Map<String, List> modifications = {
+                "ingredients": ingredientsARetirer.value,
+                "extras": extrasPourProduit.value,
+              };
+              onModificationsSelected(modifications);
+            },
+            child: Text("Valider"),
           ),
         ),
         Positioned(

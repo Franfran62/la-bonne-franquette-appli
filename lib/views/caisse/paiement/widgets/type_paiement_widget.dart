@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
-import 'package:la_bonne_franquette_front/views/commande/widgets/montant_type_widget.dart';
-import 'package:la_bonne_franquette_front/views/commande/widgets/rembourser_type_widget.dart';
-import 'package:la_bonne_franquette_front/views/commande/widgets/selection_type_widget.dart';
-import 'package:la_bonne_franquette_front/views/commande/widgets/toutpayer_type_widget.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/widgets/montant_type_widget.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/widgets/rembourser_type_widget.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/widgets/selection_type_widget.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/widgets/toutpayer_type_widget.dart';
 import 'package:provider/provider.dart';
 
 class TypePaiementWidget extends StatefulWidget {

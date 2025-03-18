@@ -9,18 +9,18 @@ import 'package:la_bonne_franquette_front/services/provider/commande_notifier.da
 import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
 import 'package:flutter/widgets.dart';
 
-class CommandeViewModel extends ChangeNotifier {
-  static final CommandeViewModel _singleton = CommandeViewModel._internal();
-  
+class PaiementViewModel extends ChangeNotifier {
+  static final PaiementViewModel _singleton = PaiementViewModel._internal();
+
   String title = "";
   double number = 0;
   CommandeNotifier commandeNotifier = CommandeNotifier();
   PaiementNotifier paiementNotifier = PaiementNotifier();
 
-  factory CommandeViewModel() {
+  factory PaiementViewModel() {
     return _singleton;
   }
-  CommandeViewModel._internal();
+  PaiementViewModel._internal();
 
   void init(BuildContext context) {
     number = 0;
@@ -46,23 +46,27 @@ class CommandeViewModel extends ChangeNotifier {
       case PaymentChoice.selection:
         body["prix"] = paiementNotifier.displayTotalSelection();
         body["type"] = paiementNotifier.selectedPaymentType;
-        body["articles"] = ArticlePaiement.getArticles(paiementNotifier.currentSelection);
-        body["selections"] = ArticlePaiement.getSelections(paiementNotifier.currentSelection);
-      break;
+        body["articles"] =
+            ArticlePaiement.getArticles(paiementNotifier.currentSelection);
+        body["selections"] =
+            ArticlePaiement.getSelections(paiementNotifier.currentSelection);
+        break;
       case PaymentChoice.toutPayer:
         body["prix"] = paiementNotifier.resteAPayer;
         body["type"] = paiementNotifier.selectedPaymentType;
-        body["articles"] = ArticlePaiement.getArticles(paiementNotifier.currentArticles);
-        body["selections"] = ArticlePaiement.getSelections(paiementNotifier.currentArticles);
-      break;
-      case PaymentChoice.rembourser: 
+        body["articles"] =
+            ArticlePaiement.getArticles(paiementNotifier.currentArticles);
+        body["selections"] =
+            ArticlePaiement.getSelections(paiementNotifier.currentArticles);
+        break;
+      case PaymentChoice.rembourser:
         body["prix"] = paiementNotifier.currentMontant;
         body["type"] = paiementNotifier.selectedPaymentType;
         body["articles"] = <Article>[];
         body["selections"] = <Selection>[];
-      break;  
+        break;
     }
-      return body;
+    return body;
   }
 
   Future<bool> sendEmail(String email, bool seeDetails) async {
@@ -91,14 +95,16 @@ class CommandeViewModel extends ChangeNotifier {
   void pay() async {
     var body = setPaymentInfo();
     Paiement paiement = Paiement(
-      type: paiementNotifier.selectedPaymentType!, 
+      type: paiementNotifier.selectedPaymentType!,
       commandeId: commandeNotifier.currentCommande.commandeId!,
       prix: body["prix"],
       articles: body["articles"],
       selections: body["selections"],
     );
     var response = await ApiService.post(
-        endpoint: "/paiement/${commandeNotifier.currentCommande.commandeId}", body: paiement.toSend(), token: true);
+        endpoint: "/paiement/${commandeNotifier.currentCommande.commandeId}",
+        body: paiement.toSend(),
+        token: true);
     paiement.id = response["id"];
     paiement.date = DateTime.parse(response["date"]);
     paiementNotifier.addPaiement(paiement);
@@ -110,7 +116,9 @@ class CommandeViewModel extends ChangeNotifier {
   }
 
   Future<void> cancel(BuildContext context) async {
-    await ApiService.delete(endpoint: '/commandes/${commandeNotifier.currentCommande.commandeId.toString()}');
+    await ApiService.delete(
+        endpoint:
+            '/commandes/${commandeNotifier.currentCommande.commandeId.toString()}');
     reset();
     GoRouter.of(context).go("/destinationCommande");
   }
@@ -124,9 +132,13 @@ class CommandeViewModel extends ChangeNotifier {
   updateDateLivraison() {
     try {
       ApiService.patch(
-        endpoint: "/commandes/${commandeNotifier.currentCommande.commandeId.toString()}", 
-        body: {'dateLivraison': commandeNotifier.currentCommande.dateLivraison?.toIso8601String()}, 
-        token: true);
+          endpoint:
+              "/commandes/${commandeNotifier.currentCommande.commandeId.toString()}",
+          body: {
+            'dateLivraison': commandeNotifier.currentCommande.dateLivraison
+                ?.toIso8601String()
+          },
+          token: true);
     } catch (e) {
       print(e);
     }

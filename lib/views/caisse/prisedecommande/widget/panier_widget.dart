@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -6,23 +5,21 @@ import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
-import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/article_card.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/menu_card.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/wrapper/article.dart';
+import '../../../../models/wrapper/article.dart';
 
 class PanierWidget extends HookWidget {
-
   final double height;
 
   const PanierWidget({required this.height, super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    final CommandeViewModel viewModel = CommandeViewModel();
+    final PaiementViewModel viewModel = PaiementViewModel();
     return Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 0),
         child: Consumer<CommandeNotifier>(
@@ -34,20 +31,25 @@ class PanierWidget extends HookWidget {
             void sendCommand() async {
               if (commandeNotifier.currentCommande.commandeId != null) {
                 await ApiService.patch(
-                    endpoint: '/commandes/${commandeNotifier.currentCommande.commandeId}',
-                    body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: true),
+                    endpoint:
+                        '/commandes/${commandeNotifier.currentCommande.commandeId}',
+                    body: commandeNotifier.currentCommande
+                        .toCreateCommandeJson(patch: true),
                     token: true);
               } else {
-                  Map<String, dynamic> commande = await ApiService.post(
+                Map<String, dynamic> commande = await ApiService.post(
                     endpoint: '/commandes',
-                    body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: false),
+                    body: commandeNotifier.currentCommande
+                        .toCreateCommandeJson(patch: false),
                     token: true);
-                  commandeNotifier.currentCommande.commandeId = commande['commandeId'];
-                  commandeNotifier.currentCommande.numero = commande['numero'];
-                  commandeNotifier.currentCommande.dateSaisie = DateTime.parse(commande['dateSaisie']);
+                commandeNotifier.currentCommande.commandeId =
+                    commande['commandeId'];
+                commandeNotifier.currentCommande.numero = commande['numero'];
+                commandeNotifier.currentCommande.dateSaisie =
+                    DateTime.parse(commande['dateSaisie']);
               }
-            viewModel.init(context);
-            context.push('/commande');
+              viewModel.init(context);
+              context.pushNamed('caisse_paiement');
             }
 
             return Column(
@@ -59,12 +61,16 @@ class PanierWidget extends HookWidget {
                           children: items.map<Widget>((item) {
                             if (item is Selection) {
                               return Card(
-                                color: item.isModified ? Color(0xFFE8F4FD) : Color(0xFFF8F9FA),
-                                child: MenuCard(menu: item));
+                                  color: item.isModified
+                                      ? Color(0xFFE8F4FD)
+                                      : Color(0xFFF8F9FA),
+                                  child: MenuCard(menu: item));
                             } else if (item is Article) {
                               return Card(
-                                color: item.isModified ? Color(0xFFE8F4FD) : Color(0xFFF8F9FA),
-                                child: ArticleCard(article: item));
+                                  color: item.isModified
+                                      ? Color(0xFFE8F4FD)
+                                      : Color(0xFFF8F9FA),
+                                  child: ArticleCard(article: item));
                             } else {
                               return SizedBox.shrink();
                             }

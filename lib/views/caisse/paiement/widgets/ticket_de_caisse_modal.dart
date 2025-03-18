@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
-import 'package:la_bonne_franquette_front/views/commande/viewmodel/commande_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 
 class TicketDeCaisseModal extends StatefulWidget {
   @override
@@ -8,11 +8,10 @@ class TicketDeCaisseModal extends StatefulWidget {
 }
 
 class _TicketDeCaisseModalState extends State<TicketDeCaisseModal> {
-
   String email = '';
   bool seeDetails = true;
   final _formKey = GlobalKey<FormState>();
-  final CommandeViewModel viewModel = CommandeViewModel();
+  final PaiementViewModel viewModel = PaiementViewModel();
 
   bool _isEmailValid(String email) {
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
@@ -24,7 +23,7 @@ class _TicketDeCaisseModalState extends State<TicketDeCaisseModal> {
       bool emailSend = await viewModel.sendEmail(email, seeDetails);
       if (emailSend) {
         Navigator.of(context).pop();
-      }  
+      }
     }
   }
 
