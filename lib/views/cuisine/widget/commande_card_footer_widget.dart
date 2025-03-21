@@ -6,7 +6,7 @@ class CommandeCardFooterWidget extends StatelessWidget {
   final Function suppressionFn;
 
   CommandeCardFooterWidget(
-      {this.commandePaye = false,
+      {required this.commandePaye,
       required this.envoieFn,
       required this.suppressionFn,
       super.key});
@@ -29,7 +29,7 @@ class CommandeCardFooterWidget extends StatelessWidget {
       style: ButtonStyle(
         minimumSize: WidgetStateProperty.all(const Size(175, 50)),
         backgroundColor: WidgetStateProperty.all(
-          Theme.of(context).colorScheme.secondary,
+          Theme.of(context).colorScheme.tertiary,
         ),
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

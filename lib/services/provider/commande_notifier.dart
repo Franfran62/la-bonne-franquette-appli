@@ -8,7 +8,7 @@ class CommandeNotifier extends ChangeNotifier {
   
   static final CommandeNotifier _singleton = CommandeNotifier._internal();
 
-  static Commande _currentCommande = Commande(surPlace: true, articles: [], menus: [], paiementSet: [], status: StatusCommande.EN_COURS, dateLivraison: DateTime.now());
+  static Commande _currentCommande = Commande(surPlace: true, articles: [], menus: [], paiementSet: [], status: StatusCommande.EN_COURS, dateLivraison: DateTime.now(), paye: false);
 
   factory CommandeNotifier() {
     return _singleton;
@@ -21,7 +21,8 @@ class CommandeNotifier extends ChangeNotifier {
       articles: [], 
       menus: [], 
       paiementSet: [],
-      status: StatusCommande.EN_COURS
+      status: StatusCommande.EN_COURS,
+      paye: false,
       );
   }
 
@@ -35,7 +36,8 @@ class CommandeNotifier extends ChangeNotifier {
       menus: [], 
       paiementSet: [],
       status: StatusCommande.EN_COURS,
-      prixTTC: 0
+      prixTTC: 0,
+      paye: false,
       );
     calculerLePrixTotal();
   }

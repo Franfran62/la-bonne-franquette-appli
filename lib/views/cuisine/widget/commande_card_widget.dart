@@ -27,15 +27,17 @@ class CommandeCard extends StatelessWidget {
 
   @override
 Widget build(BuildContext context) {
+    final bool commandePaye = commande.paye!;
+
     return Container(
       margin: const EdgeInsets.all(10.0),
       child: Card(
-        color: Theme.of(context).colorScheme.primary,
+        color: commandePaye ? Theme.of(context).colorScheme.inversePrimary : Colors.redAccent,
         child: Column(
           children: <Widget>[
-            CommandeCardHeaderWidget(numero: commande.numero!, heure: commande.dateSaisie!.hour, minute: commande.dateSaisie!.minute),
+            CommandeCardHeaderWidget(numero: commande.numero!, heure: commande.dateSaisie!.hour, minute: commande.dateSaisie!.minute, commandePaye: commandePaye,),
             Expanded(child: CommandeCardCommandeWidget(commande)),
-            CommandeCardFooterWidget(commandePaye: true,envoieFn: envoieCommande, suppressionFn: supprimerCommande,),
+            CommandeCardFooterWidget(commandePaye: commandePaye,envoieFn: envoieCommande, suppressionFn: supprimerCommande,),
             const SizedBox(height: 25.0,),
           ],
         ),

@@ -16,7 +16,7 @@ class CuisineHomepageViewModel {
       List<Commande> commandes = List<Commande>.from(response.map((commande) => Commande.fromJson(commande)));
       return commandes;
     } catch (e) {
-      throw Exception("Impossible de récupérer les commandes en cours");
+      throw Exception("Impossible de récupérer les commandes en cours : $e");
     }
   }
 }

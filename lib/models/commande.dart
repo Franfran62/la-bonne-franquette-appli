@@ -17,7 +17,7 @@ class Commande {
   List<Selection> menus;
   List<Paiement> paiementSet;
   String? paiementTypeCommande;
-  bool? paye;
+  bool paye;
 
   Commande({
     this.commandeId,
@@ -32,7 +32,7 @@ class Commande {
     required List<Selection>? menus,
     required this.paiementSet,
     this.paiementTypeCommande,
-    this.paye
+    required this.paye
   })  : articles = articles ?? [],
         menus = menus ?? [];
 
