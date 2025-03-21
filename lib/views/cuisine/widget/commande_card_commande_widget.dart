@@ -19,7 +19,7 @@ class CommandeCardCommandeWidget extends StatelessWidget {
           return Container(
             margin: EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.tertiary,
               borderRadius: BorderRadius.circular(5.0),
             ),
             child: Column(
