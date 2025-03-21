@@ -27,11 +27,16 @@ class CommandeCardHeaderWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text('N°${numero.toString()}',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall
-                  ?.copyWith(color: Colors.white)),
+          Row(
+            children: [
+              Text('N°${numero.toString()}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(color: Colors.white)),
+              commandePaye ? Icon(Icons.attach_money, color: Colors.green,) : Icon(Icons.money_off, color: Colors.white,)
+            ],
+          ),
           Text('${heure.toString()}:${minute.toString()}',
               style: Theme.of(context)
                   .textTheme

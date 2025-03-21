@@ -20,6 +20,7 @@ class _CommandeListViewState extends State<CommandeListView> {
 
   List<Commande> commandes = [];
   final WebSocketService webSocketService = WebSocketService();
+  bool filterPaid = false;
 
   @override
   void initState() {
@@ -53,9 +54,22 @@ class _CommandeListViewState extends State<CommandeListView> {
   void setupWebSocket() async {
     await webSocketService.setWebSocketServerAdress();
     webSocketService.connect((String message) {
-      //faire des trucs ici
       loadCommandes();
     });
+  }
+
+  void updateFilter() async {
+    setState(() {
+      filterPaid = !filterPaid;
+    });
+  }
+
+  List<Commande> filterCommandes() {
+    if(filterPaid) {
+      return commandes.where((c) => c.paye == true).toList();
+    } else {
+      return commandes;
+    }
   }
 
   @override
@@ -73,15 +87,22 @@ class _CommandeListViewState extends State<CommandeListView> {
           Expanded(
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: commandes.length,
+                itemCount: filterCommandes().length,
                 itemBuilder: (context, index) {
                   return ConstrainedBox(
                       constraints: const BoxConstraints(maxWidth: 500),
-                      child: CommandeCard(commande: commandes[index], loadCommandes: loadCommandes, popCommande: popCommande,)
+                      child: CommandeCard(commande: filterCommandes()[index], loadCommandes: loadCommandes, popCommande: popCommande,)
                   );
                 }
             ),
           ),
+          Row(children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(64.0,0.0,8.0,0.0),
+              child: Text("Commandes payées uniquement ?"),
+            ),
+            Switch(value: filterPaid, onChanged: (value) => {updateFilter()})
+          ],),
         ],
       )
     );
