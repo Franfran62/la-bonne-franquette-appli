@@ -89,7 +89,7 @@ class PaiementViewModel extends ChangeNotifier {
       pay();
     }
     reset();
-    context.pushNamed('caisse_destination');
+    context.pushNamed('caisse');
   }
 
   void pay() async {
@@ -120,7 +120,7 @@ class PaiementViewModel extends ChangeNotifier {
         endpoint:
             '/commandes/${commandeNotifier.currentCommande.commandeId.toString()}');
     reset();
-    context.pushNamed('caisse_destination');
+    context.pushNamed('caisse');
   }
 
   void reset() {
