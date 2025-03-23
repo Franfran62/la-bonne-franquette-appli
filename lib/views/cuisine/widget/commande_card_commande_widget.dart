@@ -10,22 +10,16 @@ class CommandeCardCommandeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Article> articles = commande.getArticlesConcatMenus();
-    return Container(
-      margin: EdgeInsets.all(15.0),
-      child: ListView.builder(
+    return ListView.builder(
         shrinkWrap: true,
         itemCount: articles.length,
         itemBuilder: (context, articleIndex) {
-          return Container(
-            margin: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary,
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            child: Column(
+          return Column(
               children: [
                 ListTile(
-                  title: Text('${articles[articleIndex].quantite} ${articles[articleIndex].nom}'),
+                  title: Text(
+                    '${articles[articleIndex].quantite} ${articles[articleIndex].nom}',
+                    style: Theme.of(context).textTheme.bodyLarge),
                 ),
                 ...articles[articleIndex].ingredients.map((ingredient) => ListTile(
                       leading: Icon(Icons.remove),
@@ -44,10 +38,8 @@ class CommandeCardCommandeWidget extends StatelessWidget {
                       ),
                     )),
               ],
-            ),
-          );
-        },
-      ),
+            );
+        }
     );
   }
 }

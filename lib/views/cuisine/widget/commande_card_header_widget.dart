@@ -15,40 +15,30 @@ class CommandeCardHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: commandePaye ? Theme.of(context).colorScheme.inversePrimary : Colors.redAccent,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10.0),
-          topRight: Radius.circular(10.0),
-        ),
-      ),
+    return  Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            children: [
-              Text('N°${numero.toString()}',
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                  children: [
+                    Text(numero.toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ),
+                    commandePaye 
+                    ? Icon(Icons.attach_money, color: Colors.green,) 
+                    : Icon(Icons.money_off, color: Colors.redAccent,)
+                  ],
+                ),
+              Text('${heure.toString()}h${minute.toString()}',
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall
-                      ?.copyWith(color: Colors.white)),
-              commandePaye ? Icon(Icons.attach_money, color: Colors.green,) : Icon(Icons.money_off, color: Colors.white,)
+                      ),
             ],
           ),
-          Text('${heure.toString()}:${minute.toString()}',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall
-                  ?.copyWith(color: Colors.white)),
-          Text('${heure.toString()}:${minute.toString()}',
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall
-                  ?.copyWith(color: Colors.white)),
-        ],
-      ),
     );
   }
 }

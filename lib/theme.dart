@@ -127,11 +127,11 @@ class CustomTheme {
     );
   }
 
-  static ElevatedButtonThemeData getCancelElevatedButtonTheme() {
+  static ElevatedButtonThemeData getCancelElevatedButtonTheme(Color backgroundColor) {
   return ElevatedButtonThemeData(
     style: ButtonStyle(
       shadowColor: WidgetStateProperty.all(Colors.transparent),
-      backgroundColor: WidgetStateColor.resolveWith((states) => Colors.white), 
+      backgroundColor: WidgetStateColor.resolveWith((states) => backgroundColor), 
       foregroundColor: WidgetStateColor.resolveWith((states) => Colors.red), 
       side: WidgetStateProperty.all(
         BorderSide(

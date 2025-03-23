@@ -84,18 +84,6 @@ class _CommandeListViewState extends State<CommandeListView> {
     return Center(
       child: Column(
         children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: filterCommandes().length,
-                itemBuilder: (context, index) {
-                  return ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 500),
-                      child: CommandeCard(commande: filterCommandes()[index], loadCommandes: loadCommandes, popCommande: popCommande,)
-                  );
-                }
-            ),
-          ),
           Row(children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(64.0,0.0,8.0,0.0),
@@ -103,6 +91,18 @@ class _CommandeListViewState extends State<CommandeListView> {
             ),
             Switch(value: filterPaid, onChanged: (value) => {updateFilter()})
           ],),
+          Expanded(
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: filterCommandes().length,
+                itemBuilder: (context, index) {
+                  return ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 450),
+                      child: CommandeCard(commande: filterCommandes()[index], loadCommandes: loadCommandes, popCommande: popCommande,)
+                  );
+                }
+            ),
+          ),
         ],
       )
     );
