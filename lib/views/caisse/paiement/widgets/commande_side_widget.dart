@@ -27,15 +27,18 @@ class CommandeSideWidget extends HookWidget {
               Padding(padding: EdgeInsets.symmetric(vertical: 12)),
               Expanded(
                 child: paiementNotifier.currentArticles.isNotEmpty
-                    ? ListView(
-                        children: paiementNotifier.currentArticles
-                            .map<Widget>((item) {
+                    ? ListView.builder(
+                        itemCount: paiementNotifier.currentArticles.length,
+                        itemBuilder: (context, index) {
+                          final item = paiementNotifier.currentArticles[index];
+                          final isSelected = paiementNotifier.currentSelection.contains(item);
+                          final isPaid = paiementNotifier.isArticlePaiementPaidIndexed(item, index);
                           return ItemLineWidget(
                             item: item,
-                            isSelected: paiementNotifier.currentSelection
-                                .contains(item),
+                            isSelected: isSelected,
+                            isPaid: isPaid,
                           );
-                        }).toList(),
+                        },
                       )
                     : SizedBox(),
               ),
