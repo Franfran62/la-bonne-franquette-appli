@@ -6,6 +6,7 @@ import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
+import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/viewmodel/prisedecommande_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/article_card.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/menu_card.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,10 @@ class PanierWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PaiementViewModel viewModel = PaiementViewModel();
+    
+    final PaiementViewModel paiementViewModel = PaiementViewModel();
+    final PriseDeCommandeViewModel priseDeCommandeViewModel = PriseDeCommandeViewModel();
+
     return Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 0),
         child: Consumer<CommandeNotifier>(
@@ -29,26 +33,8 @@ class PanierWidget extends HookWidget {
             final items = [...menus, ...articles];
 
             void sendCommand() async {
-              if (commandeNotifier.currentCommande.commandeId != null) {
-                await ApiService.patch(
-                    endpoint:
-                        '/commandes/${commandeNotifier.currentCommande.commandeId}',
-                    body: commandeNotifier.currentCommande
-                        .toCreateCommandeJson(patch: true),
-                    token: true);
-              } else {
-                Map<String, dynamic> commande = await ApiService.post(
-                    endpoint: '/commandes',
-                    body: commandeNotifier.currentCommande
-                        .toCreateCommandeJson(patch: false),
-                    token: true);
-                commandeNotifier.currentCommande.commandeId =
-                    commande['commandeId'];
-                commandeNotifier.currentCommande.numero = commande['numero'];
-                commandeNotifier.currentCommande.dateSaisie =
-                    DateTime.parse(commande['dateSaisie']);
-              }
-              viewModel.init(context);
+              await priseDeCommandeViewModel.createCommand();
+              paiementViewModel.init(context, commandeNotifier.currentCommande);
               context.pushNamed('caisse_paiement');
             }
 

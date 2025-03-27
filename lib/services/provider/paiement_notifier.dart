@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
 import 'package:la_bonne_franquette_front/models/paiementTypeCommande.dart';
+import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article_paiement.dart';
 
@@ -166,4 +167,30 @@ class PaiementNotifier extends ChangeNotifier {
     }
     updateResteAPayer();
   }
+
+  bool isArticlePaiementPaidIndexed(ArticlePaiement article, int index) {
+    final sameBefore = _currentArticles
+        .sublist(0, index)
+        .where((e) => _isSameArticlePaiement(e, article))
+        .length;
+
+    final paidCount = _currentPaid
+        .where((e) => _isSameArticlePaiement(e, article))
+        .length;
+
+    return sameBefore < paidCount;
+}
+
+bool _isSameArticlePaiement(ArticlePaiement a, ArticlePaiement b) {
+  if (a.article is Article && b.article is Article) {
+    return a.article == b.article;
+  }
+  if (a.article is Selection && b.article is Selection) {
+    return a.article == b.article;
+  }
+  return false;
+}
+
+
+
 }

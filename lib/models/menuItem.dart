@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
@@ -35,5 +36,22 @@ class MenuItem {
       produitSet: [],
     );
   }
+
+   @override
+  bool operator == (Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final MenuItem otherMenuItem = other as MenuItem;
+    return id == otherMenuItem.id &&
+            otherMenuItem.optional == optional &&
+            otherMenuItem.prixTTC == prixTTC &&
+            ListEquality().equals(produitSet, otherMenuItem.produitSet);
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        id, prixTTC, optional,
+        ListEquality().hash(produitSet),
+      );
 }
 

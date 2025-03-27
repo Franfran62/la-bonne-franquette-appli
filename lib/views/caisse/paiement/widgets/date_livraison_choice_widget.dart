@@ -1,52 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
-import 'package:provider/provider.dart';
 
-class DateLivraisonChoiceWidget extends StatelessWidget {
+class DateLivraisonChoiceWidget extends StatefulWidget {
+  const DateLivraisonChoiceWidget({super.key});
+
+  @override
+  State<DateLivraisonChoiceWidget> createState() => _DateLivraisonChoiceWidgetState();
+}
+
+class _DateLivraisonChoiceWidgetState extends State<DateLivraisonChoiceWidget> {
+  final PaiementViewModel viewModel = PaiementViewModel();
+  DateTime? _dateLivraison;
+
+@override
+void initState() {
+  super.initState();
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final commande = viewModel.commande;
+    if (commande != null && commande.dateLivraison != null) {
+      setState(() {
+        _dateLivraison = commande.dateLivraison!;
+      });
+    }
+  });
+}
+
+
+  Future<void> _showTimePicker() async {
+    final TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_dateLivraison!),
+    );
+
+    if (time != null) {
+      DateTime newDate = DateTime(viewModel.commande!.dateLivraison!.year, viewModel.commande!.dateLivraison!.month, viewModel.commande!.dateLivraison!.day, time.hour, time.minute);
+
+      if (newDate.isBefore(viewModel.commande!.dateLivraison!)) {
+        newDate = newDate.add(const Duration(days: 1));
+      }
+
+      setState(() {
+        _dateLivraison = newDate;
+      });
+
+      viewModel.commande!.dateLivraison = _dateLivraison;
+      viewModel.updateDateLivraison();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    PaiementViewModel viewModel = PaiementViewModel();
 
-    return Consumer<CommandeNotifier>(
-      builder: (context, commandeNotifier, child) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Pour : ", style: Theme.of(context).textTheme.bodyMedium),
-            SizedBox(width: 10),
-            TextButton(
-              onPressed: () {
-                showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.fromDateTime(
-                      commandeNotifier.currentCommande.dateLivraison!),
-                ).then((time) {
-                  if (time != null) {
-                    final now = DateTime.now();
-                    DateTime date = DateTime(
-                      now.year,
-                      now.month,
-                      now.day,
-                      time.hour,
-                      time.minute,
-                    );
-                    if (date.isBefore(now)) {
-                      date = date.add(Duration(days: 1));
-                    }
-                    commandeNotifier.setDateLivraison(date);
-                    viewModel.updateDateLivraison();
-                  }
-                });
-              },
-              child: Text(
-                "${commandeNotifier.currentCommande.dateLivraison!.hour}h${commandeNotifier.currentCommande.dateLivraison!.minute} (${commandeNotifier.currentCommande.dateLivraison!.day}/${commandeNotifier.currentCommande.dateLivraison!.month})",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-          ],
-        );
-      },
+    if (_dateLivraison == null) {
+      return const CircularProgressIndicator();
+    }
+
+    final hour = _dateLivraison!.hour.toString().padLeft(2, '0');
+    final minute = _dateLivraison!.minute.toString().padLeft(2, '0');
+    final day = viewModel.commande!.dateLivraison!.day.toString();
+    final month = viewModel.commande!.dateLivraison!.month.toString();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Pour : ", style: Theme.of(context).textTheme.bodyMedium),
+        const SizedBox(width: 10),
+        TextButton(
+          onPressed: _showTimePicker,
+          child: Text(
+            "${hour}h${minute} ($day/$month)",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+      ],
     );
   }
 }

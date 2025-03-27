@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:la_bonne_franquette_front/models/interface/identifiable.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 
@@ -65,4 +66,27 @@ class Categorie implements Identifiable {
       sousCategories: map['sousCategories'] != null ? map['souscategories'] : [],
     );
   }
+
+  @override
+bool operator ==(Object other) {
+  if (identical(this, other)) return true;
+
+  return other is Categorie &&
+      other.id == id &&
+      other.nom == nom &&
+      other.categorieType == categorieType &&
+      other.categorieId == categorieId &&
+      ListEquality().equals(other.produits, produits) &&
+      ListEquality().equals(other.sousCategories, sousCategories);
+}
+
+  @override
+int get hashCode => Object.hash(
+      id,
+      nom,
+      categorieType,
+      categorieId,
+      ListEquality().hash(produits),
+      ListEquality().hash(sousCategories),
+    );
 }

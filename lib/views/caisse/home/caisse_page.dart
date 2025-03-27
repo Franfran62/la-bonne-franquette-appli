@@ -31,7 +31,7 @@ class CaissePage extends StatelessWidget {
             onPressed: () => handleChoice(choice),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
-                  Theme.of(context).colorScheme.secondary),
+                  Theme.of(context).colorScheme.primary),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
