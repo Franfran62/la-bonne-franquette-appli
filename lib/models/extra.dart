@@ -46,5 +46,16 @@ class Extra implements Identifiable {
   int getprixTTC() {
     return prixTTC;
   }
+
+   @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    final Extra otherExtra = other as Extra;
+    return nom == otherExtra.nom && prixTTC == otherExtra.prixTTC;
+  }
+
+  @override
+  int get hashCode => Object.hash(nom, prixTTC);
   
 }

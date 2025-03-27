@@ -36,7 +36,7 @@ class Commande {
   })  : articles = articles ?? [],
         menus = menus ?? [];
 
-  factory Commande.fromJson(Map<String, dynamic> json) {
+  factory Commande.fromJson(Map<String, dynamic> json) {  
     List<Article> articles = [];
     if (json['articles'] != null) {
       json['articles'].forEach((articleJson) {
@@ -51,13 +51,18 @@ class Commande {
       });
     }
 
+    List<Paiement> paiementSet = [];
+    if (json['paiementSet'] != null) {
+      json['paiementSet'].forEach((paiementJson) {
+        paiementSet.add(Paiement.fromJson(paiementJson));
+      });
+    }
+
     return Commande(
       commandeId: json['commandeId'],
       numero: json['numero'],
       dateSaisie: DateTime.parse(json['dateSaisie']).toLocal(),
-      dateLivraison: json['dateLivraison'] != null
-          ? DateTime.parse(json['dateLivraison'])
-          : null,
+      dateLivraison: DateTime.parse(json['dateLivraison']).toLocal(),
       status: StatusCommande.values.firstWhere(
           (status) => status.toString().split('.').last == json['status']),
       surPlace: json['surPlace'] ?? false,
@@ -65,7 +70,7 @@ class Commande {
       prixTTC: json['prixTTC'],
       articles: articles,
       menus: menus,
-      paiementSet: [],
+      paiementSet: paiementSet,
       paye: json['paye'],
       paiementTypeCommande: json['paiementTypeCommande'] as String?,
     );
@@ -102,8 +107,7 @@ class Commande {
       articles.map((article) => article.toJson()).toList();
     List<Map<String, dynamic>> menusJson =
       menus.map((selection) => selection.toJson()).toList();
-    List<Map<String, dynamic>> paiementSetJson =
-      paiementSet.map((paiement) => paiement.toJsonForCommande()).toList();
+
 
     return patch 
       ? {
@@ -117,7 +121,8 @@ class Commande {
       'prixTTC': prixTTC,
       'articles': articlesJson,
       'menus': menusJson,
-      'paiementSet': paiementSetJson,
+      "dateSaisie": dateSaisie?.toIso8601String(),
+      "dateLivraison": dateLivraison?.toIso8601String(),
     };
   }
 

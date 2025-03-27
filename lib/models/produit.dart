@@ -1,3 +1,4 @@
+import "package:collection/collection.dart";
 import "package:la_bonne_franquette_front/models/categorie.dart";
 import "package:la_bonne_franquette_front/models/interface/identifiable.dart";
 import "package:la_bonne_franquette_front/services/stores/database_service.dart";
@@ -97,4 +98,25 @@ class Produit implements Identifiable {
   List<Extra> getExtras() {
     return extras;
   }
+
+  @override
+  bool operator == (Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    final Produit otherProduit = other as Produit;
+    return id == otherProduit.id &&
+            nom == otherProduit.nom &&
+            prixTTC == otherProduit.prixTTC &&
+            ListEquality().equals(ingredients, otherProduit.ingredients) &&
+            ListEquality().equals(categories, otherProduit.categories) &&
+            ListEquality().equals(extras, otherProduit.extras);   
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        id, nom, prixTTC,
+        ListEquality().hash(ingredients),
+        ListEquality().hash(categories),
+        ListEquality().hash(extras),
+      );
 }

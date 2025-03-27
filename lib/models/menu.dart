@@ -30,7 +30,7 @@ class Menu implements Identifiable {
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator == (Object other) {
     if (identical(this, other)) return true;
     if (runtimeType != other.runtimeType) return false;
     final Menu otherMenu = other as Menu;

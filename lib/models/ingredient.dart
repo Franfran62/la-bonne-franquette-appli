@@ -52,4 +52,17 @@ class Ingredient implements Identifiable{
   String getNom() {
     return nom;
   }
+
+  @override
+  bool operator == (Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+    final Ingredient otherIngredient = other as Ingredient;
+
+    return other.id == id && other.nom == nom;
+  }
+
+  @override
+  int get hashCode => Object.hash(id, nom);
+  
 }
