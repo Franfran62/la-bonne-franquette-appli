@@ -7,6 +7,7 @@ import 'package:la_bonne_franquette_front/models/ingredient.dart';
 import 'package:la_bonne_franquette_front/models/menu.dart';
 import 'package:la_bonne_franquette_front/models/produit.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
+import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/modification_modal.dart';
@@ -149,5 +150,25 @@ class PriseDeCommandeViewModel {
       },
     );
     return modification.future;
+  }
+
+  Future<void> createCommand() async {
+    if (commandeNotifier.currentCommande.commandeId != null) {
+      await ApiService.patch(
+        endpoint:'/commandes/${commandeNotifier.currentCommande.commandeId}',
+        body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: true),
+         token: true);
+    } else {
+      commandeNotifier.currentCommande.dateSaisie = DateTime.now();
+      commandeNotifier.currentCommande.dateLivraison = DateTime.now();
+
+      Map<String, dynamic> commande = await ApiService.post(
+        endpoint: '/commandes',
+        body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: false),
+        token: true);
+      commandeNotifier.currentCommande.commandeId = commande['commandeId'];
+      commandeNotifier.currentCommande.numero = commande['numero'];
+      commandeNotifier.currentCommande.dateSaisie = DateTime.parse(commande['dateSaisie']);
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
@@ -14,7 +15,7 @@ class PaiementViewModel extends ChangeNotifier {
 
   String title = "";
   double number = 0;
-  CommandeNotifier commandeNotifier = CommandeNotifier();
+  Commande? commande;
   PaiementNotifier paiementNotifier = PaiementNotifier();
 
   factory PaiementViewModel() {
@@ -22,15 +23,14 @@ class PaiementViewModel extends ChangeNotifier {
   }
   PaiementViewModel._internal();
 
-  void init(BuildContext context) {
+  void init(BuildContext context, Commande newCommande) {
+    commande = newCommande;
     number = 0;
-    paiementNotifier.currentArticles = ArticlePaiement.buildArticlePaiementList(
-        commandeNotifier.currentCommande);
-    paiementNotifier.currentPaid = ArticlePaiement.buildArticlePaiementPaid(
-        commandeNotifier.currentCommande);
-    paiementNotifier.total = commandeNotifier.currentCommande.prixTTC ?? 0;
-    paiementNotifier.paiements = commandeNotifier.currentCommande.paiementSet;
-    title = "Commande numéro ${commandeNotifier.currentCommande.numero}";
+    paiementNotifier.currentArticles = ArticlePaiement.buildArticlePaiementList(commande!);
+    paiementNotifier.currentPaid = ArticlePaiement.buildArticlePaiementPaid(commande!);
+    paiementNotifier.total = commande!.prixTTC ?? 0;
+    paiementNotifier.paiements = commande!.paiementSet;
+    title = "Commande numéro ${commande!.numero}";
     (context as Element).markNeedsBuild();
   }
 
@@ -69,21 +69,6 @@ class PaiementViewModel extends ChangeNotifier {
     return body;
   }
 
-  Future<bool> sendEmail(String email, bool seeDetails) async {
-    var body = {
-      "email": email,
-      "seeDetails": seeDetails,
-      "commandeId": commandeNotifier.currentCommande.commandeId,
-      "date": DateTime.now().toIso8601String(),
-    };
-    body.addAll(setPaymentInfo());
-
-    var response = await ApiService.post(
-        endpoint: "/api/v1/paiement/sendReceipt", body: body, token: true);
-
-    return response.code == 200;
-  }
-
   void valid(BuildContext context) {
     if (paiementNotifier.selectedPayment == PaymentChoice.toutPayer) {
       pay();
@@ -95,14 +80,13 @@ class PaiementViewModel extends ChangeNotifier {
   void pay() async {
     var body = setPaymentInfo();
     Paiement paiement = Paiement(
-      type: paiementNotifier.selectedPaymentType!,
-      commandeId: commandeNotifier.currentCommande.commandeId!,
+      type: paiementNotifier.selectedPaymentType!.name,
       prix: body["prix"],
       articles: body["articles"],
       selections: body["selections"],
     );
     var response = await ApiService.post(
-        endpoint: "/paiement/${commandeNotifier.currentCommande.commandeId}",
+        endpoint: "/paiement/${commande!.commandeId}",
         body: paiement.toSend(),
         token: true);
     paiement.id = response["id"];
@@ -118,7 +102,7 @@ class PaiementViewModel extends ChangeNotifier {
   Future<void> cancel(BuildContext context) async {
     await ApiService.delete(
         endpoint:
-            '/commandes/${commandeNotifier.currentCommande.commandeId.toString()}');
+            '/commandes/${commande!.commandeId}');
     reset();
     context.pushNamed('caisse');
   }
@@ -126,18 +110,13 @@ class PaiementViewModel extends ChangeNotifier {
   void reset() {
     number = 0;
     paiementNotifier.reset();
-    commandeNotifier.reset();
   }
 
   updateDateLivraison() {
     try {
       ApiService.patch(
-          endpoint:
-              "/commandes/${commandeNotifier.currentCommande.commandeId.toString()}",
-          body: {
-            'dateLivraison': commandeNotifier.currentCommande.dateLivraison
-                ?.toIso8601String()
-          },
+          endpoint: "/commandes/${commande!.commandeId}",
+          body: { 'dateLivraison': commande!.dateLivraison?.toIso8601String()},
           token: true);
     } catch (e) {
       print(e);

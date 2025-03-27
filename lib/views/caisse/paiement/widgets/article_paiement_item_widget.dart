@@ -11,10 +11,12 @@ import 'package:la_bonne_franquette_front/widgets/panier/badge_modifie.dart';
 
 class ItemLineWidget extends HookWidget {
   final ArticlePaiement item;
+  final bool isPaid;
   bool isSelected = false;
 
   ItemLineWidget({
     required this.item,
+    required this.isPaid,
     isSelected,
     super.key,
   });
@@ -24,14 +26,14 @@ class ItemLineWidget extends HookWidget {
     final PaiementNotifier paiementNotifier = PaiementNotifier();
 
     Color defineBackGroundColor() {
-      if (paiementNotifier.currentPaid.contains(item)) {
+      if (isPaid) {
         return Color.fromARGB(255, 68, 207, 131);
       }
       return item.article.isModified ? Color(0xFFFFF9C4) : Color(0xFFF8F9FA);
     }
 
     void onTap() {
-      if (paiementNotifier.selectedPayment == PaymentChoice.selection && !paiementNotifier.currentPaid.contains(item)) {
+      if (paiementNotifier.selectedPayment == PaymentChoice.selection && !isPaid) {
         paiementNotifier.currentSelection.contains(item)
             ? paiementNotifier.removeSelection(item)
             : paiementNotifier.addSelection(item);
