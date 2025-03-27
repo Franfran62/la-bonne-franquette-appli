@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
-import 'ticket_de_caisse_modal.dart';
 
 class ValidPaimentWidget extends StatefulWidget {
   final PaymentChoice paymentChoiceState;
@@ -16,14 +15,6 @@ class ValidPaimentWidget extends StatefulWidget {
 }
 
 class _ValidPaimentWidgetState extends State<ValidPaimentWidget> {
-  void _showModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return TicketDeCaisseModal();
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +23,6 @@ class _ValidPaimentWidgetState extends State<ValidPaimentWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // ChoiceChip(
-          //   label: Text("Envoyer par mail",
-          //       style: Theme.of(context).textTheme.bodyMedium),
-          //   labelPadding: EdgeInsets.all(8.0),
-          //   selected: false,
-          //   onSelected: (selected) => _showModal(context),
-          // ),
           if (widget.paymentChoiceState != PaymentChoice.toutPayer &&
               widget.paymentChoiceState != PaymentChoice.rembourser)
             Padding(
