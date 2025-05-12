@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/theme.dart';
 
 class CommandeCardFooterWidget extends StatelessWidget {
   final bool commandePaye;
@@ -13,32 +14,24 @@ class CommandeCardFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        commandePaye
-            ? _buildButton(context, "Envoyer", envoieFn)
-            : const SizedBox(width: 175),
-        _buildButton(context, "Supprimer", suppressionFn),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          commandePaye
+              ? _buildButton(context, true, envoieFn)
+              : _buildButton(context, false, suppressionFn),
+        ],
+      ),
     );
   }
 
-  Widget _buildButton(BuildContext context, String text, Function onPressed) {
+  Widget _buildButton(BuildContext context, bool action, Function onPressed) {
     return ElevatedButton(
-      style: ButtonStyle(
-        minimumSize: WidgetStateProperty.all(const Size(175, 50)),
-        backgroundColor: WidgetStateProperty.all(
-          Theme.of(context).colorScheme.tertiary,
-        ),
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
-          ),
-        ),
-      ),
+      style: action ? null : CustomTheme.getCancelElevatedButtonTheme(Color(0xFFF8F9FA)).style,
       onPressed: () => onPressed(),
-      child: Text(text),
+      child: Text(action ? "Envoyer" : "Supprimer"),
     );
   }
 }

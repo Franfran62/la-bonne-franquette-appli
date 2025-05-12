@@ -30,15 +30,14 @@ Widget build(BuildContext context) {
     final bool commandePaye = commande.paye!;
 
     return Container(
-      margin: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.only(left: 12.0, right: 12.0, top: 12.0, bottom: 50.0),
       child: Card(
-        color: commandePaye ? Theme.of(context).colorScheme.inversePrimary : Colors.redAccent,
+        color: Color(0xFFF8F9FA),
         child: Column(
           children: <Widget>[
-            CommandeCardHeaderWidget(numero: commande.numero!, heure: commande.dateSaisie!.hour, minute: commande.dateSaisie!.minute, commandePaye: commandePaye,),
+            CommandeCardHeaderWidget(numero: commande.numero!, heure: commande.dateSaisie!.hour, minute: commande.dateSaisie!.minute, commandePaye: commandePaye),
             Expanded(child: CommandeCardCommandeWidget(commande)),
             CommandeCardFooterWidget(commandePaye: commandePaye,envoieFn: envoieCommande, suppressionFn: supprimerCommande,),
-            const SizedBox(height: 25.0,),
           ],
         ),
         ),

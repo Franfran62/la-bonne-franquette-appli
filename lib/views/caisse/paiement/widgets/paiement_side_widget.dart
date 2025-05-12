@@ -94,7 +94,7 @@ class PaiementSideWidget extends HookWidget {
                     ),
                     ElevatedButton(
                         onPressed: () async => await viewModel.cancel(context),
-                        style: CustomTheme.getCancelElevatedButtonTheme().style,
+                        style: CustomTheme.getCancelElevatedButtonTheme(Colors.white).style,
                         child: Text(
                           'Annuler',
                         )),
