@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/services/utils/time_formatter.dart';
 
 class CommandeCardHeaderWidget extends StatelessWidget {
   final int numero;
-  final int heure;
-  final int minute;
+  final DateTime date;
   final bool commandePaye;
 
   CommandeCardHeaderWidget(
       {required this.numero,
-      required this.heure,
-      required this.minute,
+      required this.date,
       required this.commandePaye,
       super.key});
 
@@ -32,7 +31,7 @@ class CommandeCardHeaderWidget extends StatelessWidget {
                     : Icon(Icons.money_off, color: Colors.redAccent,)
                   ],
                 ),
-              Text('${heure.toString()}h${minute.toString()}',
+              Text(TimeFormatter.withSeparator(date),
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall

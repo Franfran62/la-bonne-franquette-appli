@@ -42,7 +42,7 @@ Widget build(BuildContext context) {
         color: Color(0xFFF8F9FA),
         child: Column(
           children: <Widget>[
-            CommandeCardHeaderWidget(numero: commande.numero!, heure: commande.dateSaisie!.hour, minute: commande.dateSaisie!.minute, commandePaye: commandePaye),
+            CommandeCardHeaderWidget(numero: commande.numero!, date: commande.dateSaisie!, commandePaye: commandePaye),
             Expanded(child: CommandeCardCommandeWidget(commande)),
             CommandeCardFooterWidget(commandePaye: commandePaye,envoieFn: envoieCommande, suppressionFn: supprimerCommande,),
           ],

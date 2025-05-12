@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/services/utils/time_formatter.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 
 class DateLivraisonChoiceWidget extends StatefulWidget {
@@ -55,9 +56,6 @@ void initState() {
     if (_dateLivraison == null) {
       return const CircularProgressIndicator();
     }
-
-    final hour = _dateLivraison!.hour.toString().padLeft(2, '0');
-    final minute = _dateLivraison!.minute.toString().padLeft(2, '0');
     final day = viewModel.commande!.dateLivraison!.day.toString();
     final month = viewModel.commande!.dateLivraison!.month.toString();
 
@@ -69,7 +67,7 @@ void initState() {
         TextButton(
           onPressed: _showTimePicker,
           child: Text(
-            "${hour}h${minute} ($day/$month)",
+            "${TimeFormatter.withSeparator(viewModel.commande!.dateLivraison!)} ($day/$month)",
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),

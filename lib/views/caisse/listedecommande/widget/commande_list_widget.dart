@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
+import 'package:la_bonne_franquette_front/services/utils/time_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:la_bonne_franquette_front/views/caisse/listedecommande/viewmodel/listedecommande_view_model.dart';
 
@@ -62,8 +63,8 @@ class CommandeListWidget extends StatelessWidget {
                                               _buildCell(context: context, text: commande.numero.toString()),
                                               _buildCell(context: context, text: commande.surPlace ? 'Sur place' : 'A emporter'),
                                               _buildCell(context: context, text: commande.status.name),
-                                              _buildCell(context: context, text: "${commande.dateSaisie.hour}h${commande.dateSaisie.minute}"),
-                                              _buildCell(context: context, text: "${commande.dateLivraison.hour}h${commande.dateLivraison.minute}"),
+                                              _buildCell(context: context, text: TimeFormatter.withSeparator(commande.dateSaisie)),
+                                              _buildCell(context: context, text: TimeFormatter.withSeparator(commande.dateLivraison)),
                                               _buildCell(context: context, text: "${commande.prixTTC / 100 } €"),
                                               _buildCell(context: context, text: commande.paiementType),
                                             ],
