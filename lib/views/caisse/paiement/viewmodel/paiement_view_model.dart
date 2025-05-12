@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
+import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/models/paiement.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
@@ -100,9 +101,13 @@ class PaiementViewModel extends ChangeNotifier {
   }
 
   Future<void> cancel(BuildContext context) async {
-    await ApiService.delete(
-        endpoint:
-            '/commandes/${commande!.commandeId}');
+    await ApiService.patch(
+        endpoint:'/commandes/${commande!.commandeId}',
+        body: {
+          "status": StatusCommande.ANNULEE.name,
+        },
+        token: true,   
+        );
     reset();
     context.pushNamed('caisse');
   }

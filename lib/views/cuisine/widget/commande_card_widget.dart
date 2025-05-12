@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
+import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/views/cuisine/widget/commande_card_commande_widget.dart';
 
@@ -20,7 +21,13 @@ class CommandeCard extends StatelessWidget {
   }
 
   void supprimerCommande() {
-    ApiService.delete(endpoint: '/commandes/${commande.commandeId.toString()}').then((value) {
+    ApiService.patch(
+      endpoint: '/commandes/${commande.commandeId.toString()}', 
+      body: {
+        "status": StatusCommande.ANNULEE.name,
+      },
+      token: true
+    ).then((value) {
       popCommande(commande.commandeId);
     });
   }
