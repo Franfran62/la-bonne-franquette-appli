@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/services/exception/custom_exception.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/views/login/viewmodel/loginpage_view_model.dart';
 import '../../theme.dart';
 
@@ -120,10 +123,12 @@ class _LoginPageState extends State<LoginPage> {
                   ? context.pushNamed('cuisine')
                   : context.pushNamed('caisse');
               }
+            } on ApiException catch (e) {
+              await context.showError(e.message);
+            } on JsonException catch (e) {
+              await context.showError(e.message);
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(e.toString())),
-              );
+              await context.showError("Une erreur s'est produite lors de la connexion");
             }
           }
         },

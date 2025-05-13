@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:la_bonne_franquette_front/services/api/api_exception_service.dart';
 import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
+import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/services/exception/custom_exception.dart';
 
 class ApiService{
 
@@ -60,21 +64,26 @@ class ApiService{
   }
 
     static Future<T> _retryRequest<T>(Future<http.Response> Function() request, bool token) async {
-    final response = await request();
-    if (token && response.statusCode == 401) {
-      await SessionService.refresh();
-      await Future.delayed(Duration(seconds: 2));
-      final retryResponse = await request();
-      if (retryResponse.statusCode >= 300) {
-        throw Exception('Erreur : Impossible d\'accéder à la ressource après réessai, ${retryResponse.statusCode} : ${retryResponse.body}');
+    try {
+      final response = await request();
+      if (token && response.statusCode == 403) {
+        await Future.delayed(Duration(seconds: 2));
+        await SessionService.refresh();
+        await Future.delayed(Duration(seconds: 2));
+        final retryResponse = await request();
+        if (retryResponse.statusCode >= 300) {
+        throw ApiExceptionService.throwError(retryResponse.statusCode, retryResponse.body);
+        }
+        return processResponse(retryResponse);
       }
-      return processResponse(retryResponse);
-    }
 
-    if (response.statusCode >= 300) {
-      throw Exception('Erreur : Impossible d\'accéder à la ressource : ${response.statusCode} : ${response.body}');
+      if (response.statusCode >= 300) {
+        throw ApiExceptionService.throwError(response.statusCode, response.body);
+      }
+      return processResponse(response);
+    } on SocketException catch (e) {
+      throw ConnectionException(e.toString());
     }
-    return processResponse(response);
   }
 
   static dynamic processResponse(http.Response response) {
@@ -84,7 +93,7 @@ class ApiService{
           return jsonDecode(response.body);
         }
       } catch (e) {
-        throw Exception('Erreur de décodage JSON : ${e.toString()}');
+        throw JsonException(e.toString());
       }
     return response.body;
   }

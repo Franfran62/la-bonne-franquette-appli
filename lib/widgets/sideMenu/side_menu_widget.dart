@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
+import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 
 class SideMenuWidget extends StatelessWidget {
   final String destination;
@@ -32,7 +34,14 @@ class SideMenuWidget extends StatelessWidget {
               () => context.pushNamed(destination)),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion",
-              () async => await SessionService.logout(context),
+              () async {
+                try {
+                  await SessionService.logout();
+                } on ApiException catch (e) {
+                  context.showLogoutDialog(e.message);
+                }
+                GoRouter.of(context).pushNamed("login");
+              },
               color: Colors.red),
           SizedBox(
             height: 10,

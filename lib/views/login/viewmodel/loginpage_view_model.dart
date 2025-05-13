@@ -1,6 +1,7 @@
 import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
+import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 import 'package:la_bonne_franquette_front/services/stores/initialisation_service.dart';
 
@@ -29,20 +30,21 @@ class LoginPageViewModel {
   }
 
   Future<bool> submitForm({required String username, required String password}) async {
-
     try {
-        User user = User(username: username.trim(), password: password.trim());
-        await SessionService.login(user: user);
-        final String apiVersion = await CacheService.getApiCacheVersion();
-        bool isStores = false;
-        if ((apiVersion != DatabaseService.databaseVersion)) {
-          isStores = await loadStores(newVersion: apiVersion);
-        } else {
-          isStores = true;
-        }
-        return isStores;
+      User user = User(username: username.trim(), password: password.trim());
+      await SessionService.login(user: user);
+      final String apiVersion = await CacheService.getApiCacheVersion();
+      bool isStores = false;
+      if ((apiVersion != DatabaseService.databaseVersion)) {
+        isStores = await loadStores(newVersion: apiVersion);
+      } else {
+        isStores = true;
+      }
+      return isStores;
+    } on ApiException catch (e) {
+      throw Exception(e);
     } catch (e) {
-      throw Exception(e.toString());  
+      throw Exception("Une erreur s'est produite lors de la connexion");
     }
 }
 

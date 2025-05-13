@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiUtilsService {
 
-
   static Future<String> getToken() async {
     String? authToken = await SecuredStorage().readSecret('auth-token');
     return authToken ?? "";
