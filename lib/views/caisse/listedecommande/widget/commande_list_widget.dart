@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/services/utils/time_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:la_bonne_franquette_front/views/caisse/listedecommande/viewmodel/listedecommande_view_model.dart';
@@ -18,7 +20,12 @@ class CommandeListWidget extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Erreur : ${snapshot.error}'));
+          if (snapshot.error is ForbiddenException) {
+            context.showLogoutDialog(snapshot.error.toString());
+          } else {
+            context.showError("${snapshot.error}");
+          }
+          return const Center();
         } else {
           final commandes = viewModel.getCommandeList();
           if (commandes.isEmpty) {

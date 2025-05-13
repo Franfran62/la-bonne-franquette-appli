@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/projection/commandeListProjection.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
@@ -37,17 +38,29 @@ class ListedeCommandeViewModel extends ChangeNotifier {
   }
 
   Future<void> refreshFromApi() async {
-    var response = await ApiService.get(
-        endpoint: "/commandes/liste/${_date.year}-${_date.month}-${_date.day}",
-        token: true);
-    _commandeList = (response as List)
-        .map((proj) => CommandeListProjection.fromJson(proj))
-        .toList();
+    try {
+      var response = await ApiService.get(
+          endpoint: "/commandes/liste/${_date.year}-${_date.month}-${_date.day}",
+          token: true);
+      _commandeList = (response as List)
+          .map((proj) => CommandeListProjection.fromJson(proj))
+          .toList();
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw Exception("Une erreur inattendue s'est produite.");
+    }
   }
 
   Future<void> go(BuildContext context, int id) async {
-    final commande = await ApiService.get(endpoint: "/commandes/${id}", token: true);
-    paiementViewModel.init(context, Commande.fromJson(commande));
-    context.pushNamed("caisse_paiement");
+    try {
+      final commande = await ApiService.get(endpoint: "/commandes/${id}", token: true);
+      paiementViewModel.init(context, Commande.fromJson(commande));
+      context.pushNamed("caisse_paiement");
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw Exception("Une erreur inattendue s'est produite.");
+    }
   }
 }

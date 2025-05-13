@@ -164,7 +164,6 @@ class PriseDeCommandeViewModel {
       } else {
         commandeNotifier.currentCommande.dateSaisie = DateTime.now();
         commandeNotifier.currentCommande.dateLivraison = DateTime.now();
-
         Map<String, dynamic> commande = await ApiService.post(
           endpoint: '/commandes',
           body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: false),
@@ -173,7 +172,7 @@ class PriseDeCommandeViewModel {
         commandeNotifier.currentCommande.numero = commande['numero'];
         commandeNotifier.currentCommande.dateSaisie = DateTime.parse(commande['dateSaisie']);
       }
-    } on ApiException {
+    } on ApiException catch (e) {
       rethrow;
     } catch (e) {
       throw Exception("Une erreur inattendue s'est produite");

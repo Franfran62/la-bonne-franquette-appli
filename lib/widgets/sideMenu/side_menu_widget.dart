@@ -38,7 +38,7 @@ class SideMenuWidget extends StatelessWidget {
                 try {
                   await SessionService.logout();
                 } on ApiException catch (e) {
-                  context.showLogoutDialog(e.message);
+                  await context.showLogoutDialog(e.message);
                 }
                 GoRouter.of(context).pushNamed("login");
               },

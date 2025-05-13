@@ -41,6 +41,8 @@ class PanierWidget extends HookWidget {
                 context.pushNamed('caisse_paiement');
               } on ForbiddenException catch (e) {
                 context.showLogoutDialog(e.message);
+              } on ConnectionException catch (e) {
+                context.showLogoutDialog(e.message);
               } on ApiException catch(e) {
                 context.showError(e.message);
               } catch (e) {

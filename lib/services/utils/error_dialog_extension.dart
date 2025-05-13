@@ -44,7 +44,7 @@ extension ErrorDialogExtension on BuildContext {
             const Text('Deconnexion'),
           ],
         ),
-        content: Text("${message} Vous allez être redirigé vers la page de connexion"),
+        content: Text("$message Vous allez être redirigé vers la page de connexion"),
         actions: [
           TextButton(
             onPressed: () {

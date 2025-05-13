@@ -6,7 +6,7 @@ sealed class ApiException implements Exception {
 }
 
 class ConnectionException extends ApiException {
-  ConnectionException([String? body]) : super(503, body, message: "Impossible de se connetcer au serveur");
+  ConnectionException([String? body]) : super(503, body, message: "Une erreur est survenue lors de la connection au serveur");
 }
 
 class BadRequestException extends ApiException { // 400
