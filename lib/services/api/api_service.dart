@@ -4,8 +4,8 @@ import 'package:la_bonne_franquette_front/services/api/api_exception_service.dar
 import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
-import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
-import 'package:la_bonne_franquette_front/services/exception/custom_exception.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/exception/custom_exception.dart';
 
 class ApiService{
 

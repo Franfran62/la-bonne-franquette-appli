@@ -1,4 +1,4 @@
-import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 
 class ApiExceptionService {
 

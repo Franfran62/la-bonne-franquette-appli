@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
-import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 
 class SideMenuWidget extends StatelessWidget {

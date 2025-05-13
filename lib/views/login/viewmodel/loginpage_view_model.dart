@@ -1,7 +1,7 @@
 import 'package:la_bonne_franquette_front/models/user.dart';
 import 'package:la_bonne_franquette_front/services/api/cache_service.dart';
 import 'package:la_bonne_franquette_front/services/api/session_service.dart';
-import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
 import 'package:la_bonne_franquette_front/services/stores/initialisation_service.dart';
 

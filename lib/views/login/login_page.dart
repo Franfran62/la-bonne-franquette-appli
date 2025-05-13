@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:la_bonne_franquette_front/services/exception/api_exception.dart';
-import 'package:la_bonne_franquette_front/services/exception/custom_exception.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/exception/custom_exception.dart';
 import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/views/login/viewmodel/loginpage_view_model.dart';
 import '../../theme.dart';
