@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/viewmodel/prisedecommande_view_model.dart';
 import 'package:la_bonne_franquette_front/widgets/panier/article_card.dart';
@@ -33,9 +35,17 @@ class PanierWidget extends HookWidget {
             final items = [...menus, ...articles];
 
             void sendCommand() async {
-              await priseDeCommandeViewModel.createCommand();
-              paiementViewModel.init(context, commandeNotifier.currentCommande);
-              context.pushNamed('caisse_paiement');
+              try {
+                await priseDeCommandeViewModel.createCommand();
+                paiementViewModel.init(context, commandeNotifier.currentCommande);
+                context.pushNamed('caisse_paiement');
+              } on ForbiddenException catch (e) {
+                context.showLogoutDialog(e.message);
+              } on ApiException catch(e) {
+                context.showError(e.message);
+              } catch (e) {
+                context.showError("Une erreur inattendue s'est produite.", redirect: true, route: "login");
+              }
             }
 
             return Column(

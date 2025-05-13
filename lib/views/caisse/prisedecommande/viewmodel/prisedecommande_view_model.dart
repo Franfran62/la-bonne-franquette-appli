@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/article.dart';
 import 'package:la_bonne_franquette_front/models/enums/tables.dart';
 import 'package:la_bonne_franquette_front/models/extra.dart';
@@ -10,6 +11,7 @@ import 'package:la_bonne_franquette_front/models/selection.dart';
 import 'package:la_bonne_franquette_front/services/api/api_service.dart';
 import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
 import 'package:la_bonne_franquette_front/services/stores/database_service.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/views/caisse/prisedecommande/widget/modification_modal.dart';
 import '../../../../models/categorie.dart';
 
@@ -153,22 +155,28 @@ class PriseDeCommandeViewModel {
   }
 
   Future<void> createCommand() async {
-    if (commandeNotifier.currentCommande.commandeId != null) {
-      await ApiService.patch(
-        endpoint:'/commandes/${commandeNotifier.currentCommande.commandeId}',
-        body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: true),
-         token: true);
-    } else {
-      commandeNotifier.currentCommande.dateSaisie = DateTime.now();
-      commandeNotifier.currentCommande.dateLivraison = DateTime.now();
+    try {
+      if (commandeNotifier.currentCommande.commandeId != null) {
+        await ApiService.patch(
+          endpoint:'/commandes/${commandeNotifier.currentCommande.commandeId}',
+          body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: true),
+          token: true);
+      } else {
+        commandeNotifier.currentCommande.dateSaisie = DateTime.now();
+        commandeNotifier.currentCommande.dateLivraison = DateTime.now();
 
-      Map<String, dynamic> commande = await ApiService.post(
-        endpoint: '/commandes',
-        body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: false),
-        token: true);
-      commandeNotifier.currentCommande.commandeId = commande['commandeId'];
-      commandeNotifier.currentCommande.numero = commande['numero'];
-      commandeNotifier.currentCommande.dateSaisie = DateTime.parse(commande['dateSaisie']);
+        Map<String, dynamic> commande = await ApiService.post(
+          endpoint: '/commandes',
+          body: commandeNotifier.currentCommande.toCreateCommandeJson(patch: false),
+          token: true);
+        commandeNotifier.currentCommande.commandeId = commande['commandeId'];
+        commandeNotifier.currentCommande.numero = commande['numero'];
+        commandeNotifier.currentCommande.dateSaisie = DateTime.parse(commande['dateSaisie']);
+      }
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw Exception("Une erreur inattendue s'est produite");
     }
   }
 }
