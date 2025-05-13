@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/widgets/valid_paiement_widget.dart';
@@ -89,11 +91,38 @@ class PaiementSideWidget extends HookWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 12.0),
                       child: ElevatedButton(
-                          onPressed: () => viewModel.valid(context),
+                          onPressed: () async {
+                            try {
+                              await viewModel.valid();
+                              context.pushNamed('caisse');
+                            } on ForbiddenException catch (e) {
+                              context.showLogoutDialog(e.message);
+                            } on ConnectionException catch (e) {
+                              context.showLogoutDialog(e.message);
+                            } on ApiException catch (e) {
+                              context.showError(e.message);
+                            } catch (e) {
+                              context.showError(e.toString(), redirect: true, route: "login");
+                            } 
+                          },
                           child: Text('Valider')),
                     ),
                     ElevatedButton(
-                        onPressed: () async => await viewModel.cancel(context),
+                        onPressed: () async {
+                          try {
+                            await viewModel.cancel();
+                            context.pushNamed('caisse');
+
+                          } on ForbiddenException catch (e) {
+                            context.showLogoutDialog(e.message);
+                          } on ConnectionException catch (e) {
+                            context.showLogoutDialog(e.message);
+                          } on ApiException catch (e) {
+                            context.showError(e.message);
+                          } catch (e) {
+                            context.showError(e.toString(), redirect: true, route: "login");
+                          }
+                        },
                         style: CustomTheme.getCancelElevatedButtonTheme(Colors.white).style,
                         child: Text(
                           'Annuler',

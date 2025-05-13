@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 
@@ -28,7 +30,19 @@ class _ValidPaimentWidgetState extends State<ValidPaimentWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: ElevatedButton(
-                onPressed: () => viewModel.pay(),
+                onPressed: () async {
+                  try {
+                    await viewModel.pay();
+                  } on ForbiddenException catch (e) {
+                    context.showLogoutDialog(e.message);
+                  } on ConnectionException catch(e) {
+                    context.showLogoutDialog(e.message);
+                  } on ApiException catch (e) {
+                    context.showError(e.message);
+                  } catch (e) {
+                    context.showError(e.toString(), redirect: true, route: "login");
+                  }
+                },
                 style: CustomTheme.getSecondaryElevatedButtonTheme().style,
                 child:
                     Text("Payer", style: Theme.of(context).textTheme.bodyLarge),
@@ -39,7 +53,20 @@ class _ValidPaimentWidgetState extends State<ValidPaimentWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: ElevatedButton(
-                onPressed: () => {viewModel.rembourser(), viewModel.pay()},
+                onPressed: () async {
+                  try {
+                    viewModel.rembourser(); 
+                    await viewModel.pay();
+                  } on ForbiddenException catch (e) {
+                    context.showLogoutDialog(e.message);
+                  } on ConnectionException catch(e) {
+                    context.showLogoutDialog(e.message);
+                  } on ApiException catch (e) {
+                    context.showError(e.message);
+                  } catch (e) {
+                    context.showError(e.toString(), redirect: true, route: "login");
+                  }
+                },
                 style: CustomTheme.getSecondaryElevatedButtonTheme().style,
                 child: Text("Rembourser",
                     style: Theme.of(context).textTheme.bodyLarge),

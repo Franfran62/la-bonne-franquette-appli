@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/services/utils/time_formatter.dart';
 import 'package:la_bonne_franquette_front/views/caisse/paiement/viewmodel/paiement_view_model.dart';
 
@@ -29,24 +31,34 @@ void initState() {
 
 
   Future<void> _showTimePicker() async {
-    final TimeOfDay? time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.fromDateTime(_dateLivraison!),
-    );
+    try {
+      final TimeOfDay? time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(_dateLivraison!),
+      );
 
-    if (time != null) {
-      DateTime newDate = DateTime(viewModel.commande!.dateLivraison!.year, viewModel.commande!.dateLivraison!.month, viewModel.commande!.dateLivraison!.day, time.hour, time.minute);
+      if (time != null) {
+        DateTime newDate = DateTime(viewModel.commande!.dateLivraison!.year, viewModel.commande!.dateLivraison!.month, viewModel.commande!.dateLivraison!.day, time.hour, time.minute);
 
-      if (newDate.isBefore(viewModel.commande!.dateLivraison!)) {
-        newDate = newDate.add(const Duration(days: 1));
+        if (newDate.isBefore(viewModel.commande!.dateLivraison!)) {
+          newDate = newDate.add(const Duration(days: 1));
+        }
+
+        setState(() {
+          _dateLivraison = newDate;
+        });
+
+        viewModel.commande!.dateLivraison = _dateLivraison;
+        viewModel.updateDateLivraison();
       }
-
-      setState(() {
-        _dateLivraison = newDate;
-      });
-
-      viewModel.commande!.dateLivraison = _dateLivraison;
-      viewModel.updateDateLivraison();
+    } on ForbiddenException catch (e) {
+      context.showLogoutDialog(e.message);
+    } on ConnectionException catch (e) {
+      context.showLogoutDialog(e.message);
+    } on ApiException catch (e) {
+      context.showError(e.message);
+    } catch (e) {
+      context.showError(e.toString(), redirect: true, route: "login");
     }
   }
 

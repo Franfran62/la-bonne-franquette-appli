@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/models/commande.dart';
 import 'package:la_bonne_franquette_front/models/enums/PaymentChoice.dart';
 import 'package:la_bonne_franquette_front/models/enums/statusCommande.dart';
@@ -70,46 +71,62 @@ class PaiementViewModel extends ChangeNotifier {
     return body;
   }
 
-  void valid(BuildContext context) {
-    if (paiementNotifier.selectedPayment == PaymentChoice.toutPayer) {
-      pay();
+  Future<void> valid() async {
+    try {
+      if (paiementNotifier.selectedPayment == PaymentChoice.toutPayer) {
+        await pay();
+      }
+      reset();
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw Exception("Une erreur inattendue s'est produite.");
     }
-    reset();
-    context.pushNamed('caisse');
   }
 
-  void pay() async {
-    var body = setPaymentInfo();
-    Paiement paiement = Paiement(
-      type: paiementNotifier.selectedPaymentType!.name,
-      prix: body["prix"],
-      articles: body["articles"],
-      selections: body["selections"],
-    );
-    var response = await ApiService.post(
-        endpoint: "/paiement/${commande!.commandeId}",
-        body: paiement.toSend(),
-        token: true);
-    paiement.id = response["id"];
-    paiement.date = DateTime.parse(response["date"]);
-    paiementNotifier.addPaiement(paiement);
-    number = 0;
+  Future<void> pay() async {
+    try {
+      var body = setPaymentInfo();
+      Paiement paiement = Paiement(
+        type: paiementNotifier.selectedPaymentType!.name,
+        prix: body["prix"],
+        articles: body["articles"],
+        selections: body["selections"],
+      );
+      var response = await ApiService.post(
+          endpoint: "/paiement/${commande!.commandeId}",
+          body: paiement.toSend(),
+          token: true);
+      paiement.id = response["id"];
+      paiement.date = DateTime.parse(response["date"]);
+      paiementNotifier.addPaiement(paiement);
+      number = 0;
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw Exception("Une erreur inattendue s'est produite.");
+    }
   }
 
   void rembourser() {
     paiementNotifier.currentMontant = paiementNotifier.resteAPayer;
   }
 
-  Future<void> cancel(BuildContext context) async {
-    await ApiService.patch(
-        endpoint:'/commandes/${commande!.commandeId}',
-        body: {
-          "status": StatusCommande.ANNULEE.name,
-        },
-        token: true,   
-        );
-    reset();
-    context.pushNamed('caisse');
+  Future<void> cancel() async {
+    try {
+      await ApiService.patch(
+          endpoint:'/commandes/${commande!.commandeId}',
+          body: {
+            "status": StatusCommande.ANNULEE.name,
+          },
+          token: true,   
+          );
+      reset();
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw Exception("Une erreur inattendue s'est produite.");
+    }
   }
 
   void reset() {
@@ -123,8 +140,10 @@ class PaiementViewModel extends ChangeNotifier {
           endpoint: "/commandes/${commande!.commandeId}",
           body: { 'dateLivraison': commande!.dateLivraison?.toIso8601String()},
           token: true);
+    } on ApiException {
+      rethrow;
     } catch (e) {
-      print(e);
+      throw Exception("Une erreur inattendue s'est produite.");
     }
   }
 }
