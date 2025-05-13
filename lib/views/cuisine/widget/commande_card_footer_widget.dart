@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
 
 class CommandeCardFooterWidget extends StatelessWidget {
@@ -30,7 +32,15 @@ class CommandeCardFooterWidget extends StatelessWidget {
   Widget _buildButton(BuildContext context, bool action, Function onPressed) {
     return ElevatedButton(
       style: action ? null : CustomTheme.getCancelElevatedButtonTheme(Color(0xFFF8F9FA)).style,
-      onPressed: () => onPressed(),
+      onPressed: () {
+        try {
+          onPressed();
+        } on ApiException catch (e) {
+          context.showError(e.message);
+        } catch (e) {
+          context.showError("Une erreur inattendue s'est produite.", redirect: true, route: "login");
+        }
+      },
       child: Text(action ? "Envoyer" : "Supprimer"),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 
 import '../../../models/commande.dart';
 import '../../../services/websocket_service.dart';
@@ -36,9 +38,10 @@ class _CommandeListViewState extends State<CommandeListView> {
           commandes = result;
         });
       });
+    } on ApiException catch (e) {
+      context.showError(e.message, redirect: true, route: "login");
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      context.showError(e.toString(), redirect: true, route: "login");
     }
   }
 
@@ -52,10 +55,16 @@ class _CommandeListViewState extends State<CommandeListView> {
   }
 
   void setupWebSocket() async {
-    await webSocketService.setWebSocketServerAdress();
-    webSocketService.connect((String message) {
-      loadCommandes();
-    });
+    try {
+      await webSocketService.setWebSocketServerAdress();
+      webSocketService.connect((String message) {
+        loadCommandes();
+      });
+    } on ApiException catch (e) {
+      context.showError(e.message, redirect: true, route: "login");
+    } catch (e) {
+      context.showError("Une erreur inattendue s'est produite.", redirect: true, route: "login");
+    }
   }
 
   void updateFilter() async {

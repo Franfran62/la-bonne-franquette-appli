@@ -1,3 +1,4 @@
+import 'package:la_bonne_franquette_front/exception/api_exception.dart';
 import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
 import 'package:la_bonne_franquette_front/services/stores/secured_storage.dart';
 import 'package:stomp_dart_client/stomp.dart';
@@ -42,8 +43,10 @@ class WebSocketService {
           } else {
             print("Nombre maximal de tentatives de connexion atteint.");
             stompClient?.deactivate();
+            throw ServerErrorException(500, stompClient.toString());
           }
         },
+        onStompError: (p0) => throw ServerErrorException(500, stompClient.toString()),
         stompConnectHeaders: {'auth-token': await ApiUtilsService.getToken()},
         webSocketConnectHeaders: {'auth-token': await ApiUtilsService.getToken()}, 
       ),

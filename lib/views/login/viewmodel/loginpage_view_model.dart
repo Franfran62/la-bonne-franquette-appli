@@ -41,8 +41,8 @@ class LoginPageViewModel {
         isStores = true;
       }
       return isStores;
-    } on ApiException catch (e) {
-      throw Exception(e);
+    } on ApiException {
+      rethrow;
     } catch (e) {
       throw Exception("Une erreur s'est produite lors de la connexion");
     }
