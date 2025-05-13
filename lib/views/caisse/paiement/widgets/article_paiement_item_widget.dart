@@ -29,7 +29,9 @@ class ItemLineWidget extends HookWidget {
       if (isPaid) {
         return Color.fromARGB(255, 68, 207, 131);
       }
-      return item.article.isModified ? Color(0xFFFFF9C4) : Color(0xFFF8F9FA);
+      return item.article is Article && (item.article.ingredients.isNotEmpty || item.article.extraSet.isNotEmpty) 
+      ? Color(0xFFE8F4FD) 
+      : Color(0xFFF8F9FA);
     }
 
     void onTap() {
@@ -55,15 +57,6 @@ class ItemLineWidget extends HookWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (item.article.isModified)
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                        child: BadgeModifie(),
-                      ),
-                    ],
-                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -85,7 +78,7 @@ class ItemLineWidget extends HookWidget {
                     )),
                   ],
                 ),
-                if (item.article is Article &&
+                if (item.article is Article && 
                     (item.article.ingredients.isNotEmpty ||
                         item.article.extraSet.isNotEmpty))
                   Padding(

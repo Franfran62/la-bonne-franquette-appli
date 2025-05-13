@@ -40,7 +40,7 @@ class Article {
       prixTTC: json['prixTTC'],
       ingredients: ingredients,
       extraSet: extraSet,
-      isModified: json['isModified']
+      isModified: json['modified']
     );
   }
 
@@ -53,7 +53,7 @@ class Article {
       'prixTTC': prixTTC,
       'ingredients': ingredientsJson,
       'extraSet': extraSetJson,
-      "isModified": isModified
+      "modified": isModified
     };
   }
 
