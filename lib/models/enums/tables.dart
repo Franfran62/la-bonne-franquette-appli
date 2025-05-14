@@ -1,16 +1,16 @@
 enum Tables {
-  ingredient(name: "ingredient"),
-  extra(name: "extra"),
-  categorie(name: "categorie"),
-  produit(name: "produit"),
-  menu(name: "menu"),
-  menuItem(name: "menu_item"),
-  menuItemContientProduit(name: "menu_item_contient_produit"),
-  produitContientIngredient(name: "produit_contient_ingredient"),
-  produitContientExtra(name: "produit_contient_extra"),
-  produitAppartientCategorie(name: "produit_appartient_categorie"),
-  menuContientProduit(name: "menu_contient_produit"),
-  paiementTypeCommande(name: "paiement_type_commande");
+  ingredient(name: "ingredients"),
+  addon(name: "addons"),
+  category(name: "categories"),
+  product(name: "products"),
+  menu(name: "menus"),
+  menuItem(name: "menu_items"),
+  menuItemContainsProduct(name: "menu_item_contains_product"),
+  productContainsIngredient(name: "product_contains_ingredient"),
+  productContainsAddon(name: "product_contains_addon"),
+  productInCategory(name: "product_in_category"),
+  menuContainsProduct(name: "menu_contains_product"),
+  paymentType(name: "payment_type");
 
   const Tables({
     required this.name,

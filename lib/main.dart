@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:la_bonne_franquette_front/router/routes.dart';
-import 'package:la_bonne_franquette_front/services/api/session_service.dart';
-import 'package:la_bonne_franquette_front/services/provider/commande_notifier.dart';
-import 'package:la_bonne_franquette_front/services/provider/paiement_notifier.dart';
+import 'package:la_bonne_franquette_front/services/api/api_session.dart';
+import 'package:la_bonne_franquette_front/services/provider/order_notifier.dart';
+import 'package:la_bonne_franquette_front/services/provider/payment_notifier.dart';
 import 'package:la_bonne_franquette_front/theme.dart';
-import 'package:la_bonne_franquette_front/views/caisse/listedecommande/viewmodel/listedecommande_view_model.dart';
+import 'package:la_bonne_franquette_front/views/cashier/order_list/order_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -15,7 +15,7 @@ void main() async {
   String initialRoute = '/';
   // Vérifie si l'utilisateur est encore connecté et récupére la dernière page visitée
   try {
-    if (await SessionService.isConnected()) {
+    if (await ApiSession.isConnected()) {
       initialRoute = await getLastVisitedPage();
     }
   } catch (e) {
@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CommandeNotifier()),
-        ChangeNotifierProvider(create: (_) => PaiementNotifier()),
-        ChangeNotifierProvider(create: (_) => ListedeCommandeViewModel()),
+        ChangeNotifierProvider(create: (_) => OrderNotifier()),
+        ChangeNotifierProvider(create: (_) => PaymentNotifier()),
+        ChangeNotifierProvider(create: (_) => OrderListViewModel()),
       ],
       child: MaterialApp.router(
         routerConfig: createRouter(initialRoute),

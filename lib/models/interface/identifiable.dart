@@ -1,4 +1,4 @@
 abstract class Identifiable {
   int get id;
-  String get nom;
+  String get name;
 }
