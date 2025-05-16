@@ -39,7 +39,7 @@ class ArticlePayment {
     return list;
   }
 
-  static List<ArticlePayment> buildArticlePaiementPaid(Order commande) {
+  static List<ArticlePayment> buildArticlePaymentPaid(Order commande) {
     List<ArticlePayment> list = [];
     for (var paiement in commande.payments) {
       for (var article in paiement.articles) {

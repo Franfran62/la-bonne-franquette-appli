@@ -54,10 +54,7 @@ class ApiRequest {
     }, token);
   }
 
-  static Future<Map<String, dynamic>> patch(
-      {required String endpoint,
-      required Map<String, dynamic> body,
-      bool token = false}) async {
+  static Future<Map<String, dynamic>> patch({required String endpoint, required Map<String, dynamic> body, bool token = false}) async {
     return _retryRequest(() async {
       Map<String, String> headers = await ApiUtils.setHeaders(token);
       String url = await ApiUtils.getComputedUrl(endpoint: endpoint);
@@ -82,9 +79,8 @@ class ApiRequest {
     try {
       final response = await request();
       if (token && response.statusCode == 403) {
-        await Future.delayed(Duration(seconds: 2));
         await ApiSession.refresh();
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 1));
         final retryResponse = await request();
         if (retryResponse.statusCode >= 300) {
           throw ApiException.throwError(
