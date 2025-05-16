@@ -129,8 +129,7 @@ class DatabaseRequest {
     return null;
   }
 
-  static Future<List<Product>> findAllProductByCategoryId(
-      int categoryId) async {
+  static Future<List<Product>> findAllProductByCategoryId(int categoryId) async {
     final result = await database?.query(Tables.productInCategory.name,
         where: "category_id = $categoryId", columns: ["product_id"]);
     List<int> productIDs =
@@ -153,10 +152,10 @@ class DatabaseRequest {
   static Future<List<Ingredient>> findAllIngredientByProductId(
       int productId) async {
     final result = await database?.rawQuery('''
-      SELECT ingredient.*
+      SELECT ingredients.*
       FROM ingredients
       INNER JOIN product_contains_ingredient
-      ON ingredient.id = product_contains_ingredient.ingredient_id
+      ON ingredients.id = product_contains_ingredient.ingredient_id
       WHERE product_contains_ingredient.product_id = ?
     ''', [productId]);
 
@@ -165,10 +164,10 @@ class DatabaseRequest {
 
   static Future<List<Addon>> findAllAddonByProductId(int productId) async {
     final result = await database?.rawQuery('''
-      SELECT addon.*
+      SELECT addons.*
       FROM addons
       INNER JOIN product_contains_addon
-      ON addon.id = product_contains_addon.addon_id
+      ON addons.id = product_contains_addon.addon_id
       WHERE product_contains_addon.product_id = ?
     ''', [productId]);
 
