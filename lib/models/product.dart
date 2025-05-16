@@ -119,4 +119,9 @@ class Product implements Identifiable {
         ListEquality().hash(categories),
         ListEquality().hash(addons),
       );
+
+  @override
+  String toString() {
+    return 'Product{id: $id, name: $name, totalPrice: $totalPrice, ingredients: $ingredients, categories: $categories, addons: $addons}';
+  }
 }

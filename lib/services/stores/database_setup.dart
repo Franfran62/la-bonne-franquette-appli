@@ -55,39 +55,39 @@ class DatabaseSetup {
         optional INTEGER NOT NULL,
         totalPrice INTEGER,
         menu_id INTEGER NOT NULL,
-        FOREIGN KEY (menu_id) REFERENCES menu(id)
+        FOREIGN KEY (menu_id) REFERENCES menus(id)
       );
     ''');
     db.execute('''
       CREATE TABLE menu_item_contains_product (
         menu_item_id INTEGER NOT NULL,
         product_id INTEGER NOT NULL,
-        FOREIGN KEY (menu_item_id) REFERENCES menu_item(id),
-        FOREIGN KEY (product_id) REFERENCES product(id)
+        FOREIGN KEY (menu_item_id) REFERENCES menu_items(id),
+        FOREIGN KEY (product_id) REFERENCES products(id)
       );
     ''');
     db.execute('''
       CREATE TABLE product_contains_ingredient (
         product_id INTEGER,
         ingredient_id INTEGER,
-        FOREIGN KEY (product_id) REFERENCES product(id),
-        FOREIGN KEY (ingredient_id) REFERENCES ingredient(id)
+        FOREIGN KEY (product_id) REFERENCES products(id),
+        FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
       );
     ''');
     db.execute('''
       CREATE TABLE product_contains_addon (
         product_id INTEGER,
         addon_id INTEGER,
-        FOREIGN KEY (product_id) REFERENCES product(id),
-        FOREIGN KEY (addon_id) REFERENCES addon(id)
+        FOREIGN KEY (product_id) REFERENCES products(id),
+        FOREIGN KEY (addon_id) REFERENCES addons(id)
       );
     ''');
     db.execute('''
       CREATE TABLE product_in_category (
         product_id INTEGER,
         category_id INTEGER,
-        FOREIGN KEY (product_id) REFERENCES product(id),
-        FOREIGN KEY (category_id) REFERENCES categorie(id)
+        FOREIGN KEY (product_id) REFERENCES products(id),
+        FOREIGN KEY (category_id) REFERENCES categories(id)
       );
     ''');
     db.execute('''
@@ -117,35 +117,30 @@ class DatabaseSetup {
       switch (endpoint) {
         case "ingredient":
           for (var i in response) {
-            print(i);
             await DatabaseRequest.insert(
                 Tables.ingredient, i as Map<String, dynamic>);
           }
           break;
         case "addon":
           for (var i in response) {
-            print(i);
             await DatabaseRequest.insert(
                 Tables.addon, i as Map<String, dynamic>);
           }
           break;
         case "category":
           for (var i in response) {
-            print(i);
             await DatabaseRequest.insert(
                 Tables.category, i as Map<String, dynamic>);
           }
           break;
         case "payment/type":
           for (var i in response) {
-            print(i);
             await DatabaseRequest.insert(
                 Tables.paymentType, i as Map<String, dynamic>);
           }
           break;
         case "product":
           for (var i in response) {
-            print(i);
             Product product = Product.fromJson(i);
             List<Category> categories = product.getCategories();
             List<Ingredient> ingredients = product.getIngredients();
@@ -160,7 +155,6 @@ class DatabaseSetup {
           break;
         case "menu":
           for (var i in response) {
-            print("------- MENU $i");
             Menu menu = await Menu.fromJson(i);
             await DatabaseRequest.insert(Tables.menu, {
               "id": menu.id,

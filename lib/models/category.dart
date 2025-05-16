@@ -8,7 +8,7 @@ class Category implements Identifiable {
   @override
   final String name;
   final String categoryType;
-  final int? parentCategoryId;
+  final int? categoryId;
   final List<Product> products;
   final List<Category> subCategories;
 
@@ -16,7 +16,7 @@ class Category implements Identifiable {
     required this.id,
     required this.name,
     required this.categoryType,
-    this.parentCategoryId,
+    this.categoryId,
     this.products = const [],
     this.subCategories = const [],
   });
@@ -27,14 +27,14 @@ class Category implements Identifiable {
         "id": int id,
         "name": String name,
         "categoryType": String categoryType,
-        "parentCategoryId": int? parentCategoryId,
+        "categoryId": int? categoryId,
         "products": List<Product> products,
       } =>
         Category(
             id: id,
             name: name,
             categoryType: categoryType,
-            parentCategoryId: parentCategoryId,
+            categoryId: categoryId,
             products: products),
       {
         "id": int id,
@@ -48,13 +48,13 @@ class Category implements Identifiable {
         "id": int id,
         "name": String name,
         "categoryType": String categoryType,
-        "parentCategoryId": int? parentCategoryId
+        "categoryId": int? categoryId
       } =>
         Category(
             id: id,
             name: name,
             categoryType: categoryType,
-            parentCategoryId: parentCategoryId),
+            categoryId: categoryId),
       {
         "id": int id,
         "name": String name,
@@ -71,7 +71,7 @@ class Category implements Identifiable {
       id: map['id'],
       name: map['name'],
       categoryType: map['categoryType'],
-      parentCategoryId: map['parentCategoryId'],
+      categoryId: map['categoryId'],
       products: map['products'],
       subCategories: map['sub-categories'] ?? [],
     );
@@ -85,7 +85,7 @@ class Category implements Identifiable {
         other.id == id &&
         other.name == name &&
         other.categoryType == categoryType &&
-        other.parentCategoryId == parentCategoryId &&
+        other.categoryId == categoryId &&
         ListEquality().equals(other.products, products) &&
         ListEquality().equals(other.subCategories, subCategories);
   }
@@ -95,8 +95,13 @@ class Category implements Identifiable {
         id,
         name,
         categoryType,
-        parentCategoryId,
+        categoryId,
         ListEquality().hash(products),
         ListEquality().hash(subCategories),
       );
+    
+    @override
+    String toString() {
+      return 'Category(id: $id, name: $name, categoryType: $categoryType, categoryId: $categoryId, products: $products, subCategories: $subCategories)';
+    }
 }
