@@ -22,7 +22,7 @@ class KitchenHomeView extends StatelessWidget {
           }
         },
         child: MainScaffold(
-            body: ListView(),
+            body: OrderListView(),
             destination: "caisse",
             title: "Commandes",
             scaffoldKey: _scaffoldKey));
