@@ -67,7 +67,7 @@ class ItemLineWidget extends HookWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                       maxLines: 1,
                       overflow: TextOverflow.clip,
-                      "1 ${item.article.nom}",
+                      "1 ${item.article.name}",
                     )),
                     Expanded(
                         child: Text(
@@ -75,7 +75,7 @@ class ItemLineWidget extends HookWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                             maxLines: 1,
                             overflow: TextOverflow.clip,
-                            "${item.article.prixTTC / 100} €")),
+                            "${item.article.totalPrice / 100} €")),
                   ],
                 ),
                 if (item.article is Article &&
