@@ -129,9 +129,9 @@ class PaymentViewModel extends ChangeNotifier {
     paymentNotifier.reset();
   }
 
-  updateDeliveryDate() {
+  updateDeliveryDate() async {
     try {
-      ApiRequest.patch(
+      await ApiRequest.patch(
           endpoint: "/order/${order!.id}",
           body: {'creationDate': order!.creationDate?.toIso8601String()},
           token: true);

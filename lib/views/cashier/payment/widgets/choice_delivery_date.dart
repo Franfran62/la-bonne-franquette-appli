@@ -53,7 +53,7 @@ class _ChoiceDeliveryDateState extends State<ChoiceDeliveryDate> {
         });
 
         viewModel.order!.deliveryDate = _deliveryDate;
-        viewModel.updateDeliveryDate();
+        await viewModel.updateDeliveryDate();
       }
     } on ForbiddenException catch (e) {
       context.showLogoutDialog(e.message);
