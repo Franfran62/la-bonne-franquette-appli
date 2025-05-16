@@ -18,10 +18,10 @@ class _ChoicePaymentTypeState extends State<ChoicePaymentType> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PaymentNotifier>(
-      builder: (context, paiementNotifier, child) {
+      builder: (context, paymentNotifier, child) {
         return Column(
           children: [
-            paiementNotifier.amontDue > 0
+            paymentNotifier.amontDue > 0
                 ? Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -31,9 +31,9 @@ class _ChoicePaymentTypeState extends State<ChoicePaymentType> {
                           label: Text("Montant",
                               style: Theme.of(context).textTheme.bodyMedium),
                           labelPadding: EdgeInsets.all(8.0),
-                          selected: paiementNotifier.selectedPayment ==
+                          selected: paymentNotifier.selectedPayment ==
                               PaymentChoice.custom,
-                          onSelected: (selected) => paiementNotifier
+                          onSelected: (selected) => paymentNotifier
                               .selectedPayment = PaymentChoice.custom,
                         ),
                       ),
@@ -43,9 +43,9 @@ class _ChoicePaymentTypeState extends State<ChoicePaymentType> {
                             label: Text("Sélection",
                                 style: Theme.of(context).textTheme.bodyMedium),
                             labelPadding: EdgeInsets.all(8.0),
-                            selected: paiementNotifier.selectedPayment ==
+                            selected: paymentNotifier.selectedPayment ==
                                 PaymentChoice.selected,
-                            onSelected: (selected) => paiementNotifier
+                            onSelected: (selected) => paymentNotifier
                                 .selectedPayment = PaymentChoice.selected),
                       ),
                       Padding(
@@ -54,31 +54,31 @@ class _ChoicePaymentTypeState extends State<ChoicePaymentType> {
                             label: Text("Payer le reste",
                                 style: Theme.of(context).textTheme.bodyMedium),
                             labelPadding: EdgeInsets.all(8.0),
-                            selected: paiementNotifier.selectedPayment ==
+                            selected: paymentNotifier.selectedPayment ==
                                 PaymentChoice.full,
-                            onSelected: (selected) => paiementNotifier
+                            onSelected: (selected) => paymentNotifier
                                 .selectedPayment = PaymentChoice.full),
                       ),
                     ],
                   )
-                : _buildRefundButton(paiementNotifier),
-            if (paiementNotifier.amontDue > 0 &&
-                paiementNotifier.selectedPayment == PaymentChoice.custom)
+                : _buildRefundButton(paymentNotifier),
+            if (paymentNotifier.amontDue > 0 &&
+                paymentNotifier.selectedPayment == PaymentChoice.custom)
               TypeCustom(),
-            if (paiementNotifier.amontDue > 0 &&
-                paiementNotifier.selectedPayment == PaymentChoice.selected)
+            if (paymentNotifier.amontDue > 0 &&
+                paymentNotifier.selectedPayment == PaymentChoice.selected)
               TypeSelected(),
-            if (paiementNotifier.amontDue > 0 &&
-                paiementNotifier.selectedPayment == PaymentChoice.full)
+            if (paymentNotifier.amontDue > 0 &&
+                paymentNotifier.selectedPayment == PaymentChoice.full)
               TypeFull(),
-            if (paiementNotifier.amontDue < 0) TypeRefund(),
+            if (paymentNotifier.amontDue < 0) TypeRefund(),
           ],
         );
       },
     );
   }
 
-  Widget _buildRefundButton(PaymentNotifier paiementNotifier) {
+  Widget _buildRefundButton(PaymentNotifier paymentNotifier) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

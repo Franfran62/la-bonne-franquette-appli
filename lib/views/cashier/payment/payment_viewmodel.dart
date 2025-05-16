@@ -31,6 +31,7 @@ class PaymentViewModel extends ChangeNotifier {
         ArticlePayment.buildArticlePaymentPaid(order!);
     paymentNotifier.total = order!.totalPrice ?? 0;
     paymentNotifier.payments = order!.payments;
+    paymentNotifier.selectedPayment = PaymentChoice.full;
     title = "Commande numéro ${order!.number}";
     (context as Element).markNeedsBuild();
   }
