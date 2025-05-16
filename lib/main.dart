@@ -11,24 +11,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-
-  String initialRoute = '/';
-  // Vérifie si l'utilisateur est encore connecté et récupére la dernière page visitée
-  try {
-    if (await ApiSession.isConnected()) {
-      initialRoute = await getLastVisitedPage();
-    }
-  } catch (e) {
-    print('Connection error: $e');
-  }
-
-  runApp(MyApp(initialRoute: initialRoute));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String initialRoute;
 
-  const MyApp({super.key, required this.initialRoute});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => OrderListViewModel()),
       ],
       child: MaterialApp.router(
-        routerConfig: createRouter(initialRoute),
+        routerConfig: createRouter("/"),
         title: 'La Bonne Franquette',
         theme: CustomTheme.getTheme(),
       ),

@@ -183,7 +183,6 @@ class DatabaseSetup {
               'Impossible d\'initialiser le store pour le modèle $T');
       }
     } catch (e) {
-      print(e);
       throw Exception(e);
     }
   }

@@ -66,8 +66,6 @@ class DatabaseRequest {
               await DatabaseRequest.findProductById(el['product_id'] as int);
           if (product != null) {
             products.add(product);
-          } else {
-            print("Produit introuvable pour product_id=${el['product_id']}");
           }
         }
         menuItems.add(MenuItem(
