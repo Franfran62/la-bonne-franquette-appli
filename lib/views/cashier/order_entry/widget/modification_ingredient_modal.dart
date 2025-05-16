@@ -25,7 +25,7 @@ class ModificationIngredientModal extends StatelessWidget {
           return SizedBox();
         }
 
-        final ingredients = snapshot.data!;
+        final data = snapshot.data!;
         return Column(
           children: [
             Padding(
@@ -38,7 +38,7 @@ class ModificationIngredientModal extends StatelessWidget {
               ),
             ),
             Padding(padding: EdgeInsets.only(top: 12)),
-            ...ingredients.map((ingredient) => Padding(
+            ...data.map((ingredient) => Padding(
                   padding: EdgeInsets.all(8.0),
                   child: StatefulBuilder(
                     builder: (context, setState) {
@@ -47,7 +47,7 @@ class ModificationIngredientModal extends StatelessWidget {
                           children: [
                             Text(ingredient.name,
                                 style: Theme.of(context).textTheme.bodyMedium),
-                            if (ingredients.contains(ingredient))
+                            if (ingredients.value.contains(ingredient))
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Icon(Icons.close),
@@ -56,11 +56,11 @@ class ModificationIngredientModal extends StatelessWidget {
                         ),
                         onTap: () {
                           setState(() {
-                            if (!ingredients
+                            if (!ingredients.value
                                 .contains(ingredient)) {
-                              ingredients.add(ingredient);
+                              ingredients.value.add(ingredient);
                             } else {
-                              ingredients.remove(ingredient);
+                              ingredients.value.remove(ingredient);
                             }
                           });
                         },
