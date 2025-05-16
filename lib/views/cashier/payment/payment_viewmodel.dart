@@ -24,6 +24,7 @@ class PaymentViewModel extends ChangeNotifier {
   PaymentViewModel._internal();
 
   void init(BuildContext context, Order newOrder) {
+    print(newOrder);
     order = newOrder;
     number = 0;
     paymentNotifier.currentArticles = ArticlePayment.build(order!);

@@ -160,14 +160,14 @@ class OrderEntryViewModel {
       } else {
         orderNotifier.order.creationDate = DateTime.now();
         orderNotifier.order.deliveryDate = DateTime.now();
-        Map<String, dynamic> commande = await ApiRequest.post(
+        Map<String, dynamic> order = await ApiRequest.post(
             endpoint: '/order',
             body: orderNotifier.order.toAPI(patch: false),
             token: true);
-        orderNotifier.order.id = commande['id'];
-        orderNotifier.order.number = commande['numero'];
+        orderNotifier.order.id = order['id'];
+        orderNotifier.order.number = order['number'];
         orderNotifier.order.creationDate =
-            DateTime.parse(commande['creationDate']);
+            DateTime.parse(order['creationDate']);
       }
     } on RequestException catch (e) {
       rethrow;
