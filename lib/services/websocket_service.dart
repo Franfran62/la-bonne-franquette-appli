@@ -1,6 +1,5 @@
-import 'package:la_bonne_franquette_front/exception/api_exception.dart';
-import 'package:la_bonne_franquette_front/services/api/api_utils_service.dart';
-import 'package:la_bonne_franquette_front/services/stores/secured_storage.dart';
+import 'package:la_bonne_franquette_front/exceptions/request_exception.dart';
+import 'package:la_bonne_franquette_front/services/api/api_utils.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -13,7 +12,7 @@ class WebSocketService {
   String? url;
 
   Future<void> setWebSocketServerAdress() async {
-    await ApiUtilsService.getUrl().then((value) {
+    await ApiUtils.getUrl().then((value) {
       url = 'ws://$value/ws';
     });
   }
@@ -27,7 +26,7 @@ class WebSocketService {
         url: url!,
         onConnect: (StompFrame frame) {
           stompClient?.subscribe(
-            destination: '/socket/commande',
+            destination: '/socket/order',
             callback: (frame) {
               if (frame.body != null) {
                 messageReceived(frame.body!);
@@ -37,18 +36,16 @@ class WebSocketService {
         },
         beforeConnect: () async {
           if (reconnectAttempts < maxReconnectAttempts) {
-            print('Tentative de connexion WebSocket...');
             await Future.delayed(const Duration(milliseconds: 1000)); 
             reconnectAttempts++;
           } else {
-            print("Nombre maximal de tentatives de connexion atteint.");
             stompClient?.deactivate();
             throw ServerErrorException(500, stompClient.toString());
           }
         },
         onStompError: (p0) => throw ServerErrorException(500, stompClient.toString()),
-        stompConnectHeaders: {'auth-token': await ApiUtilsService.getToken()},
-        webSocketConnectHeaders: {'auth-token': await ApiUtilsService.getToken()}, 
+        stompConnectHeaders: {'auth-token': await ApiUtils.getToken()},
+        webSocketConnectHeaders: {'auth-token': await ApiUtils.getToken()}, 
       ),
     );
 

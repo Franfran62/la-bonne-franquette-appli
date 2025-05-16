@@ -1,46 +1,46 @@
-
 import "package:collection/collection.dart";
 import "package:la_bonne_franquette_front/models/interface/identifiable.dart";
 import "package:la_bonne_franquette_front/models/menuItem.dart";
-import "produit.dart";
+import "product.dart";
 
 class Menu implements Identifiable {
   @override
   final int id;
   @override
-  final String nom;
-  final int prixTTC;
-  final List<MenuItem> menuItemSet;
+  final String name;
+  final int totalPrice;
+  final List<MenuItem> menuItems;
 
   Menu({
     required this.id,
-    required this.nom,
-    required this.prixTTC,
-    required this.menuItemSet,
+    required this.name,
+    required this.totalPrice,
+    required this.menuItems,
   });
 
   static Future<Menu> fromJson(Map<String, dynamic> json) async {
-    var items = json['menuItemSet'] as List<dynamic>? ?? [];
+    var items = json['menuItems'] as List<dynamic>? ?? [];
     return Menu(
       id: json['id'] as int,
-      nom: json['nom'] as String,
-      prixTTC: json['prixTTC'] as int,
-      menuItemSet: await Future.wait(items.map((item) => MenuItem.fromMenuJson(item))),
+      name: json['name'] as String,
+      totalPrice: json['totalPrice'] as int,
+      menuItems:
+          await Future.wait(items.map((item) => MenuItem.fromMenuJson(item))),
     );
   }
 
   @override
-  bool operator == (Object other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (runtimeType != other.runtimeType) return false;
     final Menu otherMenu = other as Menu;
-    return nom == otherMenu.nom &&
-        ListEquality().equals(menuItemSet, otherMenu.menuItemSet);
+    return name == otherMenu.name &&
+        ListEquality().equals(menuItems, otherMenu.menuItems);
   }
 
   @override
   int get hashCode => Object.hash(
-        nom,
-        ListEquality().hash(menuItemSet),
+        name,
+        ListEquality().hash(menuItems),
       );
 }
