@@ -21,7 +21,7 @@ extension ErrorDialogExtension on BuildContext {
             onPressed: () {
               Navigator.of(this).pop();
               if (redirect && route != null) {
-              GoRouter.of(this).pushNamed(route);
+              GoRouter.of(this).goNamed(route);
               }
             },
             child: const Text('OK'),
@@ -49,7 +49,7 @@ extension ErrorDialogExtension on BuildContext {
           TextButton(
             onPressed: () {
               Navigator.of(this).pop();
-              GoRouter.of(this).pushNamed("login");
+              GoRouter.of(this).goNamed("login");
             },
             child: const Text('Se reconnecter'),
           ),

@@ -27,8 +27,8 @@ class OrderListWidget extends StatelessWidget {
           }
           return const Center();
         } else {
-          final commandes = viewModel.getOrderList();
-          if (commandes.isEmpty) {
+          final orders = viewModel.getOrderList();
+          if (orders.isEmpty) {
             return const Center(child: Text('Aucune commande'));
           }
           return Expanded(
@@ -54,47 +54,47 @@ class OrderListWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: commandes.length,
+                      itemCount: orders.length,
                       itemBuilder: (context, index) {
-                        final commande = commandes[index];
+                        final order = orders[index];
                         final isClickable =
-                            commande.status != OrderStatus.ANNULEE &&
-                                commande.status != OrderStatus.TERMINEE;
+                            order.status != OrderStatus.ANNULEE &&
+                                order.status != OrderStatus.TERMINEE;
                         final child = Container(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             constraints: BoxConstraints(maxWidth: 1200),
                             decoration: BoxDecoration(
                                 color: _buildRowColor(
-                                    context: context, status: commande.status),
+                                    context: context, status: order.status),
                                 borderRadius: BorderRadius.circular(8)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 _buildCell(
                                     context: context,
-                                    text: commande.number.toString()),
+                                    text: order.number.toString()),
                                 _buildCell(
                                     context: context,
-                                    text: commande.dineIn
+                                    text: order.dineIn
                                         ? 'Sur place'
                                         : 'A emporter'),
                                 _buildCell(
                                     context: context,
-                                    text: commande.status.name),
+                                    text: order.status.name),
                                 _buildCell(
                                     context: context,
                                     text: TimeFormatter.withSeparator(
-                                        commande.creationDate)),
+                                        order.creationDate)),
                                 _buildCell(
                                     context: context,
                                     text: TimeFormatter.withSeparator(
-                                        commande.deliveryDate)),
+                                        order.deliveryDate)),
                                 _buildCell(
                                     context: context,
-                                    text: "${commande.totalPrice / 100} €"),
+                                    text: "${order.totalPrice / 100} €"),
                                 _buildCell(
                                     context: context,
-                                    text: commande.paymentType),
+                                    text: order.paymentType),
                               ],
                             ));
                         return Padding(
@@ -102,7 +102,7 @@ class OrderListWidget extends StatelessWidget {
                           child: isClickable
                               ? GestureDetector(
                                   onTap: () async =>
-                                      await viewModel.go(context, commande.id),
+                                      await viewModel.go(context, order.id),
                                   child: child)
                               : child,
                         );

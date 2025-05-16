@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:la_bonne_franquette_front/exceptions/request_exception.dart';
+import 'package:la_bonne_franquette_front/router/routes.dart';
+import 'package:la_bonne_franquette_front/services/api/api_session.dart';
+import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
 import 'package:la_bonne_franquette_front/widgets/side_menu.dart';
 
 class MainScaffold extends StatefulWidget {
@@ -23,6 +27,27 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
+    final router = GoRouter.of(context);
+
+    void goBack() async {
+      final router = GoRouter.of(context);
+      final matches = router.routerDelegate.currentConfiguration;
+      if (matches.isNotEmpty) {
+        final routeName = matches.last.route.name;
+        final redirect = await getBackPage(routeName);
+        if (redirect == "login") {
+          try {
+            await ApiSession.logout();
+          } on RequestException catch (e) {
+            await context.showLogoutDialog(e.message);
+          } catch (e) {
+            await context.showError("Une erreur inattendue s'est produite");
+          }
+        }
+        context.goNamed(redirect);
+      }
+    }
+
     return Scaffold(
       key: widget.scaffoldKey,
       drawer: SideMenu(
@@ -36,11 +61,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         title: Text(widget.title ?? ""),
         actions: [
           InkWell(
-            onTap: () {
-              if (GoRouter.of(context).canPop()) {
-                GoRouter.of(context).pop();
-              }
-            },
+            onTap: goBack,
             child: Icon(Icons.arrow_back),
           ),
           SizedBox(width: 20.0),

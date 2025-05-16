@@ -92,7 +92,7 @@ class SidePayment extends HookWidget {
                           onPressed: () async {
                             try {
                               await viewModel.valid();
-                              context.pushNamed('caisse');
+                              context.goNamed('caisse');
                             } on ForbiddenException catch (e) {
                               context.showLogoutDialog(e.message);
                             } on ConnectionException catch (e) {
@@ -110,7 +110,7 @@ class SidePayment extends HookWidget {
                         onPressed: () async {
                           try {
                             await viewModel.cancel();
-                            context.pushNamed('caisse');
+                            context.goNamed('caisse');
                           } on ForbiddenException catch (e) {
                             context.showLogoutDialog(e.message);
                           } on ConnectionException catch (e) {

@@ -120,8 +120,8 @@ class _LoginViewState extends State<LoginView> {
               );
               if (connected) {
                 switchView
-                    ? context.pushNamed('cuisine')
-                    : context.pushNamed('caisse');
+                    ? context.goNamed('cuisine')
+                    : context.goNamed('caisse');
               }
             } on RequestException catch (e) {
               await context.showError(e.message);

@@ -15,7 +15,7 @@ class DestinationView extends StatelessWidget {
   Widget build(BuildContext context) {
     void handleChoice(bool dineIn) {
       viewModel.init(dineIn);
-      context.pushNamed('caisse_prise_de_commande');
+      context.goNamed('caisse_prise_de_commande');
     }
 
     Widget buildButton(bool dineIn, IconData icon, String text) {

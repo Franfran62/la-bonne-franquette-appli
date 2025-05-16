@@ -34,7 +34,7 @@ class CartWidget extends HookWidget {
               try {
                 await orderEntryViewModel.createOrder();
                 paymentViewModel.init(context, orderNotifier.order);
-                context.pushNamed('caisse_paiement');
+                context.goNamed('caisse_paiement');
               } on ForbiddenException catch (e) {
                 context.showLogoutDialog(e.message);
               } on ConnectionException catch (e) {

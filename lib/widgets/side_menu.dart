@@ -30,8 +30,11 @@ class SideMenu extends StatelessWidget {
           const SizedBox(height: 25),
           _buildIconButton(
               Icons.close, () => scaffoldKey.currentState?.closeDrawer()),
-          _buildMenuItem(Icons.arrow_forward_rounded, "Changer de vue",
-              () => context.pushNamed(destination)),
+          _buildMenuItem(Icons.arrow_forward_rounded, 
+              destination == "cuisine" 
+                ? "Aller en cuisine"
+                : "Aller à la caisse",
+              () => context.goNamed(destination)),
           const Spacer(),
           _buildMenuItem(Icons.logout, "Déconnexion", () async {
             try {
@@ -39,7 +42,7 @@ class SideMenu extends StatelessWidget {
             } on RequestException catch (e) {
               await context.showLogoutDialog(e.message);
             }
-            GoRouter.of(context).pushNamed("login");
+            GoRouter.of(context).goNamed("login");
           }, color: Colors.red),
           SizedBox(
             height: 10,

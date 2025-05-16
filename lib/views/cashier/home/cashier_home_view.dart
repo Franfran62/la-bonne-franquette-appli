@@ -13,10 +13,10 @@ class CashierHomeView extends StatelessWidget {
     void handleChoice(bool choice) {
       switch (choice) {
         case true:
-          context.pushNamed('caisse_destination');
+          context.goNamed('caisse_destination');
           break;
         case false:
-          context.pushNamed('caisse_liste_commande');
+          context.goNamed('caisse_liste_commande');
           break;
       }
     }

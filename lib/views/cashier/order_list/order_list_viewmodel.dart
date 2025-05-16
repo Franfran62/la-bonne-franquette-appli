@@ -56,7 +56,7 @@ class OrderListViewModel extends ChangeNotifier {
       final order =
           await ApiRequest.get(endpoint: "/order/${id}", token: true);
       paiementViewModel.init(context, Order.fromJson(order));
-      context.pushNamed("caisse_paiement");
+      context.goNamed("caisse_paiement");
     } on RequestException {
       rethrow;
     } catch (e) {
