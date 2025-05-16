@@ -53,9 +53,9 @@ class OrderListViewModel extends ChangeNotifier {
 
   Future<void> go(BuildContext context, int id) async {
     try {
-      final commande =
+      final order =
           await ApiRequest.get(endpoint: "/order/${id}", token: true);
-      paiementViewModel.init(context, Order.fromJson(commande));
+      paiementViewModel.init(context, Order.fromJson(order));
       context.pushNamed("caisse_paiement");
     } on RequestException {
       rethrow;

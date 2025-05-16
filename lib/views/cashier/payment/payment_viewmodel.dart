@@ -28,7 +28,7 @@ class PaymentViewModel extends ChangeNotifier {
     number = 0;
     paymentNotifier.currentArticles = ArticlePayment.build(order!);
     paymentNotifier.currentPaid =
-        ArticlePayment.buildArticlePaiementPaid(order!);
+        ArticlePayment.buildArticlePaymentPaid(order!);
     paymentNotifier.total = order!.totalPrice ?? 0;
     paymentNotifier.payments = order!.payments;
     title = "Commande numéro ${order!.number}";
@@ -133,7 +133,7 @@ class PaymentViewModel extends ChangeNotifier {
     try {
       await ApiRequest.patch(
           endpoint: "/order/${order!.id}",
-          body: {'creationDate': order!.creationDate?.toIso8601String()},
+          body: {'deliveryDate': order!.deliveryDate?.toIso8601String()},
           token: true);
     } on RequestException {
       rethrow;
