@@ -128,7 +128,7 @@ class PaymentNotifier extends ChangeNotifier {
   int defineSelected() {
     int totalSelection = 0;
     for (var article in _selected) {
-      totalSelection += article.article.prixTTC as int;
+      totalSelection += article.article.totalPrice as int;
     }
     return totalSelection;
   }

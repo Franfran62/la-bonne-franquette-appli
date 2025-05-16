@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:la_bonne_franquette_front/exception/request_exception.dart';
 import 'package:la_bonne_franquette_front/models/wrapper/selection.dart';
 import 'package:la_bonne_franquette_front/services/provider/order_notifier.dart';
 import 'package:la_bonne_franquette_front/services/utils/error_dialog_extension.dart';
@@ -10,6 +9,7 @@ import 'package:la_bonne_franquette_front/views/cashier/order_entry/order_entry_
 import 'package:la_bonne_franquette_front/widgets/cart/card_article.dart';
 import 'package:la_bonne_franquette_front/widgets/cart/card_menu.dart';
 import 'package:provider/provider.dart';
+import '../../../../exceptions/request_exception.dart';
 import '../../../../models/wrapper/article.dart';
 
 class CartWidget extends HookWidget {
