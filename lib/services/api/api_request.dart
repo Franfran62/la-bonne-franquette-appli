@@ -78,7 +78,7 @@ class ApiRequest {
       Future<http.Response> Function() request, bool token) async {
     try {
       final response = await request();
-      if (token && response.statusCode == 403) {
+      if (token && response.statusCode == 401) {
         await ApiSession.refresh();
         await Future.delayed(Duration(seconds: 1));
         final retryResponse = await request();

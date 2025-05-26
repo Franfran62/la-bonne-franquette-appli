@@ -21,13 +21,13 @@ class BadRequestException extends RequestException {
 class UnauthorizedException extends RequestException {
   // 401
   UnauthorizedException([String? body])
-      : super(401, body, message: "Vous n'êtes pas autorisé à faire ça");
+      : super(401, body, message: "Vous avez été déconnecté");
 }
 
 class ForbiddenException extends RequestException {
   // 403
   ForbiddenException([String? body])
-      : super(403, body, message: "Vous avez été déconnecté");
+      : super(403, body, message: "Vous n'êtes pas autorisé à faire ça");
 }
 
 class NotFoundException extends RequestException {
