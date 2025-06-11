@@ -33,11 +33,11 @@ jobs:
       - name: Set up Flutter env
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2'
+          flutter-version: '3.29.2'
           channel: 'stable'
           architecture: x64
       - name: Add Flutter to PATH
-        run: echo "${{ runner.tool_cache }}/flutter/3.22.2-stable/x64/bin" >> $GITHUB_PATH
+        run: echo "${{ runner.tool_cache }}/flutter/3.29.2-stable/x64/bin" >> $GITHUB_PATH
       - name: Set up project dependencies
         run: flutter pub get
       - name: Check flutter installation
