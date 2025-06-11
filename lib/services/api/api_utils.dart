@@ -26,7 +26,7 @@ class ApiUtils {
   }
 
   static Future<String> getComputedUrl({String endpoint = ""}) async {
-    return 'http://${dotenv.env['API_URL']}/api/v1$endpoint';
+    return 'https://${dotenv.env['API_URL']}/api/v1$endpoint';
   }
 
     static Future<Map<String, String>> setHeaders(bool token) async {
