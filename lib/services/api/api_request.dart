@@ -102,7 +102,7 @@ class ApiRequest {
     try {
       final contentType = response.headers['content-type'];
       if (contentType != null && contentType.contains('application/json')) {
-        return jsonDecode(response.body);
+        return jsonDecode(utf8.decode(response.bodyBytes));
       }
     } catch (e) {
       throw JsonException(e.toString());
