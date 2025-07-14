@@ -81,11 +81,11 @@ class OrderEntryViewModel {
     show = false;
   }
 
-  void initMenuSelected({String name = ""}) {
+  void initMenuSelected({String name = "", int price = 0}) {
     menuSelected.articles = [];
     menuSelected.name = name;
     menuSelected.quantity = 1;
-    menuSelected.totalPrice = 0;
+    menuSelected.totalPrice = price;
     menuSelected.modified = false;
   }
 

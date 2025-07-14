@@ -50,9 +50,9 @@ class Selection {
       articles.add(article);
       if (article.modified) {
         modified = true;
+        calculatePrice();
       }
     }
-    calculatePrice();
   }
 
 
@@ -67,7 +67,12 @@ class Selection {
   }
 
   calculatePrice() {
-    totalPrice = articles.fold(0, (sum, article) => sum + article.totalPrice * article.quantity);
+    totalPrice = articles.fold(totalPrice, (sum, article) {
+      return article.modified 
+        ? sum + ( article.addons.fold(0, (addonSum, addon) => addonSum + addon.totalPrice) * article.quantity )
+        : sum;
+      }
+    );
   } 
 
   @override
@@ -90,4 +95,9 @@ class Selection {
         totalPrice,
         modified,
       );
+
+  @override
+  String toString() {
+    return 'Selection(name: $name, articles: $articles, quantity: $quantity, totalPrice: $totalPrice, modified: $modified)';
+  }
 }

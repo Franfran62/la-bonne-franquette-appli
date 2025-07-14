@@ -43,4 +43,9 @@ class Menu implements Identifiable {
         name,
         ListEquality().hash(menuItems),
       );
+
+  @override
+  String toString() {
+    return 'Menu{id: $id, name: $name, totalPrice: $totalPrice, menuItems: $menuItems}';
+  }
 }

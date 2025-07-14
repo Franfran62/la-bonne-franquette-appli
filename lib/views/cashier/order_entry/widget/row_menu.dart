@@ -32,7 +32,7 @@ class RowMenu extends HookWidget {
     void updateMenuItems(Menu menu) {
       selectedMenu.value = menu;
       selectedMenuItems.value = menu.menuItems.first;
-      viewModel.initMenuSelected(name: menu.name);
+      viewModel.initMenuSelected(name: menu.name, price: menu.totalPrice);
       selectedIndexMenuItems.value = 0;
       selectedProductInMenuItems.value = [];
     }
