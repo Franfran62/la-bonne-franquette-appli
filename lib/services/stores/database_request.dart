@@ -173,7 +173,7 @@ class DatabaseRequest {
   }
 
   static Future<List<PaymentType>> findAllPaymentTypeEnable() async {
-    final result = await database?.query('payment_type', where: 'isEnable = 1');
+    final result = await database?.query('payment_type');
     return result?.map((e) => PaymentType.fromMap(e)).toList() ?? [];
   }
 }
