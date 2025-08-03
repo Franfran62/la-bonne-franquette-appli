@@ -1,16 +1,10 @@
 # la_bonne_franquette_front
 
-A new Flutter project.
+Application mobile de La bonne Franquette
 
-## Getting Started
+## Les autres dépôts:
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-    
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* [L'application mobile](https://github.com/Franfran62/la-bonne-franquette-appli)
+* [L'API REST](https://github.com/iDrack/la-bonne-franquette-back)
+* [Le dashboard](https://github.com/Franfran62/la-bonne-franquette-website)
+* [La gestion de l'infrastructure](https://github.com/Franfran62/la-bonne-franquette-infra)
